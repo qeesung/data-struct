@@ -15,7 +15,8 @@ int delete_number(List L,int number);
 int delete_List(List L);
 //find the number
 Position position_find(List L,int numher);
-
+//print the list number
+void Print_lits(List my_list);
 
 
 #endif

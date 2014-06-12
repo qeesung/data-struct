@@ -10,10 +10,10 @@
 struct listnode
 {
 	int number;
-	position next;
+	Position next;
 };
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++
-List init_List()
+List init_list()
 {
 	List my_list;
 	my_list=malloc(sizeof(struct listnode));// create a header
@@ -106,16 +106,16 @@ int delete_number(List my_list,int number)
 int delete_List(List my_list)
 {
 	Position temp;
-	while(my_list!=NULL)
+	while(temp!=NULL)
 	{
-		temp=list->next;
-		free(list);
-		list=temp;
+		temp=my_list->next;
+		free(my_list);
+		my_list=temp;
 	}// release all the number
 	return 1;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Position position_find(List my_list,int number);
+Position position_find(List my_list,int number)
 {
 	Position temp;
 	if(my_list->next==NULL)
@@ -138,4 +138,21 @@ Position position_find(List my_list,int number);
 	{
 		return temp->next;
 	}
+}
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+void Print_lits(List my_list)
+{
+	if(my_list->next==NULL)
+	{
+		printf("the list is NULL\n");
+		return;
+	}
+	while(my_list->next!=NULL)
+	{
+		printf("%d\t\t",my_list->next->number);
+	}
+	return;
 }
