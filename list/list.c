@@ -40,8 +40,8 @@ int insert_number(List my_list,int number,Position my_position)
 		printf("out of space\n");
 		return -1;
 	}
-	new_node->number==number;
-	new_node->next==NULL;
+	new_node->number=number;
+	new_node->next=NULL;
 
 	if(my_list==NULL)
 	{
@@ -125,7 +125,7 @@ Position position_find(List my_list,int number)
 	
 	}
 	temp=my_list;
-	while(temp->next!=NULL && temp->number != number)
+	while(temp->next!=NULL && temp->next->number != number)
 	{
 		temp=temp->next;
 	}
@@ -136,7 +136,7 @@ Position position_find(List my_list,int number)
 	}
 	else
 	{
-		return temp->next;
+		return (temp->next);
 	}
 }
 
@@ -192,5 +192,12 @@ int delete_direct(List my_list)
 	my_list->next=temp;
 	// delete done
 	return 1;
+
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void print_node_detail(Position my_position)
+{
+	printf("the number is : %d \n",my_position->number);
 
 }
