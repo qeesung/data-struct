@@ -143,7 +143,7 @@ Position position_find(List my_list,int number)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void Print_lits(List my_list)
+void print_list(List my_list)
 {
 	if(my_list->next==NULL)
 	{
@@ -153,6 +153,44 @@ void Print_lits(List my_list)
 	while(my_list->next!=NULL)
 	{
 		printf("%d\t\t",my_list->next->number);
+		my_list=my_list->next;
 	}
+	printf("\n");
 	return;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+int insert_direct(List my_list,int number)// insert the number to the list header
+{
+	Position new_node;
+	Position temp;
+	new_node=malloc(sizeof(struct listnode));
+	new_node->number=number;
+	new_node->next=NULL;
+	if(new_node==NULL)
+	{
+		printf("out of space\n");
+		return -1;
+	}
+	temp=my_list->next;
+	my_list->next=new_node;
+	my_list->next->next=temp;
+	// insert done
+	return 1;
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+int delete_direct(List my_list)
+{
+	Position temp;
+	if(my_list->next==NULL)
+	{
+		printf("the List is empty\n");
+		return -1;
+	}
+	temp=my_list->next->next;
+	free(my_list->next);
+	my_list->next=temp;
+	// delete done
+	return 1;
+
 }

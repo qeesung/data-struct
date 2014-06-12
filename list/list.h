@@ -16,7 +16,9 @@ int delete_List(List L);
 //find the number
 Position position_find(List L,int numher);
 //print the list number
-void Print_lits(List my_list);
-
-
+void print_list(List my_list);
+//insert the number after the header
+int insert_direct(List my_list,int number);
+// delete the number after the header
+int delete_direct(List my_list);
 #endif
