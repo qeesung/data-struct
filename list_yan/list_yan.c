@@ -75,7 +75,7 @@ void Insert_List(List my_lsit,int i,int number ,char * name)
 		printf("craete the node failed\n");
 		return ;
 	}
-	temp=Find_Previous(Get_Node(my_list,i,LIST_SIZE));// find the previous
+	temp=(Get_Node(my_list,i-1,LIST_SIZE));// find the previous
 	if(temp==NULL)
 	{
 		printf("can not find the element\n");
@@ -98,15 +98,26 @@ void Delete_List(List my_list, int i)
 		printf("the list is empty\n");
 		return;
 	}
-	temp=Find_Previous(Get_Node(my_list,i,LIST_SIZE));
+	temp=(Get_Node(my_list,i-1,LIST_SIZE));
 	if(temp==NULL)
 	{
 		printf("can not find the element\n");
 		return;
 	}
 	temp1=temp->next->next;
-	free(Get_Node(my_list,i,LIST_SIZE));
-	temp->next=temp1;
+	free(temp->next);
+	temp->next=temp1;// delte down;
 	return;
 
+}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void Print_List(List my_list)
+{
+	int i=0;
+	while(my_list->next!=NULL)
+	{
+		printf("#%d number : %d\t\t name is : %s \n",my_list->next->number,my_list->next->name);
+		my_list=my_list->next;
+	}
+	printf("+++++++++++++++++++++++++++++++++++++++++++\n");
 }

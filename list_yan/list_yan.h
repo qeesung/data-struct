@@ -12,5 +12,6 @@ Position Get_Node(List my_list,int i);
 void Insert_List(List my_list ,int i , int number ,char * name);
 /* delete the element in the #i */
 void Delete_List(List my_list , int i );
-
+/* printf all the element in the list */
+void Print_List(List my_list);
 #endif
