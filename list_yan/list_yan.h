@@ -14,4 +14,6 @@ void Insert_List(List my_list ,int i , int number ,char * name);
 void Delete_List(List my_list , int i );
 /* printf all the element in the list */
 void Print_List(List my_list);
+/* Delete all the element in the List */
+void Delete_All(List my_list);
 #endif

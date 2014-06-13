@@ -121,3 +121,21 @@ void Print_List(List my_list)
 	}
 	printf("+++++++++++++++++++++++++++++++++++++++++++\n");
 }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void Delete_All(List my_list)
+{
+	Position temp;
+	if(my_list==NULL)
+	{
+		printf("The list is not exist\n");
+		return;
+	}
+	while(my_list!=NULL)
+	{
+		temp=my_list->next;
+		free(my_list);
+		my_list=temp;
+	}// delete all the element include the header
+	return;
+
+}
