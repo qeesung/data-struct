@@ -65,5 +65,48 @@ Position Get_Node(List my_list , int i,int list_size)
 	return temp;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void Insert_List(List my_lsit,int i,int number ,char * name)
+{
+	Position temp;
+	Position new_node;
+	new_node=malloc(sizeof(struct Listnode));
+	if(new_node==NULL)
+	{
+		printf("craete the node failed\n");
+		return ;
+	}
+	temp=Find_Previous(Get_Node(my_list,i,LIST_SIZE));// find the previous
+	if(temp==NULL)
+	{
+		printf("can not find the element\n");
+		return ;
+	}
+	my_list=temp->next;
+	temp->next=new_node;
+	temp->next->next=my_list;// insert done;
+	return;
 
 
+}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void Delete_List(List my_list, int i)
+{
+	Position temp;
+	Position temp1;
+	if(my_list->next==NULL)
+	{
+		printf("the list is empty\n");
+		return;
+	}
+	temp=Find_Previous(Get_Node(my_list,i,LIST_SIZE));
+	if(temp==NULL)
+	{
+		printf("can not find the element\n");
+		return;
+	}
+	temp1=temp->next->next;
+	free(Get_Node(my_list,i,LIST_SIZE));
+	temp->next=temp1;
+	return;
+
+}
