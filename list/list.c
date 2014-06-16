@@ -201,3 +201,55 @@ void print_node_detail(Position my_position)
 	printf("the number is : %d \n",my_position->number);
 
 }
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+List merge_list(List list1 , List list2)
+{
+	List new_list;
+	Position temp;
+	new_list=malloc(sizeof(struct listnode));
+	if(new_list==NULL)
+	{
+		printf("out of space\n");
+		return NULL;
+	}
+	temp=new_list;
+	if(list1->next==NULL)
+	{
+		return list2;
+	}
+	if(list2->next==NULL)
+	{
+		return list1;
+	}
+	// two lists is not empty
+	while(list1->next!=NULL && list2->next!=NULL)
+	{
+		if(list1->next->number  > list2->next->number )
+		{
+			printf("%d > %d \n",list1->next->number,list2->next->number);
+			new_list->next=malloc(sizeof(struct listnode));
+			new_list->next->number=list1->next->number;
+			new_list=new_list->next;
+			list1=list1->next;
+		}
+		else
+		{
+			
+			printf("%d < %d \n",list1->next->number,list2->next->number);
+			new_list->next=malloc(sizeof(struct listnode));
+			new_list->next->number=list2->next->number;
+			new_list=new_list->next;
+			list2=list2->next;
+		}
+	}
+	if(list1->next==NULL)
+	{
+		// list2 is not empty
+		new_list->next=list2->next;
+	}
+	else
+	{
+		new_list->next=list1->next;
+	}
+	return temp;
+}

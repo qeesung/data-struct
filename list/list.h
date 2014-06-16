@@ -21,4 +21,6 @@ void print_list(List my_list);
 int insert_direct(List my_list,int number);
 // delete the number after the header
 int delete_direct(List my_list);
+// merge two list 
+List merge_list(List list1,List list2);
 #endif
