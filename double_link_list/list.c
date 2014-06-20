@@ -110,7 +110,7 @@ Delete_List (List list , int number)
 	Position index = Find_Position(list , number);
 	if(index  == NULL)
 	{
-		fprintf(stderr, "\n can not find the number %d ", number);
+//		fprintf(stderr, "\n can not find the number %d ", number);
 		return;
 	}
 	list=list->next;
@@ -123,16 +123,12 @@ Delete_List (List list , int number)
 		fprintf(stderr , "\n can not find the element \n");
 		return ;
 	}
-	else
-	{
 		temp=list->prior;
 		temp1=list->next;
 		free(list);
 		temp->next=temp1;
 		temp1->prior=temp;
 		return ;
-
-	}
 
 }
 
@@ -180,6 +176,12 @@ Find_Position ( List list , int number )
 	while(list!=NULL && list->number != number && list->number !=-1)
 	{
 		list=list->next;
+	}
+	if(list->number !=number || list==NULL  )
+	{
+		fprintf(stderr, "\n can not find the number : %d ", number);
+		printf("\n");
+		return NULL;
 	}
 	return list;
 
