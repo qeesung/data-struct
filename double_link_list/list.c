@@ -31,12 +31,24 @@
 Create_List ()
 {
 	List new_list;
+	Position end_node;
 
 	new_list	= malloc ( sizeof(struct Listnode) );
 	if ( new_list==NULL ) {
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
 	}
+	
+	end_node	= malloc ( sizeof(struct Listnode) );
+	if ( end_node==NULL ) {
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+
+	new_list->next=end_node;
+	end_node->prior=new_list;
+	end_node -> number = -1;
+	
 	return new_list;
 
 }
@@ -76,7 +88,7 @@ Insert_List (List list ,Position index , int number )
 	}
 
 	new_node->number = number;
-	temp1=>list->prior;
+	temp1=list->prior;
 	new_node->next=list;
 	new_node->prior=temp1;
 	temp1->next=new_node;
@@ -96,13 +108,13 @@ Delete_List (List list , int number)
 {
 	Position temp, temp1;
 	Position index = Find_Position(list , number);
-	if(Position == NULL)
+	if(index  == NULL)
 	{
 		fprintf(stderr, "\n can not find the number %d ", number);
 		return;
 	}
 	list=list->next;
-	while(list!=NULL && list!index )
+	while(list!=NULL && list!=index )
 	{
 		list=list->next;
 	}
@@ -114,10 +126,10 @@ Delete_List (List list , int number)
 	else
 	{
 		temp=list->prior;
-		temp2=list->next;
+		temp1=list->next;
 		free(list);
-		temp->next=temp2;
-		temp2->prior=temp1;
+		temp->next=temp1;
+		temp1->prior=temp;
 		return ;
 
 	}
@@ -141,9 +153,34 @@ Print_List ( List list)
 		return ;
 	}
 	list=list->next;
-	while(list!=NULL)
+	while(list!=NULL && list->number !=-1)
 	{
 		printf("%d \t\t", list->number);
+		list=list->next;
 	}
+	printf("\n");
 	return;
 }
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Position
+ *  Description:  find a element in the list
+ * =====================================================================================
+ */
+	Position
+Find_Position ( List list , int number )
+{
+	
+	list=list->next;
+	if(list == NULL)
+	{
+		fprintf(stderr , "\n the list is empty \n");
+		return NULL;
+	}
+	while(list!=NULL && list->number != number && list->number !=-1)
+	{
+		list=list->next;
+	}
+	return list;
+
+}		/* -----  end of function Find_Position  ----- */

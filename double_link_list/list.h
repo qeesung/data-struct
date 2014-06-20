@@ -26,7 +26,7 @@ struct Listnode {
 };				/* ----------  end of struct Listnode  ---------- */
 
 typedef struct Listnode * List;
-typedef struct Listnode Position;
+typedef List Position;
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Create_List
@@ -43,7 +43,7 @@ Create_List ();
  * =====================================================================================
  */
 	void
-Insert_List (List list ,int index , int number ); 
+Insert_List (List list ,Position index , int number ); 
 
 /* 
  * ===  FUNCTION  ======================================================================
