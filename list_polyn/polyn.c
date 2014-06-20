@@ -18,7 +18,7 @@
 
 #include<stdlib.h>
 #include<stdio.h>
-#include"list.h"
+#include"polyn.h"
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -115,7 +115,7 @@ Delete_Polyn ( Polyn polyn, int zhishu )
 	}
 	if(polyn->next==NULL)
 	{
-		fprintf(stderr,"\n can not find the xishu : %d \n ",xishu);
+		printf("\n can not find the xishu : %d \n ",zhishu);
 		return ;
 	}
 	temp=polyn->next->next;
@@ -171,10 +171,11 @@ Add_Polyn ( Polyn polyn1 , Polyn polyn2 )
 		}
 		else
 		{
-			temp->xishu+=polyn2->xishu;/*  apdate the xishu */
+			temp->xishu+=polyn2->next->xishu;/*  apdate the xishu */
 			if(temp->xishu==0)
 			Delete_Polyn(polyn1,temp->zhishu);/* if xishu==0 delete it */
 		}
+		polyn2=polyn2->next;
 	}
 	Delete_All_Polyn(polyn2);	
 	return ;
@@ -186,7 +187,7 @@ Add_Polyn ( Polyn polyn1 , Polyn polyn2 )
  * =====================================================================================
  */
 	void
-Nul_Polyn ( Polyn polyn1 , Polyn polyn2 )
+Mul_Polyn ( Polyn polyn1 , Polyn polyn2 )
 {
 	return ;
 }		/* -----  end of function Nul_Polyn  ----- */
@@ -220,3 +221,33 @@ Find_Position ( Polyn polyn , int zhishu )
 	/*  if the return value is NULL we would insert it into the polyn list */
 
 }		/* -----  end of function Find_Position  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_All_Polyn
+ *  Description:  delete all the elemnet in the polyn list
+ * =====================================================================================
+ */
+	void
+Delete_All_Polyn ( Polyn polyn )
+{
+	Position temp;
+	if(polyn->next=NULL)
+	{
+		free(polyn);
+		polyn==NULL;
+	}
+	else
+	{
+		while(polyn->next!=NULL)
+		{
+			temp=polyn->next;
+			free(polyn);
+			polyn=temp;
+		}
+		free(polyn);
+	}
+	return ;
+}		/* -----  end of function Delete_All_Polyn  ----- */

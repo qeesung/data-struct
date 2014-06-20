@@ -23,7 +23,7 @@ struct Polyn_node
 {
 	int zhishu;
 	int xishu;
-	struct polyn_node * next;
+	struct Polyn_node * next;
 };
 typedef struct Polyn_node * Polyn;
 typedef Polyn Position;
@@ -57,4 +57,16 @@ void Print_Polyn(Polyn polyn);
   *  mul two polyns
   *-----------------------------------------------------------------------------*/
   void Mul_Polyn(Polyn polyn1 , Polyn polyn2);
+
+
+  /*-----------------------------------------------------------------------------
+   *  Find the position 
+   *-----------------------------------------------------------------------------*/
+   Position Find_Position(Polyn polyn, int zhishu);
+
+   /*-----------------------------------------------------------------------------
+    *  delete all the element in the polyn list
+    *-----------------------------------------------------------------------------*/
+void Delete_All_Polyn(Polyn polyn);
+
 #endif
