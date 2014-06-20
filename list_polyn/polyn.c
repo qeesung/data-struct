@@ -177,7 +177,6 @@ Add_Polyn ( Polyn polyn1 , Polyn polyn2 )
 		}
 		polyn2=polyn2->next;
 	}
-	Delete_All_Polyn(polyn2);	
 	return ;
 }		/* -----  end of function Add_Polyn  ----- */
 /* 
@@ -186,10 +185,48 @@ Add_Polyn ( Polyn polyn1 , Polyn polyn2 )
  *  Description:  Mul two polyn lists 
  * =====================================================================================
  */
-	void
+	Polyn
 Mul_Polyn ( Polyn polyn1 , Polyn polyn2 )
 {
-	return ;
+	Position temp;
+	int temp_xishu;
+	int temp_zhishu;
+	Polyn temp_polyn;
+	Polyn temp1_polyn;
+
+	temp_polyn	= malloc ( sizeof(struct Polyn_node) );
+	if ( temp_polyn==NULL ) {
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+
+	while(polyn1->next!=NULL)
+	{
+		temp1_polyn=polyn2;/*  save the polyn2 start pointer */
+		while(polyn2->next!=NULL)
+		{
+			temp_xishu=polyn1->next->xishu*polyn2->next->xishu;
+			temp_zhishu=polyn1->next->zhishu+polyn2->next->zhishu;
+			temp=Find_Position(temp_polyn,temp_zhishu);
+			if(temp==NULL)
+			{
+				Insert_Polyn(temp_polyn,temp_xishu,temp_zhishu);
+			}
+			else
+			{
+				temp->xishu+=temp->xishu;
+				if(temp->xishu==0)
+				Delete_Polyn(temp_polyn,temp_zhishu);
+			}
+				
+
+
+			polyn2=polyn2->next;
+		}
+		polyn2=temp1_polyn;
+		polyn1=polyn1->next;
+	}
+	return temp_polyn;
 }		/* -----  end of function Nul_Polyn  ----- */
 
 
@@ -214,7 +251,7 @@ Find_Position ( Polyn polyn , int zhishu )
 	}
 	if(polyn->next==NULL)
 	{
-		fprintf(stderr , "\n can not find the zhishu: %d  \n ", zhishu);
+//		fprintf(stderr , "\n can not find the zhishu: %d  \n ", zhishu);
 		return NULL;
 	}
 	return polyn->next;

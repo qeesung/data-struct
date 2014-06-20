@@ -30,32 +30,37 @@
 	int
 main ( int argc, char *argv[] )
 {
-	Polyn polyn,polyn1;
+	Polyn polyn,polyn1,mul_polyn;
 	polyn=Create_Polyn();
 	polyn1=Create_Polyn();
 	Insert_Polyn(polyn,1,2);
 	Insert_Polyn(polyn,3,4);
-	Insert_Polyn(polyn,56,90);
+/* 	Insert_Polyn(polyn,56,90);
 	Insert_Polyn(polyn,71,34);
 	Insert_Polyn(polyn,289,6789);
-	Insert_Polyn(polyn,4657,9000);
+	Insert_Polyn(polyn,4657,9000);*/
 	Insert_Polyn(polyn,45,2);
 	printf("\n +++++++++++++++   polyn1   +++++++++++++++++++++ \n ");
 	Print_Polyn(polyn);
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
 	Insert_Polyn(polyn1,3,4);
-	Insert_Polyn(polyn1,39,47);
+	Insert_Polyn(polyn1,4,5);
+/*  	Insert_Polyn(polyn1,39,47);
 	Insert_Polyn(polyn1,89,36);
 	Insert_Polyn(polyn1,2892,6789);
-	Insert_Polyn(polyn1,4657,9001);
+	Insert_Polyn(polyn1,4657,9001);*/
 	Insert_Polyn(polyn1,45,2);
 	printf("\n +++++++++++++++   polyn2   +++++++++++++++++++++ \n ");
 	Print_Polyn(polyn1);
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	printf("\n ------------------------------------------------- \n ");
+	mul_polyn=Mul_Polyn(polyn, polyn1);
+	printf("\n +++++++++++++++after mul mul_polyn++++++++++++++++++\n ");
+	Print_Polyn(mul_polyn);
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	Add_Polyn(polyn,polyn1);
 	printf("\n +++++++++++++++  after add polyn1  +++++++++++++++++++++ \n ");
 	Print_Polyn(polyn);
+	printf("\n");
 
 
 	return EXIT_SUCCESS;
