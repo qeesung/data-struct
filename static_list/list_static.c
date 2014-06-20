@@ -111,7 +111,7 @@ Insert_List ( List list , int number , char * name )
 	j=list->size;
 	if(j==0)
 	{
-		list->data[i].next=0;
+		list->data[1].next=0;
 	}
 	else
 	{
@@ -136,6 +136,25 @@ Insert_List ( List list , int number , char * name )
 	void
 Delete_List (List list, int k)
 {
+	int i=1;
+	int j=1;
+	while(i!=0 && list->data[i].next!=k)
+	{
+		i=list->data[i].next;
+		j++;
+	}
+	if(i==0)
+	{
+		fprintf(stderr, "\n can not find k\n ");
+		return ;
+	}
+	else
+	{
+		if(list->data[i].next==k)
+		{
+			list->data[i].next=list->data[k].next;
+		}
+	}
 	Free_List(list , k);
 	list->size--;
 	return;
@@ -156,15 +175,7 @@ Find_Position (List list , int number , char * name )
 	{
 		i=list->data[i].next;
 	}
-	if(i==0)
-	{
-		fprintf(stderr, "\n can not find the element \n ");
-		return -1;
-	}
-	else
-	{
-		return i;/* find the element */
-	}
+	return i;
 }		/* -----  end of function int Find_Position  ----- */
 
 
@@ -181,14 +192,33 @@ Merge_List ( List list1 , List list2)
 {
 	/*  in the A and in the B  will be deleted*/	
 	/*  in the B but not in the A will be insert */
-
+	int number ;
+	char * name;
+	int i, index ;
+	i=1;
+	while(i!=0)
+	{
+		number = list2->data[i].number;
+		name = list2->data[i].name;
+		index = Find_Position(list1,number ,name);
+		if(index == 0)
+		{
+			/*  it means that the number is  not in the list we can insert into */
+			Insert_List(list1,number,name);
+		}
+		else
+		{
+			Delete_List(list1, index );
+		}
+		i=list2->data[i].next;
+	}
 	return;
 }		/* -----  end of function Merge_List  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Print_List
- *  Description:  
+ *  Description:  print all the number in the list
  * =====================================================================================
  */
 	void 
@@ -215,7 +245,7 @@ Print_List ( List list )
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Delete_All_List
- *  Description:  
+ *  Description: delete all the element in the list 
  * =====================================================================================
  */
 inline void
