@@ -26,7 +26,7 @@ struct Listnode {
 };				/* ----------  end of struct Listnode  ---------- */
 
 typedef struct Listnode * List;
-
+typedef struct Listnode Position;
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Create_List
@@ -43,7 +43,7 @@ Create_List ();
  * =====================================================================================
  */
 	void
-Insert_List (List list , int number ); 
+Insert_List (List list ,int index , int number ); 
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -65,5 +65,13 @@ Delete_List (List list , int number);
 	void
 Print_List ( List list);
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Position
+ *  Description:  Find a pointer that pointer the number is number 
+ * =====================================================================================
+ */
+	Position
+Find_Position ( List list , int number  );
 
 #endif
