@@ -51,3 +51,34 @@ Init_Stack ( )
 
 
 }		/* -----  end of function Init_Stack  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Push
+ *  Description:  push a number into the satck
+ * =====================================================================================
+ */
+	void
+Push ( Stack stack , int number  )
+{
+	if(stack->top-stack->base >=stack->stack_size-1)
+	{
+				
+		stack->base = (int *)malloc ( sizeof(int ) * (stack->stack_size + STACK_INCREMENT) );
+		if ( stack->base==NULL ) {
+			fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+			exit (EXIT_FAILURE);
+		}
+		stack->top=stack->base + stack->stack_size-1;
+		stack->stack_size+=STACK_INCREMENT;
+
+	}
+	stack->top++;
+	*(stack->top)=number;
+	return;
+}		/* -----  end of function Push  ----- */
+
+
+
