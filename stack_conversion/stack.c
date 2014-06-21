@@ -82,3 +82,22 @@ Push ( Stack stack , int number  )
 
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Pop
+ *  Description:  pop a number from the stack
+ * =====================================================================================
+ */
+	int
+Pop ( Stack stack )
+{
+	int number ;
+	if(stack->top==stack->base)
+	{
+		fprintf(stderr, "\n can not pop empty stack \n");
+		return -1;
+	}
+	number =*( stack->top);
+	stack->top--;
+	return;
+}		/* -----  end of function Pop  ----- */
