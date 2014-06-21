@@ -66,6 +66,10 @@ main ( int argc, char *argv[] )
 	Pop(stack);
 	Pop(stack);
 	Pop(stack);
+	free(stack->base);
+	stack->base = NULL;
+	free(stack);
+	stack=NULL;
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
 
