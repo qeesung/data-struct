@@ -30,7 +30,8 @@ struct Stack_node {
 typedef struct Stack_node  * Stack;
 
 Stack Init_Stack();
-void Push(Stack stack);
+void Push(Stack stack, int number );
 int Pop(Stack stack);
+void Print_Stack(Stack stack);
 
 #endif

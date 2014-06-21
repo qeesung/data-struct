@@ -101,3 +101,24 @@ Pop ( Stack stack )
 	stack->top--;
 	return;
 }		/* -----  end of function Pop  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Stack
+ *  Description:  Print all the number  in the stack
+ * =====================================================================================
+ */
+	void
+Print_Stack (Stack stack )
+{
+	int * temp;
+	temp=stack->top;
+	while(temp!=stack->base )
+	{
+		printf("%d",*(temp));
+		temp--;
+	}
+	return ;
+}		/* -----  end of function Print_Stack  ----- */
