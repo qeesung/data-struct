@@ -139,5 +139,27 @@ Get_Top ( Stack stack)
 
 
 
-	return 
+	return ;
 }		/* -----  end of function Get_Top  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Stack
+ *  Description:  print all the element in the stack
+ * =====================================================================================
+ */
+	void
+Print_Stack ( Stack stack )
+{
+	struct Person_node * temp;
+	temp=stack->top;
+	while(temp!=stack->base)
+	{
+		printf("the number is %d | the name is %s \n",temp->number , temp->name);
+		temp--;
+	}
+	return;
+}		/* -----  end of function Print_Stack  ----- */

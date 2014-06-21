@@ -19,7 +19,7 @@
 #ifndef _STACK_H
 #define _STACK_H
 
-#define STACK_INIT_SIZE 100
+#define STACK_INIT_SIZE 5
 #define STACK_INCREMENT 10
 
 struct Person_node {
@@ -46,12 +46,18 @@ typedef struct Stack_node {
   /*-----------------------------------------------------------------------------
    *  pop a element from the stack
    *-----------------------------------------------------------------------------*/
-   struct Person_node  Pop(Stack stack);
+   struct Person_node * Pop(Stack stack);
 
    /*-----------------------------------------------------------------------------
     *  get the top form the stack
     *-----------------------------------------------------------------------------*/
-    struct Person_node Get_Top(Stack stack);
+    struct Person_node * Get_Top(Stack stack);
+
+
+    /*-----------------------------------------------------------------------------
+     *  print all the element in the stack
+     *-----------------------------------------------------------------------------*/
+     void Print_Stack(Stack stack);
 
 
 #endif 

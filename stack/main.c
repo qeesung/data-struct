@@ -29,6 +29,7 @@
 main ( int argc, char *argv[] )
 {
 	Stack stack;
+	struct Person_node * temp;
 	stack=Init_Stack();
 	printf("\n +++++++++++++++push++++++++++++++\n ");
 	Push(stack,1,"yi");
@@ -48,8 +49,16 @@ main ( int argc, char *argv[] )
 	Pop(stack);
 	Pop(stack);
 	Print_Stack(stack);
+	printf("\n ++++++++++++++get top+++++++++++++++++\n ");
+	temp=Get_Top(stack);
+	printf("the number is %d | the name is : %s \n", temp->number , temp->name);
+	temp=Get_Top(stack);
+	printf("the number is %d | the name is : %s \n", temp->number , temp->name);
+	temp=Get_Top(stack);
+	printf("the number is %d | the name is : %s \n", temp->number , temp->name);
+	temp=Get_Top(stack);
+	printf("the number is %d | the name is : %s \n", temp->number , temp->name);
 	printf("\n ++++++++++++++more pop+++++++++++++++++\n ");
-	Pop(stack);
 	Pop(stack);
 	Pop(stack);
 	Pop(stack);
