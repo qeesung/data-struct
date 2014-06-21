@@ -19,14 +19,15 @@
 #ifndef _STACK_H
 #define _STACK_H
 	
-
-struct stack_node {
+#define STACK_INIT_SIZE 100
+#define STACK_INCREMENT 10
+struct Stack_node {
 	int * top;
 	int * base;
 	int stack_size;
 };				/* ----------  end of struct stack_node  ---------- */
 
-typedef struct stack_node  * Stack;
+typedef struct Stack_node  * Stack;
 
 Stack Init_Stack();
 void Push(Stack stack);
