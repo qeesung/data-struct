@@ -129,3 +129,30 @@ Destory_Queue ( Queue queue )
 	}
 	return ;
 }		/* -----  end of function Destory_Queue  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Queue
+ *  Description:  print all the elemnt in the queue
+ * =====================================================================================
+ */
+	void
+Print_Queue ( Queue queue )
+{
+	Position temp;
+	if(queue->front==NULL)
+	{
+		fprintf(stderr, "\n the queue is empty \n ");
+		return ;
+	}
+	temp=queue->front;
+	while(temp!=NULL)
+	{
+		printf("the number is :%d and the name is : %s ", temp->number, temp->name);
+		temp=temp->next;
+	}
+
+	return;
+}		/* -----  end of function Print_Queue  ----- */
