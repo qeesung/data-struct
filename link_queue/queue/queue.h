@@ -31,7 +31,7 @@ typedef List Position;
 struct queue_node {
 	Position front;
 	Position rear;
-	List queu_list;
+	List queue_list;
 };				/* ----------  end of struct Queue  ---------- */
 
 typedef struct queue_node *  Queue;
