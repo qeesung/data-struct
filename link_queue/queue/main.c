@@ -39,6 +39,17 @@ main ( int argc, char *argv[] )
 	Enqueue(my_queue,7,"qi");
 	Enqueue(my_queue,8,"ba");
 	Print_Queue(my_queue);
+	printf("\n++++++++++++++++dequeue twice++++++++++++\n");
+	Dequeue(my_queue);
+	Dequeue(my_queue);
+	Print_Queue(my_queue);
+	printf("\n++++++++++++++++enqueue twice++++++++++++\n");
+	Enqueue(my_queue,9,"jiu");
+	Enqueue(my_queue,10,"shi");
+	Print_Queue(my_queue);
+	printf("\n++++++++++++++++destory the queue++++++++++++\n");
+	Destory_Queue(my_queue);
+
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
 

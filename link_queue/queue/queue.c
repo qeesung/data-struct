@@ -63,9 +63,9 @@ Init_Queue (  )
 	void
 Enqueue ( Queue queue , int number , char * name)
 {
-	Position new_list_node;
-	new_List_node	= malloc ( sizeof(struct list_node) );
-	if ( new_List_node==NULL ) 
+	struct list_node * new_list_node;
+	new_list_node	= malloc ( sizeof(struct list_node) );
+	if ( new_list_node==NULL ) 
 	{
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
@@ -123,7 +123,7 @@ Dequeue ( Queue queue )
 	void
 Destory_Queue ( Queue queue )
 {
-	while(queue->fornt!=NULL)
+	while(queue->front!=NULL)
 	{
 		Dequeue(queue);
 	}
@@ -150,7 +150,7 @@ Print_Queue ( Queue queue )
 	temp=queue->front;
 	while(temp!=NULL)
 	{
-		printf("the number is :%d and the name is : %s ", temp->number, temp->name);
+		printf("the number is :%d and the name is : %s \n", temp->number, temp->name);
 		temp=temp->next;
 	}
 
