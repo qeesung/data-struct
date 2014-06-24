@@ -57,7 +57,7 @@ Init_Queue (  )
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Enqueue
- *  Description:  
+ *  Description:  enqueue a new elemnt
  * =====================================================================================
  */
 	void
@@ -87,3 +87,28 @@ Enqueue ( Queue queue , int number , char * name)
 	}
 	return ;
 }		/* -----  end of function Enqueue  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Dequeue
+ *  Description: dequeue a queue 
+ * =====================================================================================
+ */
+	void
+Dequeue ( Queue queue )
+{
+	Position temp;
+	if(queue->front==NULL)
+	{
+		fprintf(stderr,"\n the queue is empty \n ");
+		return ;
+	}
+	temp=queue->front->next;
+	free(queue->front);
+	queue->queue_list->next=temp;
+	queue->front=temp;
+	return;
+}		/* -----  end of function Dequeue  ----- */
