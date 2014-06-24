@@ -51,3 +51,39 @@ Init_Queue (  )
 	return new_queue;
 }		/* -----  end of function Init_Queue  ----- */
 
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Enqueue
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+Enqueue ( Queue queue , int number , char * name)
+{
+	Position new_list_node;
+	new_List_node	= malloc ( sizeof(struct list_node) );
+	if ( new_List_node==NULL ) 
+	{
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+	new_list_node->number = number;
+	new_list_node->name = name;
+	new_list_node->next=NULL;
+	if(queue->queue_list->next==NULL)
+	{
+		queue->queue_list->next=new_list_node;
+		queue->front=new_list_node;
+		queue->rear=new_list_node;
+		
+	}
+	else
+	{
+		queue->rear->next=new_list_node;
+		queue->rear=new_list_node;
+	}
+	return ;
+}		/* -----  end of function Enqueue  ----- */
