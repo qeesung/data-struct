@@ -112,3 +112,20 @@ Dequeue ( Queue queue )
 	queue->front=temp;
 	return;
 }		/* -----  end of function Dequeue  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_Queue
+ *  Description:  Detory a queue
+ * =====================================================================================
+ */
+	void
+Destory_Queue ( Queue queue )
+{
+	while(queue->fornt!=NULL)
+	{
+		Dequeue(queue);
+	}
+	return ;
+}		/* -----  end of function Destory_Queue  ----- */
