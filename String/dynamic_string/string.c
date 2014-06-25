@@ -188,3 +188,42 @@ Sub_String ( String string , int pos , int len )
 	new_string->length=len;
 	return new_string;
 }		/* -----  end of function Sub_String  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Str_Insert
+ *  Description:  Insert a string into new  string
+ * =====================================================================================
+ */
+	void
+Str_Insert ( String string , int pos , String new_string )
+{
+	int i;
+	if(new_string == NULL || new_string->ch==NULL)
+	{
+		fprintf(stderr, "\n the string is empty\n ")
+		 return ;
+	}
+	string->ch=realloc(string->ch , (string->length + new_string->length));
+	if(string->ch==NULL)
+	{
+		fprintf(stderr,"\n out of space \n ");
+		return ;
+	}
+	string->length=string->length+ new_string->length;
+
+	for(i=string->length;i>string->length-new_string->length;i--)
+	{
+		string->ch[i]=string->ch[i-new_string->length];// copy to the rear;
+	}
+	for(i=pos;i<pos+new_string->length;i++)
+	{
+		string->ch[i]=new_string->ch[i-pos];
+	}
+	return ;
+
+
+	return;
+}		/* -----  end of function Str_Insert  ----- */
