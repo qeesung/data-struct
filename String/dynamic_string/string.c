@@ -87,3 +87,67 @@ Str_Compare ( String string1 , String string2 )
 }		/* -----  end of function Str_Compare  ----- */
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Clear_String
+ *  Description:  delete a string
+ * =====================================================================================
+ */
+	void
+Clear_String (String string )
+{
+	if(String == NULL)
+	{
+		return;
+	}
+	if(string->ch==NULL)
+	{
+		free(string);
+		string=NULL;
+	}
+	else
+	{
+		free(string->ch)
+		string->ch=NULL;
+		free(string);
+		string=NULL;
+	}
+	return ;
+}		/* -----  end of function Clear_String  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Concat
+ *  Description:  merge two string into only one 
+ * =====================================================================================
+ */
+	String
+Concat (String string1 , String string2 )
+{
+	Strinf new_string;
+	int i;
+	new_string	= malloc ( sizeof(struct string) );
+	if ( new_string==NULL ) {
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+	
+	new_string->ch	= malloc ( sizeof(char) * (string1->length + string2->length) );
+	if ( new_string->ch==NULL ) {
+		free(new_string);
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+	
+	for(i=0;i<string1->length;i++)
+	{
+		new_string->ch[i]=string1->ch[i];
+	}
+	for(i=string1->length;i<string1->length+string2->length;i++)
+	{
+		new_string->ch[i]=string2->ch[i-string1->length];
+	}
+	new_string->length=string1->length+string2->length;
+
+	return new_string;
+}		/* -----  end of function Concat  ----- */
