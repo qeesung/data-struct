@@ -63,7 +63,7 @@ Str_Assign ( String string )
 	int
 Str_Length ( String string)
 {
-	return string.length;
+	return string->length;
 }		/* -----  end of function Str_Length  ----- */
 
 
@@ -96,7 +96,7 @@ Str_Compare ( String string1 , String string2 )
 	void
 Clear_String (String string )
 {
-	if(String == NULL)
+	if(string == NULL)
 	{
 		return;
 	}
@@ -107,7 +107,7 @@ Clear_String (String string )
 	}
 	else
 	{
-		free(string->ch)
+		free(string->ch);
 		string->ch=NULL;
 		free(string);
 		string=NULL;
@@ -124,7 +124,7 @@ Clear_String (String string )
 	String
 Concat (String string1 , String string2 )
 {
-	Strinf new_string;
+	String new_string;
 	int i;
 	new_string	= malloc ( sizeof(struct string) );
 	if ( new_string==NULL ) {
@@ -177,7 +177,7 @@ Sub_String ( String string , int pos , int len )
 	
 	child_string->ch	= malloc ( sizeof(char ) *(len) );
 	if ( child_string->ch==NULL ) {
-		free(child_string)
+		free(child_string);
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
 	}
@@ -185,8 +185,8 @@ Sub_String ( String string , int pos , int len )
 	{
 		child_string->ch[i]=string->ch[i+pos];
 	}
-	new_string->length=len;
-	return new_string;
+	child_string->length=len;
+	return child_string;
 }		/* -----  end of function Sub_String  ----- */
 
 
@@ -203,7 +203,7 @@ Str_Insert ( String string , int pos , String new_string )
 	int i;
 	if(new_string == NULL || new_string->ch==NULL)
 	{
-		fprintf(stderr, "\n the string is empty\n ")
+		fprintf(stderr, "\n the string is empty\n ");
 		 return ;
 	}
 	string->ch=realloc(string->ch , (string->length + new_string->length));
@@ -214,7 +214,7 @@ Str_Insert ( String string , int pos , String new_string )
 	}
 	string->length=string->length+ new_string->length;
 
-	for(i=string->length;i>string->length-new_string->length;i--)
+	for(i=string->length;i>pos+new_string->length;i--)
 	{
 		string->ch[i]=string->ch[i-new_string->length];// copy to the rear;
 	}
@@ -223,9 +223,6 @@ Str_Insert ( String string , int pos , String new_string )
 		string->ch[i]=new_string->ch[i-pos];
 	}
 	return ;
-
-
-	return;
 }		/* -----  end of function Str_Insert  ----- */
 
 
@@ -237,7 +234,7 @@ Str_Insert ( String string , int pos , String new_string )
  * =====================================================================================
  */
 	String
-Init String ( char * msg )
+Init_String ( char * msg )
 {
 	int i;
 	String new_string;
@@ -253,12 +250,13 @@ Init String ( char * msg )
 		return ;
 	}
 	new_string->ch=malloc(sizeof(char ) * i);
-	if(new_strinf->ch==NULL)
+	if(new_string->ch==NULL)
 	{
 		fprintf(stderr,"\n out of space \n ");
 		free(new_string);
 		return NULL;
 	}
+
 	new_string->length=i;
 	for(i=0;i<new_string->length;i++)
 	{
