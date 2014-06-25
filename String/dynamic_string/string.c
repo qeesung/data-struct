@@ -151,3 +151,40 @@ Concat (String string1 , String string2 )
 
 	return new_string;
 }		/* -----  end of function Concat  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Sub_String
+ *  Description:  get a part of the string form pos with length len
+ * =====================================================================================
+ */
+	String
+Sub_String ( String string , int pos , int len )
+{
+	String child_string;
+	int i;
+	if(pos<1 || pos > string->length || pos+len-1 > string->length)
+	{
+		fprintf(stderr, "\n please input rigth parameter\n");
+		return NULL;
+	}
+	child_string	= malloc ( sizeof(struct string) );
+	if ( child_string==NULL ) {
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+	
+	child_string->ch	= malloc ( sizeof(char ) *(len) );
+	if ( child_string->ch==NULL ) {
+		free(child_string)
+		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+		exit (EXIT_FAILURE);
+	}
+	for(i=0;i<len;i++)
+	{
+		child_string->ch[i]=string->ch[i+pos];
+	}
+	new_string->length=len;
+	return new_string;
+}		/* -----  end of function Sub_String  ----- */
