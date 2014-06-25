@@ -33,6 +33,8 @@ void Clear_String(String string);
 String Concat(String string1 , String string2);
 String Sub_String(String string , int pos , int len);
 void Str_Insert(String string , int pos , String new_string);// insert new_string into string  at pos
+String Init_String(char * );
+void Print_String(String string);
 
 
 #endif

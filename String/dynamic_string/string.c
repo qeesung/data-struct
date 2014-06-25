@@ -227,3 +227,62 @@ Str_Insert ( String string , int pos , String new_string )
 
 	return;
 }		/* -----  end of function Str_Insert  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Init String
+ *  Description:  init a string
+ * =====================================================================================
+ */
+	String
+Init String ( char * msg )
+{
+	int i;
+	String new_string;
+	i=0;
+	while(msg[i]!='\0')
+	{
+		i++;
+	}
+	new_string=malloc(sizeof(struct string));
+	if(new_string == NULL)
+	{
+		fprintf(stderr,"\n out of space \n ");
+		return ;
+	}
+	new_string->ch=malloc(sizeof(char ) * i);
+	if(new_strinf->ch==NULL)
+	{
+		fprintf(stderr,"\n out of space \n ");
+		free(new_string);
+		return NULL;
+	}
+	new_string->length=i;
+	for(i=0;i<new_string->length;i++)
+	{
+		new_string->ch[i]=msg[i];
+	}
+	return new_string;
+}		/* -----  end of function Init String  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_String
+ *  Description:  print all the char in the string
+ * =====================================================================================
+ */
+	void
+Print_String ( String string )
+{
+	if(string==NULL || string->ch == NULL)
+	{
+		fprintf(stderr, "\n the string is empty \n");
+		return ;
+	}
+	printf("%s\n",string->ch);
+	return ;
+}		/* -----  end of function Print_String  ----- */
