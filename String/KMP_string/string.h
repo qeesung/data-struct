@@ -21,7 +21,7 @@
 #define STR_MAX_SIZE 256
 typedef char String[STR_MAX_SIZE];/*  String[0] is used to store the size */
 
-void Init_String(char * msg);
+void Init_String(String string , char * msg);
 int Index_Kmp(String string1 , String string2);
 void Print_String(String string);
 
