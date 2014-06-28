@@ -29,7 +29,7 @@ void Set_Next(String string , Next_Array next)
 	next[1]=0;
 	while(i<string[0])
 	{
-		if(i==0 || string[i] == string [j])
+		if(j==0 || string[i] == string[j])
 		{
 			j++;
 			i++;

@@ -50,6 +50,7 @@ Init_String (String string ,char * msg )
 		i++;
 		j++;
 	}
+	string[j]=msg[i];
 	string[0]=i;// store the string size;
 	return ;
 }		/* -----  end of function Init_String  ----- */
@@ -80,28 +81,31 @@ Index_Kmp ( String string1 , String string2 )
 
 	/* set string2 next array  */
 	Set_Next(string2 , my_next);
+	printf("\n ++++++++++++the next_array+++++++++\n");
+	for(i=1;i<string2[0];i++)
+	{
+		printf("%d\t",my_next[i]);
+	}
+	fflush(stdout);
 	/*  start to get index */
 	i=1;
 	j=1;
-	while(string1[0]-i > string2[0])
+	while(i<=string1[0] && j<=string2[0])
 	{
-		if(string1[i]==string2[j])	
+		if(j==1 || string1[i]==string2[j])
 		{
 			i++;
 			j++;
-			if(string2[j]=='\0')
-			{
-				return i-string2[0];// success
-			}
 		}
 		else
-		{
-			j=my_next[j];
-			
-		}
+		j=my_next[j];
+	
 	}
+	if(j>string2[0])
+	return i-string2[0];
+	else
+	return -1;
 
-	return -1;// can not find index  
 }		/* -----  end of function Index_Kmp  ----- */
 
 
