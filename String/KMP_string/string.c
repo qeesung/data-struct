@@ -65,7 +65,7 @@ Init_String (String string ,char * msg )
 Index_Kmp ( String string1 , String string2 )
 {
 	Next_Array my_next;
-	int i , int j;
+	int i , j;
 	if(string2[0]==0)
 	{
 		fprintf(stderr,"\n the string2 is empty \n ");
@@ -119,7 +119,7 @@ Print_String ( String string )
 	{
 		return ;
 	}
-	for(i=1;i<=string[0],i++)
+	for(i=1;i<=string[0];i++)
 	{
 		printf("%c", string[i]);
 	}

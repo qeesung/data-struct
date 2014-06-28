@@ -19,7 +19,8 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include"KMP.H"
+#include"KMP.h"
+#include"string.h"
 
 void Set_Next(String string , Next_Array next)
 {
