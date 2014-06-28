@@ -38,11 +38,11 @@ Init_String (String string ,char * msg )
 		return ;
 	}
 	
-	string	= malloc ( sizeof(char )  * STR_MAX_SIZE);
+/*  	string	= malloc ( sizeof(char )  * STR_MAX_SIZE);
 	if ( string==NULL ) {
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
-	}
+	} */
 
 	while(j<STR_MAX_SIZE && msg[i]!='\0')
 	{
@@ -117,6 +117,7 @@ Print_String ( String string )
 	int i;
 	if(string[0]==0)
 	{
+		fprintf(stderr,"\n the string is empty\n ");
 		return ;
 	}
 	for(i=1;i<=string[0];i++)
