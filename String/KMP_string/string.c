@@ -19,6 +19,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"string.h"
+#include"KMP.h"
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -63,7 +64,44 @@ Init_String (String string ,char * msg )
 	int
 Index_Kmp ( String string1 , String string2 )
 {
-	return ;
+	Next_Array my_next;
+	int i , int j;
+	if(string2[0]==0)
+	{
+		fprintf(stderr,"\n the string2 is empty \n ");
+		return -1;
+	}
+	if(string1[0]==0)
+	{
+		fprintf(stderr, "\n can not find the %s \n ", string2);
+		return -1;
+	}
+
+
+	/* set string2 next array  */
+	Set_Next(string2 , my_next);
+	/*  start to get index */
+	i=1;
+	j=1;
+	while(string1[0]-i > string2[0])
+	{
+		if(string1[i]==string2[j])	
+		{
+			i++;
+			j++;
+			if(string2[j]=='\0')
+			{
+				return i-string2[0];// success
+			}
+		}
+		else
+		{
+			j=my_next[j];
+			
+		}
+	}
+
+	return -1;// can not find index  
 }		/* -----  end of function Index_Kmp  ----- */
 
 
