@@ -113,3 +113,26 @@ Delete_Index_List ( Index_list list , int index )
 	}
 	return ;
 }		/* -----  end of function Delete_Index_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Index_Position
+ *  Description:  find a index position 
+ * =====================================================================================
+ */
+	Index_position
+Find_Index_Position ( Index_list list , int index  )
+{
+	if(list==NULL)
+	{
+		fprintf(stderr,"\n the list is not init \n ");
+		return NULL;
+	}
+	while(list->next!=NULL && list->next->index_number !=index)
+	{
+		list=list->next;
+	}
+	return list->next;
+}		/* -----  end of function Find_Index_Position  ----- */
