@@ -39,8 +39,11 @@ struct string_node {
 	struct string_node * next;
 };				/* ----------  end of struct string_node  ---------- */
 
-typedef struct string_node  * String_node;
+typedef struct string_node  * String;
+typedef String Position;
 
+void Insert_String(String string , char * msg,int index );
+Position Find_Position(char * msg);
 
 
 #endif
