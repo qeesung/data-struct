@@ -156,3 +156,31 @@ Print_Index_List (Index_list list )
 	printf("\n ");
 	return ;
 }		/* -----  end of function Print_Index_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Write_Index_List
+ *  Description:  write the data into index_file
+ * =====================================================================================
+ */
+	void
+Write_Index_List (Index_list list )
+{
+	FILE * file ;
+	file=fopen("./source_file/index_file", "a+");
+	if(file==NULL)
+	{
+		fprintf(stderr, "\n open the Index_file failed\n ");
+		return ;
+	}
+	while(list->next!=NULL)
+	{
+		fputs((char*)list->next->inex_number, file);
+		fputs("\t\t", file);
+		list=list->next;
+	}
+	fputs("\n ", file);
+	return ;
+}		/* -----  end of function Write_Index_List  ----- */
