@@ -61,7 +61,7 @@ Insert_Index_List ( Index_list list, int index )
 		return ;
 	}
 
-	new_index_node	= malloc ( sizeof(index_node) );
+	new_index_node	= malloc ( sizeof(struct index_node) );
 	if ( new_index_node==NULL ) {
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
@@ -177,7 +177,7 @@ Write_Index_List (Index_list list )
 	}
 	while(list->next!=NULL)
 	{
-		fputs((char*)list->next->inex_number, file);
+		fputs((char*)list->next->index_number, file);
 		fputs("\t\t", file);
 		list=list->next;
 	}
