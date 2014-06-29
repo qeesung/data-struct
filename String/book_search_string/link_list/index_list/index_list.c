@@ -136,3 +136,23 @@ Find_Index_Position ( Index_list list , int index  )
 	}
 	return list->next;
 }		/* -----  end of function Find_Index_Position  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Index_List
+ *  Description:  print the index list all the index number 
+ * =====================================================================================
+ */
+	void
+Print_Index_List (Index_list list )
+{
+	while(list->next!=NULL )
+	{
+		printf("%d\t\t",list->next->index_number);
+		list=list->next;
+	}
+	printf("\n ");
+	return ;
+}		/* -----  end of function Print_Index_List  ----- */
