@@ -77,3 +77,39 @@ Insert_Index_List ( Index_list list, int index )
 	
 	return;
 }		/* -----  end of function Insert_Index_List  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Index_List
+ *  Description:  delete a index from the index list
+ * =====================================================================================
+ */
+	void
+Delete_Index_List ( Index_list list , int index )
+{
+	Index_position temp;
+	if(list==NULL)
+	{
+		fprintf(stderr,"\n the list is not init \n  ");
+		return ;
+	}
+	while(list->next!=NULL && list->next->index_number !=index)
+	{
+		list-list->next;
+	}
+	if(list->next==NULL)
+	{
+		fprintf(stderr,"\n can not find the index : %d \n ", index);
+		return ;
+	}
+	if(list->next->index_number == index)
+	{
+		temp=list->next->next;
+		free(list->next);
+		list->next=temp;
+	}
+	return ;
+}		/* -----  end of function Delete_Index_List  ----- */
