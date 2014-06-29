@@ -166,19 +166,21 @@ Print_Index_List (Index_list list )
  * =====================================================================================
  */
 	void
-Write_Index_List (Index_list list )
+Write_Index_List (char * filename , Index_list list )
 {
 	FILE * file ;
-	file=fopen("./source_file/index_file", "a+");
+	char  my_array[255];
+	file=fopen(filename, "a+");
 	if(file==NULL)
 	{
-		fprintf(stderr, "\n open the Index_file failed\n ");
+		fprintf(stderr, "\n open the file %s  failed\n ", filename);
 		return ;
 	}
 	while(list->next!=NULL)
 	{
-		fputs((char*)list->next->index_number, file);
-		fputs("\t\t", file);
+		sprintf(my_array,"%d\t",list->next->index_number);
+		fputs(my_array, file);
+		//fputs("\t\t", file);
 		list=list->next;
 	}
 	fputs("\n ", file);

@@ -35,7 +35,7 @@ void Insert_Index_List(Index_list list ,int number );
 void Delete_Index_List(Index_list list , int number);
 Index_position Find_Index_Position(Index_list list , int number );
 void Print_Index_List(Index_list list);
-void Write_Index_List( Index_list list);
+void Write_Index_List( char * filename,Index_list list);
 
 
 

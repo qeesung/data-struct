@@ -41,5 +41,6 @@ main ( int argc, char *argv[] )
 	Insert_Index_List(my_list, 95);
 	Insert_Index_List(my_list, 42);
 	Print_Index_List(my_list);
+	Write_Index_List("/root/suanfa/String/book_search_string/source_file/index_file",my_list);
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
