@@ -34,8 +34,9 @@ typedef String_list String_position;
 String_list Init_String_List();
 void Insert_String_List(String_list list,char * word , int index_number );
 void Delete_String_List(String_list list , char * word, int index_number );
-void Print_String_list(String_list list);
+void Print_String_List(String_list list);
 String_position Find_Position(String_list list , char * word);
+String_position Find_Insert_Position(String_list list , char * word);
 void Write_String_List(char * filename, String_list list);
 
 
