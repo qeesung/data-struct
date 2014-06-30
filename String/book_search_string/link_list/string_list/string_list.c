@@ -19,6 +19,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"./index_list/index_list.h"
+#include<string.h>
 
 
 /* 
@@ -180,3 +181,23 @@ Find_Position ( String_list list , char * word )
 		return list;
 	}
 }		/* -----  end of function Find_Position  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Insert_Position
+ *  Description:  find a position can insert a new word
+ * =====================================================================================
+ */
+	String_position
+Find_Insert_Position ( String_list list , char * word )
+{
+	while(list->next!=NULL&& strcmp(list->next->book_word, word)>0)
+	{
+		list=list->next;
+	}
+	return list;
+	
+}		/* -----  end of function Find_Insert_Position  ----- */
+
