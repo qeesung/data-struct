@@ -153,3 +153,30 @@ Print_String_List ( String_list list )
 	}
 	return;
 }		/* -----  end of function Print_String_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Position
+ *  Description:  find a word previous pointer
+ * =====================================================================================
+ */
+	String_position
+Find_Position ( String_list list , char * word )
+{
+	String_position pos;
+	while(list->next!=NULL && list->next->book_word!=word)
+	{
+		list=list->next;
+	}
+	if(list->next==NULL)
+	{
+		fprintf(stderr,"\n can not find the word : %s \n ", word);
+		return NULL;
+	}
+	if(list->next->book_word==word)
+	{
+		return list;
+	}
+}		/* -----  end of function Find_Position  ----- */
