@@ -186,3 +186,24 @@ Write_Index_List (char * filename , Index_list list )
 	fputs("\n ", file);
 	return ;
 }		/* -----  end of function Write_Index_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Index_List
+ *  Description:  destory all the index list
+ * =====================================================================================
+ */
+	void
+Destory_Index_List ( Index_list list )
+{
+	Index_position temp;
+	while(list!=NULL)
+	{
+		temp=list->next;
+		free(temp);
+		list=temp;
+	}
+	return ;
+}		/* -----  end of function Delete_Index_List  ----- */
