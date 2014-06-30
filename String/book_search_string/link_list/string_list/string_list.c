@@ -87,8 +87,47 @@ Insert_String_List ( String_list list , char * word , int index_number )
 	{
 		// the word has been existed
 		// only need to insert index_number
-		Insert_Index_List(temp->book_index,index_number);
+		Insert_Index_List(temp->next->book_index,index_number);
 	}
 
 	return ;
 }		/* -----  end of function Insert_String_List  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_String_List
+ *  Description: delete a word with index_number:-1 and delete a index with index_number > 0 
+ * =====================================================================================
+ */
+	void
+Delete_String_List ( String_list list , char * word , int index_number  )
+{
+	String_position temp, temp1;
+	if(list==NULL)
+	{
+		fprintf(stderr,"\n the list has not been init \n ");
+		return;
+	}
+	temp=Find_Position(list , word);
+	if(temp==NULL)
+	{
+		fprintf(stderr, "\n can not find the word : %s \n",word);
+		return ;
+	}
+	if(index_number==-1)
+	{
+		/*  index_number==-1  would delete the word from the list  */
+		temp1=temp->next->next;
+		free(temp->next);
+		temp->next=temp1;
+	}
+	else
+	{
+		/*  if index_number > 0 would delete a index_number in a word */
+		Delete_Index_List(temp->next->book_index,index_number);
+	}
+	return ;
+}		/* -----  end of function Delete_String_List  ----- */
