@@ -18,7 +18,7 @@
 
 #ifndef _STRING_LIST_H
 #define _STRING_LIST_H
-#include"./index_list/index_list.h"
+#include"../index_list/index_list.h"
 
 
 struct string_node {

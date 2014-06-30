@@ -18,9 +18,9 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include"./index_list/index_list.h"
 #include<string.h>
-
+#include"string_list.h"
+#include"../index_list/index_list.h"
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -39,7 +39,7 @@ Init_String_List ( )
 		exit (EXIT_FAILURE);
 	}
 	
-	new_string_list->book_index=Init_Index_list();// init the index_list in the string_list
+	new_string_list->book_index=Init_Index_List();// init the index_list in the string_list
 	new_string_list->next==NULL;
 	return new_string_list;
 }		/* -----  end of function Init_String_List  ----- */
@@ -122,6 +122,7 @@ Delete_String_List ( String_list list , char * word , int index_number  )
 	{
 		/*  index_number==-1  would delete the word from the list  */
 		temp1=temp->next->next;
+		Destory_Index_List(temp->next->book_index);
 		free(temp->next);
 		temp->next=temp1;
 	}
@@ -173,7 +174,7 @@ Find_Position ( String_list list , char * word )
 	}
 	if(list->next==NULL)
 	{
-		fprintf(stderr,"\n can not find the word : %s \n ", word);
+//		fprintf(stderr,"\n can not find the word : %s \n ", word);
 		return NULL;
 	}
 	if(list->next->book_word==word)
@@ -193,7 +194,7 @@ Find_Position ( String_list list , char * word )
 	String_position
 Find_Insert_Position ( String_list list , char * word )
 {
-	while(list->next!=NULL&& strcmp(list->next->book_word, word)>0)
+	while(list->next!=NULL&& strcmp(list->next->book_word, word)<0)
 	{
 		list=list->next;
 	}
@@ -223,7 +224,7 @@ Write_String_List (char * filename, String_list list )
 	{
 		fputs(list->next->book_word,file);
 		fputs(":",file);
-		Write_Index_List(filename, list->next->book_inedx);
+		Write_Index_List(filename, list->next->book_index);
 	}
 	return ;
 }		/* -----  end of function Write_String_List  ----- */
