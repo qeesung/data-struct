@@ -43,3 +43,52 @@ Init_String_List ( )
 	return new_string_list;
 }		/* -----  end of function Init_String_List  ----- */
 
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_String_List
+ *  Description:  insert a new word or old word into the string list
+ * =====================================================================================
+ */
+	void
+Insert_String_List ( String_list list , char * word , int index_number )
+{
+	String_position temp, temp1;
+	String_position new_string_node;
+	if(list==NULL)
+	{
+		fprintf(stderr,"\n the list have not init \n ");
+		return ;
+	}
+	temp=Find_Position(list , word);
+	if(temp==NULL)
+	{
+		// this is a new_word
+		temp=Find_Insert_Position(list , word);
+		//+++++++++++++++++++++++++++++++++++++++
+		new_string_node	= malloc ( sizeof(struct string_node) );
+		if ( new_string_node==NULL ) {
+			fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+			exit (EXIT_FAILURE);
+		}
+		new_string_node->book_word=word;
+		new_string_node->book_index=Init_Index_List();
+		//+++++++++++++++++++++++++++++++++++++++++++
+		temp1=temp->next;
+		temp->next=new_string_node;
+		temp->next->next=temp1,
+		//insert the index number into the new word index list
+		Insert_Index_List(new_string_node->book_index, index_number);
+		
+	}
+	else
+	{
+		// the word has been existed
+		// only need to insert index_number
+		Insert_Index_List(temp->book_index,index_number);
+	}
+
+	return ;
+}		/* -----  end of function Insert_String_List  ----- */
