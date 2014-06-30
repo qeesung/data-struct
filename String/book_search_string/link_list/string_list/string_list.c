@@ -201,3 +201,29 @@ Find_Insert_Position ( String_list list , char * word )
 	
 }		/* -----  end of function Find_Insert_Position  ----- */
 
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Write_String_List
+ *  Description:  write the String list into a file
+ * =====================================================================================
+ */
+	void
+Write_String_List (char * filename, String_list list )
+{
+	FILE * file ;
+	file=fopen(filename, "a+");
+	if(file==NULL)
+	{
+		fprintf(stderr,"\n open the file : %s failed \n ", filename);
+		return ;
+	}
+	while(list->next!=NULL)
+	{
+		fputs(list->next->book_word,file);
+		fputs(":",file);
+		Write_Index_List(filename, list->next->book_inedx);
+	}
+	return ;
+}		/* -----  end of function Write_String_List  ----- */
