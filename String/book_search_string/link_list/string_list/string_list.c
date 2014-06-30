@@ -131,3 +131,25 @@ Delete_String_List ( String_list list , char * word , int index_number  )
 	}
 	return ;
 }		/* -----  end of function Delete_String_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_String_List
+ *  Description:  print all the element in the string list
+ * =====================================================================================
+ */
+	void
+Print_String_List ( String_list list )
+{
+	String_position string_temp;
+	Index_position index_temp;
+	while(list->next!=NULL)
+	{
+		printf("%s----->:",list->next->book_word);
+		Print_Index_List(list->next->book_index);
+		list=list->next;
+	}
+	return;
+}		/* -----  end of function Print_String_List  ----- */
