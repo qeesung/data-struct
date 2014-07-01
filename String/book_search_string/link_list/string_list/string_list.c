@@ -54,7 +54,7 @@ Init_String_List ( )
  * =====================================================================================
  */
 	void
-Insert_String_List ( String_list list , char * word , int index_number )
+Insert_String_List ( String_list list , char * word , char * index_number )
 {
 	String_position temp, temp1;
 	String_position new_string_node;
@@ -104,7 +104,7 @@ Insert_String_List ( String_list list , char * word , int index_number )
  * =====================================================================================
  */
 	void
-Delete_String_List ( String_list list , char * word , int index_number  )
+Delete_String_List ( String_list list , char * word , char * index_number  )
 {
 	String_position temp, temp1;
 	if(list==NULL)
@@ -118,7 +118,7 @@ Delete_String_List ( String_list list , char * word , int index_number  )
 		fprintf(stderr, "\n can not find the word : %s \n",word);
 		return ;
 	}
-	if(index_number==-1)
+	if(strcmp(index_number, "-1")==0)
 	{
 		/*  index_number==-1  would delete the word from the list  */
 		temp1=temp->next->next;
@@ -168,7 +168,7 @@ Print_String_List ( String_list list )
 Find_Position ( String_list list , char * word )
 {
 	String_position pos;
-	while(list->next!=NULL && list->next->book_word!=word)
+	while(list->next!=NULL && strcmp(list->next->book_word,word)!=0)
 	{
 		list=list->next;
 	}
@@ -177,7 +177,7 @@ Find_Position ( String_list list , char * word )
 //		fprintf(stderr,"\n can not find the word : %s \n ", word);
 		return NULL;
 	}
-	if(list->next->book_word==word)
+	if(strcmp(list->next->book_word,word)==0)
 	{
 		return list;
 	}
@@ -214,17 +214,20 @@ Find_Insert_Position ( String_list list , char * word )
 Write_String_List (char * filename, String_list list )
 {
 	FILE * file ;
-	file=fopen(filename, "a+");
-	if(file==NULL)
-	{
-		fprintf(stderr,"\n open the file : %s failed \n ", filename);
-		return ;
-	}
+	system("rm -f ../../source_file/index_file");
 	while(list->next!=NULL)
 	{
+		file=fopen(filename, "a+");
+		if(file==NULL)
+		{
+			fprintf(stderr,"\n open the file : %s failed \n ", filename);
+			return ;
+		}
 		fputs(list->next->book_word,file);
 		fputs(":",file);
+		fclose(file);
 		Write_Index_List(filename, list->next->book_index);
+		list=list->next;
 	}
 	return ;
 }		/* -----  end of function Write_String_List  ----- */

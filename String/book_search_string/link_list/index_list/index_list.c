@@ -38,8 +38,6 @@ Init_Index_List ( )
 		exit (EXIT_FAILURE);
 	}
 	return new_index_list;
-	
-	return ;
 }		/* -----  end of function Init_Index_List  ----- */
 
 
@@ -51,7 +49,7 @@ Init_Index_List ( )
  * =====================================================================================
  */
 	void
-Insert_Index_List ( Index_list list, int index )
+Insert_Index_List ( Index_list list, char * index )
 {
 	Index_position temp;
 	Index_position new_index_node;
@@ -67,7 +65,7 @@ Insert_Index_List ( Index_list list, int index )
 		exit (EXIT_FAILURE);
 	}
 	new_index_node->index_number = index;
-	while(list->next!=NULL && list->next->index_number < index)
+	while(list->next!=NULL && strcmp(list->next->index_number,index)<0)
 	{
 		list=list->next;
 	}
@@ -88,7 +86,7 @@ Insert_Index_List ( Index_list list, int index )
  * =====================================================================================
  */
 	void
-Delete_Index_List ( Index_list list , int index )
+Delete_Index_List ( Index_list list , char * index )
 {
 	Index_position temp;
 	if(list==NULL)
@@ -96,7 +94,7 @@ Delete_Index_List ( Index_list list , int index )
 		fprintf(stderr,"\n the list is not init \n  ");
 		return ;
 	}
-	while(list->next!=NULL && list->next->index_number !=index)
+	while(list->next!=NULL && strcmp(list->next->index_number, index)!=0)
 	{
 		list-list->next;
 	}
@@ -105,7 +103,7 @@ Delete_Index_List ( Index_list list , int index )
 		fprintf(stderr,"\n can not find the index : %d \n ", index);
 		return ;
 	}
-	if(list->next->index_number == index)
+	if(strcmp(list->next->index_number, index)==0)
 	{
 		temp=list->next->next;
 		free(list->next);
@@ -123,14 +121,14 @@ Delete_Index_List ( Index_list list , int index )
  * =====================================================================================
  */
 	Index_position
-Find_Index_Position ( Index_list list , int index  )
+Find_Index_Position ( Index_list list , char *  index  )
 {
 	if(list==NULL)
 	{
 		fprintf(stderr,"\n the list is not init \n ");
 		return NULL;
 	}
-	while(list->next!=NULL && list->next->index_number !=index)
+	while(list->next!=NULL && strcmp(list->next->index_number,index)!=0)
 	{
 		list=list->next;
 	}
@@ -150,7 +148,7 @@ Print_Index_List (Index_list list )
 {
 	while(list->next!=NULL )
 	{
-		printf("%d\t\t",list->next->index_number);
+		printf("%s\t\t",list->next->index_number);
 		list=list->next;
 	}
 	printf("\n ");
@@ -178,12 +176,14 @@ Write_Index_List (char * filename , Index_list list )
 	}
 	while(list->next!=NULL)
 	{
-		sprintf(my_array,"%d\t",list->next->index_number);
-		fputs(my_array, file);
+//		sprintf(my_array,"%d\t",list->next->index_number);
+		fputs(list->next->index_number, file);
+		fputs("\t\t",file);
 		//fputs("\t\t", file);
 		list=list->next;
 	}
 	fputs("\n ", file);
+	fclose(file);
 	return ;
 }		/* -----  end of function Write_Index_List  ----- */
 

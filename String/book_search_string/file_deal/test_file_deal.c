@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  test_index_list.c
+ *       Filename:  test_file_deal.c
  *
- *    Description:  test index_list 
+ *    Description:  test for my file deal function
  *
  *        Version:  1.0
- *        Created:  2014年06月30日 06时08分07秒
+ *        Created:  2014年07月01日 01时37分38秒
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -15,11 +15,10 @@
  *
  * =====================================================================================
  */
-
-
+#include	"file_deal.h"
 #include	<stdlib.h>
 #include	<stdio.h>
-#include	"index_list.h"
+#include	"../link_list/string_list/string_list.h"
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -29,18 +28,12 @@
 	int
 main ( int argc, char *argv[] )
 {
+	String_list list ;
+	list=Init_String_List();
 
-	Index_list my_list;
-	my_list=Init_Index_List();
-	Insert_Index_List(my_list, "066");
-	Insert_Index_List(my_list, "082");
-	Insert_Index_List(my_list, "010");
-	Insert_Index_List(my_list, "036");
-	Insert_Index_List(my_list, "085");
-	Insert_Index_List(my_list, "017");
-	Insert_Index_List(my_list, "095");
-	Insert_Index_List(my_list, "042");
-	Print_Index_List(my_list);
-	Write_Index_List("/root/suanfa/String/book_search_string/source_file/index_file",my_list);
+	Deal_File("../source_file/bookname_file",list);
+
+	Print_String_List(list);
 	return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
+
