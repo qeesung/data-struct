@@ -29,7 +29,7 @@ struct matrix_node {
 typedef struct matrix_node * Matrix_node ;
 
 struct matrix {
-	struct matrix_node data[MATRIX_NODE_NUMBER]
+	struct matrix_node data[MATRIX_NODE_NUMBER];
 	int mu;
 	int nu;
 	int tu;

@@ -75,6 +75,8 @@ Destory_Matrix ( Matrix my_matrix )
 Insert_Matrix (Matrix my_matrix , int mu , int nu , int number )
 {
 	int k1, k2,k3;
+	nu--;
+	mu--;
 	if(my_matrix==NULL)
 	{
 		fprintf(stderr,"\n the martrix is empty in the %s \n  ", __func__);
@@ -94,11 +96,11 @@ Insert_Matrix (Matrix my_matrix , int mu , int nu , int number )
 	{
 		return;
 	}
-	for(k1=0;k1<tu;k1++)
+	for(k1=0;k1<my_matrix->tu;k1++)
 	{
 		if(my_matrix->data[k1].i > mu)
 		{
-			for(k2=tu;k2>k1;k2--)
+			for(k2=my_matrix->tu;k2>k1;k2--)
 			{
 				my_matrix->data[k2]=my_matrix->data[k2-1];
 			}
@@ -112,18 +114,18 @@ Insert_Matrix (Matrix my_matrix , int mu , int nu , int number )
 		{
 			for(k2=k1;my_matrix->data[k2].i == mu ; k2++)
 			{
-				if(matrix->data[k2].j > nu)
+				if(my_matrix->data[k2].j > nu)
 				{
 					break;
 				}
-				if(matrix->data[k2].j == nu)
+				if(my_matrix->data[k2].j == nu)
 				{
-					my_matrix->number = number ;
+					my_matrix->data[k2].number = number ;
 					return;
 				}
 			}
 
-			for(k3=tu;k3>k2;k3--)
+			for(k3=my_matrix->tu;k3>k2;k3--)
 			{
 				my_matrix->data[k3]=my_matrix->data[k3-1];
 			}
@@ -134,9 +136,9 @@ Insert_Matrix (Matrix my_matrix , int mu , int nu , int number )
 			return;
 		}
 	}
-	my_matrix->data[tu].i=mu;
-	my_matrix->data[tu].j=nu;
-	my_matrix->data[tu].number=number;
+	my_matrix->data[my_matrix->tu].i=mu;
+	my_matrix->data[my_matrix->tu].j=nu;
+	my_matrix->data[my_matrix->tu].number=number;
 	my_matrix->tu++;
 //	my_matrix->data[tu].i=mu;
 //	my_matrix->data[tu].j=tu;
@@ -158,22 +160,25 @@ Delete_Matrix ( Matrix my_matrix , int mu , int nu )
 	int k1, k2;
 	k1=0;
 	k2=0;
+	mu--;
+	nu--;
 	while(k1<my_matrix->tu )
 	{
 		if(my_matrix->data[k1].i==mu && my_matrix->data[k1].j==nu)
 		break;
 		k1++;
 	}
-	if(k1==nu)
+	if(k1==my_matrix->tu)
 	{
 		fprintf(stderr,"\n can not find the <%d , %d > number \n ", mu , nu);
 		return;
 	}
-	for(k2=k1;k2<nu-1;k2++)
+//	printf("the i==%d , and j==%d \n ",my_matrix->data[k1].i , my_matrix->data[k1].j);
+	for(k2=k1;k2<my_matrix->tu-1;k2++)
 	{
-		if(k2==tu-1)
-		break;
-		my_matrix->data[k2]=matrix->data[k2+1];
+	//	if(k2==my_matrix->tu-1)
+	//	break;
+		my_matrix->data[k2]=my_matrix->data[k2+1];
 	}
 	my_matrix->tu--;
 	return ;
@@ -198,11 +203,11 @@ Print_Matrix ( Matrix my_matrix )
 		fprintf(stderr,"\n can not print a empty matrix \n ");
 		return;
 	}
-	for(k1=0;k1<mu;k1++)
+	for(k1=0;k1<my_matrix->mu;k1++)
 	{
-		for(k2=0;k2<nu;k2++)
+		for(k2=0;k2<my_matrix->nu;k2++)
 		{
-			if((temp=Get_Matrix_Node(my_matrix, mu , nu))!=NULL)
+			if((temp=Get_Matrix_Node(my_matrix, k1 , k2))!=NULL)
 			{
 				printf("%d\t",temp->number);
 			}
@@ -235,9 +240,9 @@ Get_Matrix_Node ( Matrix my_matrix , int mu , int nu )
 		break;
 		k1++;
 	}
-	if(k1==nu)
+	if(k1==my_matrix->tu)
 	{
-		fprintf(stderr,"\n can not find the <%d , %d > number \n ", mu , nu);
+//		fprintf(stderr,"\n can not find the <%d , %d > number \n ", mu , nu);
 		return NULL;
 	}
 	return &(my_matrix->data[k1]);
