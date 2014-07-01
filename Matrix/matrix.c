@@ -43,3 +43,22 @@ Create_Matrix ( int mu , int nu )
 
 	return new_matrix;
 }		/* -----  end of function Create_Matrix  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_Matrix
+ *  Description:  destory a matrix
+ * =====================================================================================
+ */
+	void
+Destory_Matrix ( Matrix my_matrix )
+{
+	if(my_matrix==NULL)
+	{
+		fprintf(stderr, "\n the matrix is empty\n");
+		return ;
+	}
+	free(my_matrix);
+	return ;
+}		/* -----  end of function Destory_Matrix  ----- */

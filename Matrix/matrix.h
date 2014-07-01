@@ -37,7 +37,7 @@ struct matrix {
 typedef struct matrix *  Matrix;
 
 Matrix Create_Matrix(int mu , int nu);
-void Destory_Matrix();
+void Destory_Matrix(Matrix my_matrix);
 void Insert_Matrix(int mu , int nu, int number );
 void Delete_Matrix(int mu , int nu);
 Matrix Add_Matrix(Matrix my_matrix1 , Matrix my_matrix2);
