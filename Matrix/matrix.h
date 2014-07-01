@@ -28,7 +28,7 @@ struct matrix_node {
 
 
 struct matrix {
-	struct matrix_node [MATRIX_NODE_NUMBER]
+	struct matrix_node data[MATRIX_NODE_NUMBER]
 	int mu;
 	int nu;
 	int tu;
@@ -38,8 +38,8 @@ typedef struct matrix *  Matrix;
 
 Matrix Create_Matrix(int mu , int nu);
 void Destory_Matrix(Matrix my_matrix);
-void Insert_Matrix(int mu , int nu, int number );
-void Delete_Matrix(int mu , int nu);
+void Insert_Matrix(Matrix my_matrix ,int mu , int nu, int number );
+void Delete_Matrix(Matrix my_matrix,int mu , int nu);
 Matrix Add_Matrix(Matrix my_matrix1 , Matrix my_matrix2);
 Matrix Sub_Matrix(Matrix my_matrix1 , Matrix my_matrix2);
 Matrix Mul_Matrix(Matrix my_matrix1 , Matrix my_matrix2);
