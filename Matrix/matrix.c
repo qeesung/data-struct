@@ -144,3 +144,37 @@ Insert_Matrix (Matrix my_matrix , int mu , int nu , int number )
 //	matrix->tu++;
 	return ;
 }		/* -----  end of function Insert_Matrix  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Matrix
+ *  Description:  delete a node form the matrix
+ * =====================================================================================
+ */
+	void
+Delete_Matrix ( Matrix my_matrix , int mu , int nu )
+{
+	int k1, k2;
+	k1=0;
+	k2=0;
+	while(k1<nu )
+	{
+		if(my_matrix->data[k1].i==mu && my_matrix->data[k1].j==nu)
+		break;
+		k1++;
+	}
+	if(k1==nu)
+	{
+		fprintf(stderr,"\n can not find the <%d , %d > number \n ", mu , nu);
+		return;
+	}
+	for(k2=k1;k2<nu-1;k2++)
+	{
+		if(k2==tu-1)
+		break;
+		my_matrix->data[k2]=matrix->data[k2+1];
+	}
+	my_matrix->tu--;
+	return ;
+}		/* -----  end of function Delete_Matrix  ----- */
