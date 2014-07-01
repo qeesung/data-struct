@@ -36,7 +36,7 @@ struct matrix {
 
 typedef struct matrix *  Matrix;
 
-Matrix Create_Matrix();
+Matrix Create_Matrix(int mu , int nu);
 void Destory_Matrix();
 void Insert_Matrix(int mu , int nu, int number );
 void Delete_Matrix(int mu , int nu);
