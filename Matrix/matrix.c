@@ -158,7 +158,7 @@ Delete_Matrix ( Matrix my_matrix , int mu , int nu )
 	int k1, k2;
 	k1=0;
 	k2=0;
-	while(k1<nu )
+	while(k1<my_matrix->tu )
 	{
 		if(my_matrix->data[k1].i==mu && my_matrix->data[k1].j==nu)
 		break;
@@ -178,3 +178,67 @@ Delete_Matrix ( Matrix my_matrix , int mu , int nu )
 	my_matrix->tu--;
 	return ;
 }		/* -----  end of function Delete_Matrix  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Matrix
+ *  Description:  print all the matrix 
+ * =====================================================================================
+ */
+	void
+Print_Matrix ( Matrix my_matrix )
+{
+	int k1,k2;
+	Matrix_node temp;
+	if(my_matrix == NULL)
+	{
+		fprintf(stderr,"\n can not print a empty matrix \n ");
+		return;
+	}
+	for(k1=0;k1<mu;k1++)
+	{
+		for(k2=0;k2<nu;k2++)
+		{
+			if((temp=Get_Matrix_Node(my_matrix, mu , nu))!=NULL)
+			{
+				printf("%d\t",temp->number);
+			}
+			else
+			{
+				printf("%d\t",0);
+			}
+		}
+		printf("\n");
+	}
+	return ;
+}		/* -----  end of function Print_Matrix  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Matrix_Node
+ *  Description:  get a matrix node msg
+ * =====================================================================================
+ */
+	Matrix_node
+Get_Matrix_Node ( Matrix my_matrix , int mu , int nu )
+{
+	int k1;
+	k1=0;
+	while(k1<my_matrix->tu )
+	{
+		if(my_matrix->data[k1].i==mu && my_matrix->data[k1].j==nu)
+		break;
+		k1++;
+	}
+	if(k1==nu)
+	{
+		fprintf(stderr,"\n can not find the <%d , %d > number \n ", mu , nu);
+		return NULL;
+	}
+	return &(my_matrix->data[k1]);
+}		/* -----  end of function Get_Matrix_Node  ----- */
