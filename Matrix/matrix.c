@@ -475,3 +475,72 @@ Mul_Matrix (Matrix my_matrix1,Matrix my_matrix2 )
 	mul_matrix->tu=pos;
 	return mul_matrix;
 }		/* -----  end of function Mul_Matrix  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Fast_Transpose_Matrix
+ *  Description:  transpos matrix with another  fater way
+ * =====================================================================================
+ */
+	Matrix
+Fast_Transpose_Matrix (Matrix my_matrix )
+{	
+	int k1;
+	Matrix trans_matrix;
+	int num[my_matrix->nu];
+	int pos[my_matrix->nu];
+	if(my_matrix== NULL)
+	{
+		fprintf(stderr,"\n the matrix should not be empty \n ");
+		return NULL;
+	}
+	trans_matrix=Create_Matrix(my_matrix->nu , my_matrix->mu);
+	if(trans_matrix==NULL)
+	{
+		return NULL;
+	}
+	/*  create the num array and pos array */
+	for(k1=0;k1<my_matrix->nu;k1++)
+	{
+		num[k1]=0;
+	}
+	/*  init the num array */
+	for(k1=0;k1<my_matrix->tu;k1++)
+	{
+		num[my_matrix->data[k1].j]++;
+	}
+	/*  init the pos array */
+	pos[0]=0;
+	for(k1=1;k1<my_matrix->nu;k1++)
+	{
+		pos[k1]=pos[k1-1]+num[k1-1];
+	}
+/*  	printf("the num array is : \n ");
+	for(k1=0;k1<my_matrix->tu;k1++)
+	{
+		printf("%d \t\t", num[k1]);
+	}
+	printf("the pos array is : \n ");
+	for(k1=0;k1<my_matrix->tu;k1++)
+	{
+		printf("%d \t\t", pos[k1]);
+	}*/
+	fflush(stdout);
+	for(k1=0;k1<my_matrix->tu;k1++)
+	{
+		trans_matrix->data[ pos[my_matrix->data[k1].j] ].i = my_matrix->data[k1].j;
+		trans_matrix->data[ pos[my_matrix->data[k1].j] ].j = my_matrix->data[k1].i;
+		trans_matrix->data[ pos[my_matrix->data[k1].j] ].number = my_matrix->data[k1].number;
+		pos[my_matrix->data[k1].j]++;
+	}
+	trans_matrix->tu = my_matrix->tu;
+/*  	printf("\n hello world \n ");
+	fflush(stdout);
+	for(k1=0;k1<trans_matrix->tu;k1++)
+	{
+		printf("<%d , %d > : %d \t\t", trans_matrix->data[k1].i, trans_matrix->data[k1].j,trans_matrix->data[k1].number);
+	}*/
+	return  trans_matrix;
+}		/* -----  end of function Fast_Transpose_Matrix  ----- */
