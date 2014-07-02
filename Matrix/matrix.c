@@ -342,7 +342,7 @@ Add_Matrix ( Matrix my_matrix1 , Matrix my_matrix2 )
 				add_matrix->data[pos].i=k1;
 				add_matrix->data[pos].j=k2;
 				add_matrix->data[pos].number=number;
-				printf("<%d , %d > : %d \n ",add_matrix->data[pos].i, add_matrix->data[pos].j,add_matrix->data[pos].number );
+	//			printf("<%d , %d > : %d \n ",add_matrix->data[pos].i, add_matrix->data[pos].j,add_matrix->data[pos].number );
 				pos++;
 			}
 		}
@@ -350,3 +350,68 @@ Add_Matrix ( Matrix my_matrix1 , Matrix my_matrix2 )
 	add_matrix->tu=pos;
 	return add_matrix;
 }		/* -----  end of function Add_Matrix  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Add_Matrix
+ *  Description:  sub two matrix 
+ * =====================================================================================
+ */
+	Matrix
+Sub_Matrix ( Matrix my_matrix1 , Matrix my_matrix2 )
+{
+	Matrix sub_matrix;
+	Matrix_node node1, node2;
+	int k1, k2;
+	int number;
+	int pos=0;
+	if(my_matrix1==NULL || my_matrix2==NULL)
+	{
+		fprintf(stderr,"\n the matrix can not be empty\n ");
+		return NULL;
+	}
+	if(my_matrix1->nu != my_matrix2->mu || my_matrix1->mu !=my_matrix2->mu)
+	{
+		fprintf(stderr,"\n The matrix nu !=nu or mu!=mu \n ");
+		return NULL;
+	}
+	sub_matrix=Create_Matrix(my_matrix1->mu , my_matrix1->nu);
+	if(sub_matrix==NULL)
+	{
+		return NULL;
+	}
+	for(k1=0;k1<my_matrix1->mu;k1++)
+	{
+		for(k2=0;k2<my_matrix1->nu;k2++)
+		{
+			number=0;
+			if((node1=Get_Matrix_Node(my_matrix1,k1,k2))!=NULL)
+			{
+//				printf("\nget one in matrix1\n");
+//				printf("add the number is : %d \n", node1->number);
+				number+=node1->number;
+			}
+			if((node2=Get_Matrix_Node(my_matrix2,k1,k2))!=NULL)
+			{
+//				printf("\nget one in matrix2\n");
+//				printf("add the number is : %d \n", node2->number);
+				number-=node2->number;
+			}
+//			printf("%d\t\t",number );
+			if(number!=0)
+			{
+				sub_matrix->data[pos].i=k1;
+				sub_matrix->data[pos].j=k2;
+				sub_matrix->data[pos].number=number;
+	//			printf("<%d , %d > : %d \n ",sub_matrix->data[pos].i, sub_matrix->data[pos].j,sub_matrix->data[pos].number );
+				pos++;
+			}
+		}
+	}
+	sub_matrix->tu=pos;
+	return sub_matrix;
+}		/* -----  end of function Add_Matrix  ----- */
+
