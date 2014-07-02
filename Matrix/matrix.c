@@ -415,3 +415,63 @@ Sub_Matrix ( Matrix my_matrix1 , Matrix my_matrix2 )
 	return sub_matrix;
 }		/* -----  end of function Add_Matrix  ----- */
 
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Mul_Matrix
+ *  Description:  mul two matrix
+ * =====================================================================================
+ */
+	Matrix
+Mul_Matrix (Matrix my_matrix1,Matrix my_matrix2 )
+{	
+	Matrix mul_matrix;
+	int k1, k2,k3,k4;
+	Matrix_node node1, node2;
+	int mul_number;
+	int pos;
+	if(my_matrix1==NULL || my_matrix2==NULL)
+	{
+		fprintf(stderr,"\n the matrix should not be empty \n ");
+		return NULL;
+	}
+	if(my_matrix1->nu != my_matrix2->mu)
+	{
+		fprintf(stderr,"\n the matrix1 and matrix2 can not mul as M1->nu != M2->mu\n ");
+		return NULL;
+	}
+	mul_matrix=Create_Matrix(my_matrix1->mu ,my_matrix2->nu );
+	if(mul_matrix==NULL)
+	{
+		fprintf(stderr,"\n can not create a mul matrix \n");
+		return NULL;
+	}
+	pos=0;
+	for(k1=0;k1<my_matrix1->mu;k1++)
+	{
+			for(k3=0;k3<my_matrix2->nu;k3++)
+			{
+				mul_number=0;
+   				for(k2=0;k2<my_matrix1->nu;k2++)
+	  			{
+					if((node1=Get_Matrix_Node(my_matrix1,k1,k2))!=NULL && (node2=Get_Matrix_Node(my_matrix2,k2,k3))!=NULL)	
+					{
+						mul_number += node1->number * node2->number;
+					}
+			
+				}
+			//	printf("%d xixihaha\n",mul_number);
+				if(mul_number!=0)
+				{
+					mul_matrix->data[pos].i=k1;
+					mul_matrix->data[pos].j=k3;
+					mul_matrix->data[pos].number=mul_number;
+				//	printf("<%d , %d >::%d \t\t",mul_matrix->data[pos].i,mul_matrix->data[pos].j,mul_matrix->data[pos].number);
+					pos++;
+				}
+			}
+	}
+	mul_matrix->tu=pos;
+	return mul_matrix;
+}		/* -----  end of function Mul_Matrix  ----- */
