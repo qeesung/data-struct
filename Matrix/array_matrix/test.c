@@ -35,6 +35,7 @@ main ( int argc, char *argv[] )
 	Matrix add_matrix;
 	Matrix sub_matrix;
 	Matrix mul_matrix;
+	Matrix fast_trans_matrix;
 	my_matrix=Create_Matrix(5,5);
 	Insert_Matrix(my_matrix,2,5,4);
 	Insert_Matrix(my_matrix,4,1,1);
@@ -50,9 +51,12 @@ main ( int argc, char *argv[] )
 	{
 		printf("%d \t ",my_matrix->data[i].number);
 	}*/
-	trans_matrix=Transpose_Matrix(my_matrix);
 	printf("\n ++++++++++after transpose++++++++++\n ");
+	trans_matrix=Transpose_Matrix(my_matrix);
 	Print_Matrix(trans_matrix);
+	printf("\n ++++++++++after fast transpose++++++++++\n ");
+	fast_trans_matrix=Fast_Transpose_Matrix(my_matrix);
+	Print_Matrix(fast_trans_matrix);
 	add_matrix=Add_Matrix(my_matrix,trans_matrix);
 	printf("\n ++++++++++after add++++++++++\n ");
 	Print_Matrix(add_matrix);
@@ -62,6 +66,7 @@ main ( int argc, char *argv[] )
 	printf("\n ++++++++++after mul++++++++++\n ");
 	mul_matrix=Mul_Matrix(my_matrix, trans_matrix);
 	Print_Matrix(mul_matrix);
+
 	/*  destrory all the matrix */
 	Destory_Matrix(my_matrix);
 	Destory_Matrix(sub_matrix);

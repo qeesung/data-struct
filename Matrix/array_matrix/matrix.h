@@ -47,5 +47,6 @@ Matrix Mul_Matrix(Matrix my_matrix1 , Matrix my_matrix2);
 Matrix Transpose_Matrix(Matrix my_matrix);
 void Print_Matrix(Matrix my_matrix);
 Matrix_node Get_Matrix_Node(Matrix my_matrix , int mu , int nu);
+Matrix Fast_Transpose_Matrix(Matrix my_matrix);
 
 #endif
