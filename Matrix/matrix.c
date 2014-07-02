@@ -247,3 +247,43 @@ Get_Matrix_Node ( Matrix my_matrix , int mu , int nu )
 	}
 	return &(my_matrix->data[k1]);
 }		/* -----  end of function Get_Matrix_Node  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Transpose_Matrix
+ *  Description:  transpose a matrix
+ * =====================================================================================
+ */
+	Matrix
+Transpose_Matrix ( Matrix my_matrix )
+{
+	int k1 , k2;
+	int pos=0;
+	Matrix trans_matrix;
+	if(my_matrix == NULL)
+	{
+		fprintf(stderr,"\n the matrix is empty \n ");
+		return NULL;
+	}
+	trans_matrix=Create_Matrix(my_matrix->nu, my_matrix->mu);
+	trans_matrix->tu=my_matrix->tu;
+	for(k1=0;k1<trans_matrix->nu;k1++)
+	{
+		for(k2=0;k2<my_matrix->tu;k2++)
+		{
+			if(my_matrix->data[k2].j==k1)
+			{
+			//	printf("%d-->%d\t",k1,my_matrix->data[k2].number);
+				trans_matrix->data[pos].i=my_matrix->data[k2].j;
+				trans_matrix->data[pos].j=my_matrix->data[k2].i;
+				trans_matrix->data[pos].number = my_matrix->data[k2].number;
+			//	printf("<%d,%d>:%d\n",trans_matrix->data[pos].i, trans_matrix->data[pos].j, trans_matrix->data[pos].number);
+				pos++;
+			}
+		}
+	}
+	
+	return trans_matrix;
+}		/* -----  end of function Transpose_Matrix  ----- */
