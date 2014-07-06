@@ -44,7 +44,7 @@ Init_Matrix ( int mu , int nu  )
 	// malloc the r * mu
 	new_matrix->rhead	= malloc ( sizeof(struct matrix_node ) * mu );
 	if ( new_matrix->rhead==NULL ) {
-		free(new_matrx);
+		free(new_matrix);
 		fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 		exit (EXIT_FAILURE);
 	}
@@ -104,7 +104,7 @@ Insert_Matrix ( Matrix my_matrix, int i ,int j , int number)
 	}
 	else
 	{
-		while(temp->down!=NULL && temp->down->j < j)
+		while(temp->down!=NULL && temp->down->i < i)
 		{
 			temp=temp->down ;
 		}
@@ -120,7 +120,7 @@ Insert_Matrix ( Matrix my_matrix, int i ,int j , int number)
 	}
 	else
 	{
-		while(temp->right!=NULL && temp->right->i < i)
+		while(temp->right!=NULL && temp->right->j < j)
 		{
 			temp=temp->right;
 		}
@@ -162,9 +162,9 @@ Delete_Matrix ( Matrix my_matrix , int i ,int j )
 	return ;
 	else
 	{
-		temp1=temp->next->next;
-		free(temp->next);
-		temp->next=temp1;// done
+		temp1=temp->down->down;
+		free(temp->down);
+		temp->down=temp1;// done
 	}
 	return;
 }		/* -----  end of function Delete_Matrix  ----- */
@@ -238,14 +238,13 @@ Print_Matrix ( Matrix my_matrix  )
 		fprintf(stderr , "\n the matrix have not inited \n ");
 		return ;
 	}
-	for(k1==0 ; k1 < my_matrix->mu ; k1++)
+	for(k1=0 ; k1 < my_matrix->mu ; k1++)
 	{
 		temp=&(my_matrix->rhead[k1]);
-		if(temp->right==NULL)
-		continue;
-		for(k2==0 ; k2< my_matrix->nu ; k2++)
+		for(k2=0 ; k2< my_matrix->nu ; k2++)
 		{
-			if(temp->right->j == k2)
+			
+			if(temp->right!=NULL && temp->right->j == k2)
 			{
 				printf("%d\t" , temp->right->number);
 				temp=temp->right;
@@ -256,6 +255,7 @@ Print_Matrix ( Matrix my_matrix  )
 			}
 			
 		}
+		printf("\n ");
 	}
 
 	return ;
