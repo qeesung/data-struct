@@ -36,7 +36,7 @@ typedef struct person Tree[MAX_TREE_SIZE];// define the tree
 
 Tree Init_Bitree();
 void Destory_Bitree(Tree tree);
-void Create_Bitree(Tree tree);
+void Create_Bitree(Tree tree , Person my_person);
 void Clear_Bitree(Tree tree);
 int Bitree_Empty(Tree tree);
 int Bitree_Depth(Tree tree);
