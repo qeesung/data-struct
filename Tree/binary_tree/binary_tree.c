@@ -314,3 +314,122 @@ Bitree_Parent ( Tree tree , struct position pos )
     parent_person->age = tree[i].age;
     return parent_person;
 }		/* -----  end of function Bitree_Parent  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Child
+ *  Description:  get left child(leftorright==0) or right child(leftorright==1)
+ * =====================================================================================
+ */
+    Person
+Bitree_Child ( Tree tree , struct position pos , int leftorright )
+{
+    Person child_person;
+    int i =0;
+    int level =1;
+    if(tree == NULL)
+    {
+        fprintf(stderr,"\n the tree is not init \n ");
+        return NULL;
+    }
+    while(level!=pos.level)
+    {
+        i=2*i+1;
+        level++;
+    }
+    i+=pos.number-1;
+    if(i > MAX_TREE_SIZE )
+    {
+        fprintf(stderr, "\n the number is overflow %d \n ", MAX_TREE_SIZE);
+        return NULL;
+    }
+    
+    child_person	= malloc ( sizeof(struct person) );
+    if ( child_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    if( leftorright == 0 && 2*i+1 < MAX_TREE_SIZE && (tree[2*i+1].name != "None" && tree[2*i+1].age!=0))
+    {
+        child_person->name = tree[2*i+1].name;
+        child_person->age = tree[2*i+1].age;
+        return child_person;
+    }
+    if(leftorright==1 && 2*i+2 < MAX_TREE_SIZE &&(tree[2*i+2].name != "None" && tree[2*i+2].age != 0))
+    {
+        child_person->name = tree[2*i+2].name ;
+        child_person->age = tree[2*i+2].age;
+        return child_person;
+    }
+    free(child_person);
+    printf("\n can not get the child \n ");
+    return NULL;
+}		/* -----  end of function Bitree_Child  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Sibling
+ *  Description:  get the binary tree sibling 
+ * =====================================================================================
+ */
+    Person
+Bitree_Sibling ( Tree tree , struct position pos , int leftorright)
+{
+    /* leftorright ==0 is get left sibling
+     * leftorright ==1 is get right sibling*/
+    Person sib_person;
+    int i =0;
+    int level;
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not init \n ");
+        return NULL;
+    }
+    while(level!=pos.level)
+    {
+        level++;
+        i=2*i+1;
+    }
+    i+=pos.number-1;
+    if(i>=MAX_TREE_SIZE)
+    {
+        fprintf(stderr, "\n the size of tree is gtreater than %d \n ", MAX_TREE_SIZE);
+        return NULL;
+    }
+
+    sib_person	= malloc ( sizeof(struct person) );
+    if ( sib_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+
+    if(leftorright==0 && i%2==0)
+    {   
+        i=(i+1)/2-1;
+        i=2*i+1;
+        sib_person->name = tree[i].name ;
+        sib_person->age = tree[i].age;
+        return sib_person;
+                 
+    }
+    if(leftorright==1 && i%2==1)
+    {
+        i=(i+1)/2-1;
+        i=2*i+2;
+        if(tree[i].name == "None" && tree[i].age == 0)
+        {
+            fprintf(stderr, "\n have no right sibling\n ");
+            free(sib_person);
+            return NULL;
+        }
+        sib_person->name = tree[i].name ;
+        sib_person->age = tree[i].age;
+        return sib_person;
+    }
+    free(sib_person);
+    fprintf(stderr, "\n right sibling have not right sibling\n or \n left sibling have not left sibling \n ");
+    return NULL;
+}		/* -----  end of function Bitree_Sibling  ----- */

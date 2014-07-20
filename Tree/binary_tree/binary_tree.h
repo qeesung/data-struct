@@ -43,4 +43,7 @@ Person Bitree_Root(Tree tree);
 Person Bitree_Value(Tree tree, struct position pos);
 void Bitree_Assign(Tree tree , struct position pos , struct person new_person);
 Person Bittree_Parrent(Tree tree , struct position pos);
+Person Bitree_Child(Tree tree , struct position pos, int leftorright);
+Person Bitree_Sibling(Tree tree , struct position pos , int leftorright);
+
 #endif
