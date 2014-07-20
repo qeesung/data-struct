@@ -164,10 +164,10 @@ Bitree_Depth ( Tree tree )
             break;
     }
     i-=1;
-    while((i+1)/2-1 !=0)
+    while((i=(i+1)/2-1) !=0)
     {
         depth++;
     }
     depth++;
-    return depth;
+    return depth+1;
 }		/* ----- end of function Bitree_Depth  ----- */
