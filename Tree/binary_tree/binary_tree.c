@@ -382,7 +382,7 @@ Bitree_Sibling ( Tree tree , struct position pos , int leftorright)
      * leftorright ==1 is get right sibling*/
     Person sib_person;
     int i =0;
-    int level;
+    int level=1;
     if(tree == NULL)
     {
         fprintf(stderr, "\n the tree have not init \n ");
@@ -415,7 +415,7 @@ Bitree_Sibling ( Tree tree , struct position pos , int leftorright)
         return sib_person;
                  
     }
-    if(leftorright==1 && i%2==1)
+    if(leftorright==1 && i%2!=0)
     {
         i=(i+1)/2-1;
         i=2*i+2;
