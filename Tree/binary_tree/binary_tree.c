@@ -119,3 +119,55 @@ Print_Bitree ( Tree tree )
     }
     return;
 }		/* -----  end of function Print_Bitree  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Empty()
+ *  Description:  check if the tree is empty
+ * =====================================================================================
+ */
+    int 
+Bitree_Empty ( Tree tree )
+{
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not inited \n ");
+        return -1;
+    }
+    if(tree[0].name=="None" && tree[0].age==0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}		/* -----  end of function Bitree_Empty()  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Depth
+ *  Description:  get the depth of the binary tree
+ * =====================================================================================
+ */
+    int
+Bitree_Depth ( Tree tree )
+{   
+    int i;
+    int depth=0;
+    for(i=0;i<MAX_TREE_SIZE;i++)
+    {
+        if(tree[i].name=="None" && tree[i].age==0)
+            break;
+    }
+    i-=1;
+    while((i+1)/2-1 !=0)
+    {
+        depth++;
+    }
+    depth++;
+    return depth;
+}		/* ----- end of function Bitree_Depth  ----- */
