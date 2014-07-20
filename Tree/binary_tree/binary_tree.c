@@ -183,7 +183,7 @@ Bitree_Depth ( Tree tree )
 Bitree_Root (Tree tree )
 {
     Person root_person;
-    if(Bintree_Empty(tree))
+    if(Bitree_Empty(tree))
     {
         fprintf(stderr,"The tree is empty\n");
         return NULL;
