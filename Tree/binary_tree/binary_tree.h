@@ -39,5 +39,7 @@ void Create_Bitree(Tree  tree, Person my_person_list);
 void Print_Bitree(Tree tree);
 int Bitree_Empty(Tree tree);
 int Bitree_Depth(Tree tree);
+Person Bitree_Root(Tree tree);
+Person Bitree_Value(Tree tree, Position pos);
 
 #endif

@@ -171,3 +171,65 @@ Bitree_Depth ( Tree tree )
     depth++;
     return depth+1;
 }		/* ----- end of function Bitree_Depth  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Root
+ *  Description:  get the root value
+ * =====================================================================================
+ */
+    Person
+Bitree_Root (Tree tree )
+{
+    Person root_person;
+    if(Bintree_Empty(tree))
+    {
+        fprintf(stderr,"The tree is empty\n");
+        return NULL;
+    }
+    root_person	= malloc ( sizeof(struct person) );
+    if ( root_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    root_person->name=tree[0].name;
+    root_person->age = tree[0].age;
+    return root_person;
+}		/* -----  end of function Bitree_Root  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Value
+ *  Description:  get the positiob value
+ * =====================================================================================
+ */
+    Person
+Bitree_Value ( Tree tree , struct position pos )
+{
+    Person value_person;
+    int i=0;
+    int level=1;
+    if(tree == NULL)
+    {
+        fprintf(stderr,"\n the tree is not exists\n ");
+        return NULL;
+    }
+
+    value_person	= malloc ( sizeof(struct person) );
+    if ( value_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    while(level!=pos.level)
+    {
+        i=2*i+1;
+        level+=1;
+    }
+    i+=(pos.number-1);
+    value_person->name= tree[i].name;
+    value_person->age = tree[i].age;
+    return value_person;
+}		/* -----  end of function Bitree_Value  ----- */
