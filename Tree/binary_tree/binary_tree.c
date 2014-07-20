@@ -22,16 +22,16 @@
 
 struct person person_list[10]=
 {
-    ("A",21),
-    ("B",22),
-    ("C",23),
-    ("D",24),
-    ("E",25),
-    ("F",26),
-    ("G",27),
-    ("H",28),
-    ("I",29),
-    ("J",30)
+    {"A",21},
+    {"B",22},
+    {"C",23},
+    {"D",24},
+    {"E",25},
+    {"F",26},
+    {"G",27},
+    {"H",28},
+    {"I",29},
+    {"J",30}
 
 };
 
@@ -84,10 +84,12 @@ Create_Bitree( Tree tree, struct person my_person_list[])
         fprintf(stderr,"\n the person list is empty \n ");
         return;
     }
-    list_size=sizeof(my_person_list)/sizeof(struct person);
+    list_size=10;
+    printf("list_size : %d\n ", list_size);
     for(i=0;i<list_size;i++)
     {
-        tree[i] = my_person_list[i];
+        tree[i].name = my_person_list[i].name;
+        tree[i].age = my_person_list[i].age;
     }
     return;
 
@@ -113,6 +115,7 @@ Print_Bitree ( Tree tree )
     while(tree[i].name != "None" && tree[i].age!=0)
     {
         printf("%s ____> %d \n ", tree[i].name, tree[i].age);
+        i++;
     }
     return;
 }		/* -----  end of function Print_Bitree  ----- */
