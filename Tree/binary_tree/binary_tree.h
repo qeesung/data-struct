@@ -41,5 +41,6 @@ int Bitree_Empty(Tree tree);
 int Bitree_Depth(Tree tree);
 Person Bitree_Root(Tree tree);
 Person Bitree_Value(Tree tree, struct position pos);
-
+void Bitree_Assign(Tree tree , struct position pos , struct person new_person);
+Person Bittree_Parrent(Tree tree , struct position pos);
 #endif

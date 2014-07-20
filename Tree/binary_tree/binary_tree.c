@@ -233,3 +233,84 @@ Bitree_Value ( Tree tree , struct position pos )
     value_person->age = tree[i].age;
     return value_person;
 }		/* -----  end of function Bitree_Value  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Assign
+ *  Description:  assign a new value for position pos
+ * =====================================================================================
+ */
+    void
+Bitree_Assign ( Tree tree , struct position pos, struct person new_person)
+{
+    int i ;
+    int level=1;
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree is not exists \n");
+        return ;
+    }
+    i=0;
+    while(level != pos.level)
+    {
+        i=2*i+1;
+        level++;
+    }
+    i+=pos.number-1;
+    if(i>=MAX_TREE_SIZE)
+    {
+        fprintf(stderr,"the tree number is greater than %d please enter a new position \n", MAX_TREE_SIZE);
+        return;
+    }
+    tree[i].name = new_person.name;
+    tree[i].age = new_person.age;
+    return ;
+}		/* -----  end of function Bitree_Assign  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Bitree_Parent
+ *  Description:  get a position element parent
+ * =====================================================================================
+ */
+    Person
+Bitree_Parent ( Tree tree , struct position pos )
+{
+    Person parent_person;
+    int i=0;
+    int level=1;
+    if(tree ==NULL)
+    {
+        fprintf(stderr, "\n the tree is not init \n ");
+        return NULL;
+    }
+    if(pos.level==1)
+    {
+        fprintf(stderr, "\n the root have not parent\n ");
+        return NULL;
+    }
+    while(level != pos.level)
+    {
+        i=2*i+1;
+        level++;
+    }
+    i+=pos.number-1;
+    if(i >= MAX_TREE_SIZE)
+    {
+        fprintf(stderr,"\n the position overflow the %d try another position less than it\n", MAX_TREE_SIZE);
+        return NULL;
+    }
+
+    parent_person	= malloc ( sizeof(struct person) );
+    if ( parent_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    i=(i+1)/2 -1; /*  get the parent position  */
+    parent_person->name = tree[i].name;
+    parent_person->age = tree[i].age;
+    return parent_person;
+}		/* -----  end of function Bitree_Parent  ----- */
