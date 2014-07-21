@@ -48,6 +48,22 @@ Init_Tree ( )
 
     return new_tree;
 }		/* -----  end of function Init_Tree  ----- */
+
+void Create_Tree(Tree tree)
+{
+    int i=0;
+    if(tree == NULL)
+    {
+        fprintf(stderr,"\n the Tree have not init \n ");
+        return;
+    }
+    for(i=0;i<MAX_TREE_SIZE ;i++)
+    {
+        tree[i]=i+1;
+    }
+    return ;
+}
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
