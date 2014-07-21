@@ -551,3 +551,25 @@ Postorder_Traverse ( Tree tree , int index )
     Visit(tree[index]);
     return ;
 }		/* -----  end of function Postorder_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Levelorder_Traverse
+ *  Description:  level order traverse
+ * =====================================================================================
+ */
+    void
+Levelorder_Traverse ( Tree tree , int index )
+{
+    int i=0;
+    for(i=index;i<MAX_TREE_SIZE;i++)
+    {
+        if(tree[i].name !="None" && tree[i].age != 0)
+        {
+            Visit(tree[i]);
+        }
+    }
+    return ;
+}		/* -----  end of function Levelorder_Traverse  ----- */

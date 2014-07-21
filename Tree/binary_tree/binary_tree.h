@@ -50,5 +50,6 @@ void Visit(struct person element);
 void Preorder_Traverse(Tree tree, int index);
 void Inorder_Traverse(Tree tree ,int index);
 void Postorder_Traverse(Tree tree, int index);
+void Levelorder_Traverse(Tree tree , int index);
 
 #endif
