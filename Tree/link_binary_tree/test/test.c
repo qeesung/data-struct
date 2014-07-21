@@ -49,12 +49,23 @@ Init_Tree ( )
     return new_tree;
 }		/* -----  end of function Init_Tree  ----- */
 
-void Create_Tree(Tree tree)
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Create_Tree
+ *  Description:  create my binary tree
+ * =====================================================================================
+ */
+void Create_Tree(Tree tree , int number)
 {
     int i=0;
     if(tree == NULL)
     {
         fprintf(stderr,"\n the Tree have not init \n ");
+        return;
+    }
+    if(number > MAX_TREE_SIZE)
+    {
+        fprintf(stderr, "\n the tree size should less than %d \n ", MAX_TREE_SIZE);
         return;
     }
     for(i=0;i<MAX_TREE_SIZE ;i++)
@@ -63,6 +74,31 @@ void Create_Tree(Tree tree)
     }
     return ;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Inorder_Traverse
+ *  Description:  in order traverse my binary tree
+ * =====================================================================================
+ */
+    void
+Inorder_Traverse ( Tree tree , int index )
+{
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not init \n ");
+        return;
+    }
+    if(tree[index]==None)
+    {
+        return ;
+    }
+    Inorder_Traverse(tree , index*2+1);
+    Visit(tree[index]);
+    Inorder_Traverse(tree , index*2+2);
+    return;
+}		/* -----  end of function Inorder_Traverse  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
