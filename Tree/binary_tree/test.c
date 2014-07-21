@@ -28,11 +28,15 @@
  */
 
 extern struct person person_list[10];
+struct person person_list2[]={{"qeesung", 21}, {"qinshicheng", 22}, {"Q-season-Q", 24},
+                                {"wahaha", 89}, {"xishuashua", 56}, {"yohuohuo", 34}};
     int
 main ( int argc, char *argv[] )
 {
     Tree tree;
     struct position pos;
+    struct position pos2;
+    Tree tree2;
     struct person new_person;
     Person root_person;
     Person level_person;
@@ -43,8 +47,17 @@ main ( int argc, char *argv[] )
     Person rightsibling_person;
 
     tree=Init_Bitree();
-    Create_Bitree(tree, person_list);
+    Create_Bitree(tree, person_list , 10);
     Print_Bitree(tree);
+
+/*  test traverse */
+    printf("*********Preorder traverse***********\n");
+    Preorder_Traverse(tree , 0);
+    printf("*********Inorder traverse***********\n");
+    Inorder_Traverse(tree , 0);
+    printf("***********postorder traverse**********\n");
+    Postorder_Traverse(tree , 0);
+
     if(!Bitree_Empty(tree))
     {
         printf("the tree depth is :%d\n", Bitree_Depth(tree));
@@ -87,5 +100,15 @@ main ( int argc, char *argv[] )
         printf("the pos level %d number %d right sibling person name is %s ang age is %d \n",\
                 pos.level , pos.number, rightsibling_person->name , rightsibling_person->age);
     }
+    /* test for my Move_Bitree() function  */
+    tree2 = Init_Bitree();// create a new tree
+    Create_Bitree(tree2 , person_list2 , 6);
+    printf("*****************this is tree2****************\n ");
+    Print_Bitree(tree2);
+    printf("\n hello hello hello\n ");
+    fflush(stdout);
+    Move_Bitree(tree2, 0 ,tree , 0);
+    printf("\n *********************after move tree2 to tree*****************\n ");
+    Print_Bitree(tree);
     return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
