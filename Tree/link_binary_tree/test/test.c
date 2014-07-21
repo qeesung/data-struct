@@ -20,8 +20,8 @@
 #include	<stdlib.h>
 #include    <stdio.h>
 
-#define MAX_TREE_SIZE 50
-#define None -1
+#define MAX_TREE_SIZE (50)
+#define None (-1)
 typedef int * Tree;
 
 /* 
@@ -68,12 +68,52 @@ void Create_Tree(Tree tree , int number)
         fprintf(stderr, "\n the tree size should less than %d \n ", MAX_TREE_SIZE);
         return;
     }
-    for(i=0;i<MAX_TREE_SIZE ;i++)
+    for(i=0;i<number ;i++)
     {
         tree[i]=i+1;
     }
     return ;
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Tree
+ *  Description:  print all the massage in the tree
+ * =====================================================================================
+ */
+    void
+Print_Tree ( Tree tree )
+{
+    int i=0;
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not initn ");
+        return;
+    }
+    for(i=0;i<MAX_TREE_SIZE;i++)
+    {
+        if(tree[i]!=None)
+        {
+            printf("***%d***\n", tree[i]);
+        }
+    }
+    
+    return;
+}		/* -----  end of function Print_Tree  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Visit
+ *  Description:  print the derail massage about  Integre
+ * =====================================================================================
+ */
+    void
+Visit ( int number )
+{
+    printf("***%d***\n" , number);
+    return ;
+}		/* -----  end of function Visit  ----- */
 
 
 /* 
@@ -108,6 +148,14 @@ Inorder_Traverse ( Tree tree , int index )
  */
     int
 main ( int argc, char *argv[] )
+{
 
+    Tree tree;
+    tree=Init_Tree();
+    Create_Tree(tree ,7);
+    Print_Tree(tree);
+    printf("\n\n");
+    Inorder_Traverse(tree, 0);
+    free(tree);
     return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
