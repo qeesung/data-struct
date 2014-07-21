@@ -70,10 +70,9 @@ Tree Init_Bitree()
  * =====================================================================================
  */
     void
-Create_Bitree( Tree tree, struct person my_person_list[])
+Create_Bitree( Tree tree, struct person my_person_list[] , int list_size)
 {
     int i=0;
-    int list_size;
     if(tree == NULL)
     {
         fprintf(stderr, "\n the tree have not init \n ");
@@ -84,7 +83,6 @@ Create_Bitree( Tree tree, struct person my_person_list[])
         fprintf(stderr,"\n the person list is empty \n ");
         return;
     }
-    list_size=10;
     printf("list_size : %d\n ", list_size);
     for(i=0;i<list_size;i++)
     {
@@ -433,3 +431,123 @@ Bitree_Sibling ( Tree tree , struct position pos , int leftorright)
     fprintf(stderr, "\n right sibling have not right sibling\n or \n left sibling have not left sibling \n ");
     return NULL;
 }		/* -----  end of function Bitree_Sibling  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Move_Bitree
+ *  Description:  move tree1 at index i to tree2 at index j
+ * =====================================================================================
+ */
+    void
+Move_Bitree (Tree tree1 , int index1, Tree tree2 , int index2 )
+{
+    if(tree1 == NULL || tree2 == NULL)
+    {
+        fprintf(stderr, "\n tree1 ot tree2 is not init \n ");
+            return ;
+    }
+    if(tree1[index1*2+1].name != "None" && tree1[index1*2+1].age !=0)
+    {
+        Move_Bitree(tree1, 2*index1+1,tree2,2*index2+1);
+    }
+    if(tree1[index1*2+2].name != "None" && tree1[index1*2+2].age!=0)
+    {
+        Move_Bitree(tree1, 2*index1+2 , tree2 , 2*index2+2);
+    }
+    tree2[index1].name = tree1[index2].name;
+    tree2[index1].age = tree1[index2].age;
+    tree1[index2].name = "None";
+    tree1[index2].age = 0;
+}		/* -----  end of function Move_Bitree  ----- */
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Visit
+ *  Description:  print detail massage struct of person
+ * =====================================================================================
+ */
+    void
+Visit ( struct person my_person )
+{
+    printf("%s -----> %d\n", my_person.name, my_person.age);
+    return;
+
+}		/* -----  end of function Visit  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Preorder_Traverse
+ *  Description:  先序遍历binary tree
+ * =====================================================================================
+ */
+    void
+Preorder_Traverse ( Tree tree , int index )
+{
+    if(tree== NULL)
+    {
+        fprintf(stderr,"\n the tree have not init \n");
+        return;
+    }
+    if(tree[index].name == "None" && tree[index].age == 0)
+    {
+        return ;
+    }
+    Visit(tree[index]);
+    Preorder_Traverse(tree, index*2+1);
+    Preorder_Traverse(tree , index*2+2);
+    return;
+}		/* -----  end of function Preorder_Traverse  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Inorder_Traverse
+ *  Description: 中序遍历binary tree
+ * =====================================================================================
+ */
+    void
+Inorder_Traverse ( Tree tree , int index )
+{
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not init \n ");
+        return;
+    }
+    if(tree[index].name == "None" && tree[index].age == 0)
+    {
+        return;
+    }
+    Inorder_Traverse(tree , index*2+1);
+    Visit(tree[index]);
+    Inorder_Traverse(tree , index*2+2);
+
+    return ;
+}		/* -----  end of function Inorder_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Postorder_Traverse
+ *  Description:  后序遍历binary tree
+ * =====================================================================================
+ */
+    void
+Postorder_Traverse ( Tree tree , int index )
+{
+    if(tree == NULL)
+    {
+        fprintf(stderr, "\n the tree have not init \n ");
+        return ;
+    }
+    if(tree[index].name == "None" && tree[index].age == 0)
+    {
+        return ;
+    }
+    Postorder_Traverse(tree , index*2+1);
+    Postorder_Traverse(tree , index*2+2);
+    Visit(tree[index]);
+    return ;
+}		/* -----  end of function Postorder_Traverse  ----- */

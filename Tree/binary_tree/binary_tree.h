@@ -35,7 +35,7 @@ struct position {
 typedef struct position * Position;
 
 Tree Init_Bitree();
-void Create_Bitree(Tree  tree, Person my_person_list);
+void Create_Bitree(Tree  tree, Person my_person_list , int list_size);
 void Print_Bitree(Tree tree);
 int Bitree_Empty(Tree tree);
 int Bitree_Depth(Tree tree);
@@ -45,5 +45,10 @@ void Bitree_Assign(Tree tree , struct position pos , struct person new_person);
 Person Bittree_Parrent(Tree tree , struct position pos);
 Person Bitree_Child(Tree tree , struct position pos, int leftorright);
 Person Bitree_Sibling(Tree tree , struct position pos , int leftorright);
+void Move_Bitree(Tree tree1 , int index1, Tree tree2 , int index2);
+void Visit(struct person element);
+void Preorder_Traverse(Tree tree, int index);
+void Inorder_Traverse(Tree tree ,int index);
+void Postorder_Traverse(Tree tree, int index);
 
 #endif
