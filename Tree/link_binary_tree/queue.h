@@ -35,5 +35,9 @@ struct queue
 };
 typedef struct queue * Queue;
 
+Queue Init_Queue();
+void Enqueue(Queue my_queue , struct tree * tree_node);
+Tree Dequeue(Queue my_queue);
+void Print_Queue(Queue my_queue);
 
 #endif
