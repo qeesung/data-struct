@@ -26,9 +26,15 @@ struct tree
     struct tree * rightchild;
 };
 typedef struct tree * Tree;
+typedef void (* funcpointer ) (struct tree);// a pointer to a function with parameter struct tree
 
 Tree Init_Tree();
-void Destory_Tree(Tree tree);
+void Destory_Tree(Tree my_tree);
+void Visit(struct tree  *my_tree);
+void Preorder_Traverse(Tree my_tree , funcpointer my_fun);
+void Inorder_Traverse(Tree  my_tree , funcpointer my_fun);
+void Postorder_Traverse(Tree my_tree , funcpointer my_fun);
+void Levelorder_Traverse(Tree my_tree , funcpointer my_fun);
 
 
 #endif
