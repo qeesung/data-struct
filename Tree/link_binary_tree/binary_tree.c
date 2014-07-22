@@ -19,6 +19,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"binary_tree.h"
+#include"queue.h"
 
 
 /* 
@@ -149,6 +150,21 @@ Postorder_Traverse ( Tree my_tree , funcpointer my_fun )
     void
 Levelorder_Traverse ( Tree my_tree , funcpointer my_fun )
 {
-
+    Queue tree_queue;
+    Tree tree_node;
+    if(my_tree==NULL || my_fun == NULL)
+    {
+        return;
+    }
+    tree_queue = Init_Queue();
+    Enqueue(tree_queue, my_tree);
+    while((tree_node=Dequeue(tree_queue))!=NULL)
+    {
+        my_fun(tree_node);
+        if(tree_node->leftchild!=NULL)
+            Enqueue(tree_queue, tree_node->leftchild);
+        if(tree_node->rightchild!=NULL)
+            Enqueue(tree_queue, my_tree->rightchild);
+    }
     return ;
 }		/* -----  end of function Levelorder_Traverse  ----- */
