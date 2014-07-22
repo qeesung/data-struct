@@ -131,3 +131,35 @@ Dequeue ( Queue my_queue )
 
     return dequeue_tree;
 }		/* -----  end of function Dequeue  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Queue
+ *  Description:  print queue massage
+ * =====================================================================================
+ */
+    void
+Print_Queue ( Queue my_queue )
+{
+    List temp;
+    if(my_queue == NULL)
+    {
+        fprintf(stderr, "the queue have not init yet \n");
+        return;
+    }
+    if(my_queue->front == my_queue->rear)
+    {
+        printf("\n the queue is empty \n ");
+        return ;
+    }
+    temp = my_queue->front;
+    while(temp->next!=NULL)
+    {
+        printf("<%s , %d>:::\n", temp->next->tree_node.name, temp->next->tree_node.age);
+        temp=temp->next;
+    }
+    
+    return ;
+}		/* -----  end of function Print_Queue  ----- */
