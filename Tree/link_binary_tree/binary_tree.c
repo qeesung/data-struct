@@ -21,7 +21,18 @@
 #include"binary_tree.h"
 #include"queue.h"
 
-
+struct person person_list[]={
+    {"A", 21},
+    {"B", 22},
+    {"C", 23},
+    {"D", 24},
+    {"E", 25},
+    {"F", 26},
+    {"G", 27},
+    {"H", 28},
+    {"I", 29},
+    {"J", 30}
+};
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Init_Tree
@@ -168,3 +179,159 @@ Levelorder_Traverse ( Tree my_tree , funcpointer my_fun )
     }
     return ;
 }		/* -----  end of function Levelorder_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Create_Tree
+ *  Description:  create a binry tree with person list
+ * =====================================================================================
+ */
+    void
+Create_Tree ( Tree my_tree ,int leftorright,  struct person my_person )
+{
+    /*  create the tree left child<leftorright ==0 >
+     *  creete the tree right child<leftorright ==1 >*/
+    Tree new_tree_node;
+    new_tree_node	= malloc ( sizeof(struct tree) );
+    if ( new_tree_node==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    new_tree_node -> name = my_person.name;
+    new_tree_node -> age - my_person.age ;
+
+    if(my_tree == NULL)/*  need to create root */
+    {
+        my_tree=new_tree_node;        
+        return;
+    }
+    if(leftorright == 0)
+        my_tree->leftchild = new_tree_node ;
+    if(leftorright == 1)
+        my_tree -> rightchild = new_tree_node;
+    return;
+}		/* -----  end of function Create_Tree  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Tree_Empty
+ *  Description:  test if the tree is empty
+ * =====================================================================================
+ */
+    int
+Tree_Empty ( Tree my_tree )
+{
+    if(my_tree== NULL)
+        return 1;
+    else
+        return 0
+}		/* -----  end of function Tree_Empty  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Tree_Depth
+ *  Description:  work out the tree depth
+ * =====================================================================================
+ */
+    int
+Tree_Depth ( Tree my_tree )
+{
+    int depth;
+    int i=0;
+    int j=0;
+    if(my_tree == NULL)
+        return 0;
+    if(my_tree -> leftchild == NULL && my_tree-> rightchild == NULL)
+        return 1;
+    if(my_tree-> leftchild!=NULL)
+        i += Tree_Depth(my_tree->leftchild);
+    if(my_tree -> rightchild != NULL)
+        j += Tree_Depth(my_tree->rightchild);
+    return i>j ? i+1:j+1;
+}		/* -----  end of function Tree_Depth  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Root
+ *  Description:  return root value 
+ * =====================================================================================
+ */
+    Person
+Root ( Tree my_tree )
+{
+    Person root_person;
+
+    root_person	= malloc ( sizeof(struct person) );
+    if ( root_person==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+
+    if(my_tree! = NULL)
+    {
+        root_person->name = my_tree->name ;
+        root_person->age = my_tree->age;
+    }
+    else
+    {
+        free(root_person);
+        fprintf(stderr, "\n the tree is empty \n ");
+        return NULL;
+    }
+}		/* -----  end of function Root  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Value
+ *  Description:  get a tree_node value 
+ * =====================================================================================
+ */
+    Person
+Value (Tree my_tree_node )
+{
+    Person tree_node_person;
+    if(my_tree_node != NULL)
+    {
+        
+        my_tree_node	= malloc ( sizeof(struct person) );
+        if ( my_tree_node==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+
+        tree_node_person->name=my_tree_node->name;
+        tree_node_person->age = my_tree_node->age;
+        return tree_node_person;
+    }
+    else
+    {
+        fprintf(stderr, "\n the tree_node is not exists\n ");
+        return NULL;
+    }
+
+}		/* -----  end of function Value  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Assign
+ *  Description:  assign for a tree_node with new_name and new_age
+ * =====================================================================================
+ */
+    void
+Assign ( Tree my_tree_node, char * new_name , int new_age )
+{
+    if(my_tree_node !=NULL)
+    {
+        my_tree_node -> name = new_name;
+        my_tree_node -> age = new_age;
+    }
+    return ;
+}		/* -----  end of function Assign  ----- */

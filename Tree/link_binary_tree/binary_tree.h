@@ -43,6 +43,10 @@ void Levelorder_Traverse(Tree my_tree , funcpointer my_fun);
 void Create_Tree(Tree my_tree ,int leftorright,  struct person my_person );
 int Tree_Empty(Tree my_tree);
 int Tree_Depth(Tree my_tree);
+Person Root(Tree my_tree);
+Person Value(Tree my_tree_node);/*  maybe This two function need search function return result */
+void Assign(Tree my_tree_node , char * name, int age);
+
 
 
 #endif
