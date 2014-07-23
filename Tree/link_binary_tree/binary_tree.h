@@ -17,7 +17,12 @@
 
 #ifndef _BINARY_TREE_H
 #define _BINARY_TREE_H
-
+struct person
+{
+    char * name;
+    int age;
+}
+typedef struct person * Person;
 struct tree
 {
     char * name ;
@@ -35,6 +40,9 @@ void Preorder_Traverse(Tree my_tree , funcpointer my_fun);
 void Inorder_Traverse(Tree  my_tree , funcpointer my_fun);
 void Postorder_Traverse(Tree my_tree , funcpointer my_fun);
 void Levelorder_Traverse(Tree my_tree , funcpointer my_fun);
+void Create_Tree(Tree my_tree ,int leftorright,  struct person my_person );
+int Tree_Empty(Tree my_tree);
+int Tree_Depth(Tree my_tree);
 
 
 #endif
