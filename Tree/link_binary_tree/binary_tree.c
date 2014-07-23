@@ -335,3 +335,62 @@ Assign ( Tree my_tree_node, char * new_name , int new_age )
     }
     return ;
 }		/* -----  end of function Assign  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Parent
+ *  Description:  get a tree node parent
+ * =====================================================================================
+ */
+    Tree
+Parent ( Tree my_tree , Tree my_tree_node )
+{
+    Queue my_queue;
+    Tree dequeue_node;
+    my_queue= INit_Queue();
+    Enqueue(my_queue, my_tree);
+    while((dequeue_node = Dequeue(my_queue))!= NULL))
+    {
+        if(dequeue_node -> leftchild!=NULL && dequeue_node->leftchild->name == my_tree_node->name && dequeue_node->leftchild->age==my_tree_node->age )
+            return dequeue_node;
+        if(dequeue_node -> rightchild!=NULL && dequeue_node->rightchild->name == my_tree_node->name && dequeue_node->rightchild->age==my_tree_node->age )
+            return dequeue_node;
+        if(dequeue_node -> leftchild !=NULL)
+            Enqueue(dequeue_node->leftchild);
+        if(dequeue_node-> rightchild != NULL)
+            Enqueue(dequeue_node->rightchild);
+        
+    }
+    return <+return_value+>;
+}		/* -----  end of function Parent  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Point
+ *  Description:  find a point pointer with name and value 
+ * =====================================================================================
+ */
+    Tree
+Find_Point ( Tree my_tree , char * name, int age )
+{
+    Queue my_queue;
+    Tree dequeue_node;
+    if(my_tree == NULL)
+        return NULL;
+    my_queue=Init_Queue();
+    Enqueue(my_tree);
+    while((dequeue_node= Dequeue(my_queue))!=NULL)
+    {
+        if(dequeue_node -> name == name && dequeue_node -> age == age)
+            return dequeue_node;
+        if(dequeue_node->leftchild!=NULL)
+            Enqueue(dequeue_node->leftchild);
+        if(dequeue_node->rightchild!=NULL)
+            Enqueue(dequeue_node->rightchild);
+    }
+    printf(stderr, "\n can not find the point with name %s age %d \n", name , age);
+    return NULL;
+}		/* -----  end of function Find_Point  ----- */
