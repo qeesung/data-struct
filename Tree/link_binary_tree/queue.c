@@ -157,7 +157,7 @@ Print_Queue ( Queue my_queue )
     temp = my_queue->front;
     while(temp->next!=NULL)
     {
-        printf("<%s , %d>:::\n", temp->next->tree_node.name, temp->next->tree_node.age);
+        printf("<%s , %d>:::\t", temp->next->tree_node.name, temp->next->tree_node.age);
         temp=temp->next;
     }
     
