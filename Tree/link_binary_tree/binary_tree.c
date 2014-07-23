@@ -394,3 +394,120 @@ Find_Point ( Tree my_tree , char * name, int age )
     printf(stderr, "\n can not find the point with name %s age %d \n", name , age);
     return NULL;
 }		/* -----  end of function Find_Point  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Leftchild
+ *  Description:  get a point left child
+ * =====================================================================================
+ */
+    Tree
+Get_Leftchild ( Tree my_tree_node )
+{
+    if(my_tree_node == NULL)
+    {
+        fprintf(stderr,"\n the node is not exists\n ");
+        return NULL;
+    }
+    if(my_tree_node->leftchild!=NULL)
+        return my_tree_node->leftchild;
+    return NULL;
+}		/* -----  end of function Get_Leftchild  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Rightchild
+ *  Description:  get a tree node rightchild
+ * =====================================================================================
+ */
+    Tree
+Get_Rightchild ( Tree my_tree_node )
+{
+    if(my_tree_node == NULL)
+    {
+        fprintf(stderr, "\n the tree node is not exists\n ");
+        return NULL;
+    }
+    if(my_tree_node->rightchild!=NULL)
+        return my_tree_node->rightchild;
+    return NULL;
+}		/* -----  end of function Get_Rightchild  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Leftsibling
+ *  Description:  get a node left sibling
+ * =====================================================================================
+ */
+    Tree
+Get_Leftsibling (Tree my_tree,  Tree my_tree_node )
+{
+    Tree parent_point;
+    if(my_tree_node==NULL || my_tree==NULL)
+    {
+        fprintf(stderr, "\n the tree node or tree is not exists\n ");
+        return NULL;
+    }
+    parent_point = Parent(my_tree ,my_tree_node);
+    if(parent_point==NULL)
+        return ;
+    if(parent_point->leftchild==my_tree_node)
+    {
+        fprintf(stderr, "\n leftchild have no leftsibling\n");
+        return NULL;
+    }
+    else
+    {
+        if(parent_point -> leftchild == NULL)
+        {
+            fprintf(stderr, "\n have not left sibling \n ");
+            return NULL;
+        }
+        if(parent_point->leftchild!=NULL)
+            return parent_point ->leftchild;
+    }
+    return NULL;
+}		/* -----  end of function Get_Leftsibling  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Rightsibling
+ *  Description:  get a node right sibling
+ * =====================================================================================
+ */
+    Tree
+Get_Leftsibling (Tree my_tree,  Tree my_tree_node )
+{
+    Tree parent_point;
+    if(my_tree_node==NULL || my_tree==NULL)
+    {
+        fprintf(stderr, "\n the tree node or tree is not exists\n ");
+        return NULL;
+    }
+    parent_point = Parent(my_tree ,my_tree_node);
+    if(parent_point==NULL)
+        return ;
+    if(parent_point->rightchild==my_tree_node)
+    {
+        fprintf(stderr, "\n rightchild have no rightsibling\n");
+        return NULL;
+    }
+    else
+    {
+        if(parent_point -> rightchild == NULL)
+        {
+            fprintf(stderr, "\n have not left sibling \n ");
+            return NULL;
+        }
+        if(parent_point->rightchild!=NULL)
+            return parent_point ->rightchild;
+    }
+    return NULL;
+}		/* -----  end of function Get_Rightsibling  ----- */
