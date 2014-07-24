@@ -21,7 +21,7 @@ struct person
 {
     char * name;
     int age;
-}
+};
 typedef struct person * Person;
 struct tree
 {
@@ -31,7 +31,7 @@ struct tree
     struct tree * rightchild;
 };
 typedef struct tree * Tree;
-typedef void (* funcpointer ) (struct tree);// a pointer to a function with parameter struct tree
+typedef void (* funcpointer ) (struct tree *);// a pointer to a function with parameter struct tree
 
 Tree Init_Tree();
 void Destory_Tree(Tree my_tree);
@@ -46,11 +46,12 @@ int Tree_Depth(Tree my_tree);
 Person Root(Tree my_tree);
 Person Value(Tree my_tree_node);/*  maybe This two function need search function return result */
 void Assign(Tree my_tree_node , char * name, int age);
-Tree Parent(Tree my_tree_node);
+Tree Parent(Tree my_tree , Tree my_tree_node);
 Tree Find_Point(Tree my_tree, char * name , int age);
 Tree Get_Leftchild(Tree my_tree_node);
 Tree Get_Rightchild(Tree my_tree_node);
-Tree Get_Leftsibling(Tree my_tree_node);
-Tree Get_Rightsibling(Tree my_tree_node);
+Tree Get_Leftsibling(Tree my_tree, Tree my_tree_node);
+Tree Get_Rightsibling(Tree my_tree , Tree my_tree_node);
+void Delete_Child(Tree my_tree_node, int leftorright);
 
 #endif

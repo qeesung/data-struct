@@ -107,7 +107,7 @@ Preorder_Traverse ( Tree my_tree , funcpointer my_fun )
     if(my_tree->leftchild !=NULL)
         Preorder_Traverse(my_tree->leftchild, my_fun);
     if(my_tree->rightchild !=NULL)
-        Preorder_Traverse(my_tree->rightchild. my_fun);
+        Preorder_Traverse(my_tree->rightchild, my_fun);
     return ;
 }		/* -----  end of function Preorder_Traverse  ----- */
 
@@ -120,7 +120,7 @@ Preorder_Traverse ( Tree my_tree , funcpointer my_fun )
     void
 Inorder_Traverse ( Tree my_tree , funcpointer my_fun )
 {
-    if(my_tree == NULL || my_fun===NULL)
+    if(my_tree == NULL || my_fun==NULL)
     {
         return ;
     }
@@ -171,11 +171,19 @@ Levelorder_Traverse ( Tree my_tree , funcpointer my_fun )
     Enqueue(tree_queue, my_tree);
     while((tree_node=Dequeue(tree_queue))!=NULL)
     {
+       // Visit(tree_node->leftchild);
+        //Visit(tree_node->rightchild);
         my_fun(tree_node);
         if(tree_node->leftchild!=NULL)
+        {
             Enqueue(tree_queue, tree_node->leftchild);
+            //printf("I am En queue\n name : %s  age : %d", tree_node->leftchild->name, tree_node->leftchild->age);
+        }
         if(tree_node->rightchild!=NULL)
-            Enqueue(tree_queue, my_tree->rightchild);
+        {
+            Enqueue(tree_queue, tree_node->rightchild);
+           // printf("I am En queue\n name : %s age : %d", tree_node->rightchild->name , tree_node->rightchild->age);    
+        }
     }
     return ;
 }		/* -----  end of function Levelorder_Traverse  ----- */
@@ -200,17 +208,21 @@ Create_Tree ( Tree my_tree ,int leftorright,  struct person my_person )
         exit (EXIT_FAILURE);
     }
     new_tree_node -> name = my_person.name;
-    new_tree_node -> age - my_person.age ;
+    new_tree_node -> age = my_person.age ;
+    new_tree_node->leftchild=NULL;
+    new_tree_node->rightchild=NULL;
+
 
     if(my_tree == NULL)/*  need to create root */
     {
         my_tree=new_tree_node;        
+        fprintf(stderr, "\n this is NULL situation \n ");
         return;
     }
     if(leftorright == 0)
-        my_tree->leftchild = new_tree_node ;
+        (my_tree)->leftchild = new_tree_node ;
     if(leftorright == 1)
-        my_tree -> rightchild = new_tree_node;
+        (my_tree) -> rightchild = new_tree_node;
     return;
 }		/* -----  end of function Create_Tree  ----- */
 
@@ -227,7 +239,7 @@ Tree_Empty ( Tree my_tree )
     if(my_tree== NULL)
         return 1;
     else
-        return 0
+        return 0;
 }		/* -----  end of function Tree_Empty  ----- */
 
 
@@ -272,7 +284,7 @@ Root ( Tree my_tree )
         exit (EXIT_FAILURE);
     }
 
-    if(my_tree! = NULL)
+    if(my_tree!= NULL)
     {
         root_person->name = my_tree->name ;
         root_person->age = my_tree->age;
@@ -348,21 +360,21 @@ Parent ( Tree my_tree , Tree my_tree_node )
 {
     Queue my_queue;
     Tree dequeue_node;
-    my_queue= INit_Queue();
+    my_queue= Init_Queue();
     Enqueue(my_queue, my_tree);
-    while((dequeue_node = Dequeue(my_queue))!= NULL))
+    while((dequeue_node = Dequeue(my_queue))!= NULL)
     {
         if(dequeue_node -> leftchild!=NULL && dequeue_node->leftchild->name == my_tree_node->name && dequeue_node->leftchild->age==my_tree_node->age )
             return dequeue_node;
         if(dequeue_node -> rightchild!=NULL && dequeue_node->rightchild->name == my_tree_node->name && dequeue_node->rightchild->age==my_tree_node->age )
             return dequeue_node;
         if(dequeue_node -> leftchild !=NULL)
-            Enqueue(dequeue_node->leftchild);
+            Enqueue(my_queue, dequeue_node->leftchild);
         if(dequeue_node-> rightchild != NULL)
-            Enqueue(dequeue_node->rightchild);
+            Enqueue(my_queue, dequeue_node->rightchild);
         
     }
-    return <+return_value+>;
+    return ;
 }		/* -----  end of function Parent  ----- */
 
 
@@ -381,17 +393,18 @@ Find_Point ( Tree my_tree , char * name, int age )
     if(my_tree == NULL)
         return NULL;
     my_queue=Init_Queue();
-    Enqueue(my_tree);
+    Enqueue(my_queue, my_tree);
     while((dequeue_node= Dequeue(my_queue))!=NULL)
     {
-        if(dequeue_node -> name == name && dequeue_node -> age == age)
+//        printf("%s -----> %d\n", dequeue_node->name, dequeue_node->age);
+        if(strcmp(dequeue_node->name, name)==0 && dequeue_node -> age == age)
             return dequeue_node;
         if(dequeue_node->leftchild!=NULL)
-            Enqueue(dequeue_node->leftchild);
+            Enqueue(my_queue,dequeue_node->leftchild);
         if(dequeue_node->rightchild!=NULL)
-            Enqueue(dequeue_node->rightchild);
+            Enqueue(my_queue, dequeue_node->rightchild);
     }
-    printf(stderr, "\n can not find the point with name %s age %d \n", name , age);
+    fprintf(stderr, "\n can not find the point with name %s age %d \n", name , age);
     return NULL;
 }		/* -----  end of function Find_Point  ----- */
 
@@ -483,7 +496,7 @@ Get_Leftsibling (Tree my_tree,  Tree my_tree_node )
  * =====================================================================================
  */
     Tree
-Get_Leftsibling (Tree my_tree,  Tree my_tree_node )
+Get_Rightsibling (Tree my_tree,  Tree my_tree_node )
 {
     Tree parent_point;
     if(my_tree_node==NULL || my_tree==NULL)
@@ -511,3 +524,32 @@ Get_Leftsibling (Tree my_tree,  Tree my_tree_node )
     }
     return NULL;
 }		/* -----  end of function Get_Rightsibling  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Child
+ *  Description:  delete tree node left or right child tree
+ * =====================================================================================
+ */
+    void
+Delete_Child ( Tree my_tree_node, int leftorright )
+{
+    if(my_tree_node == NULL)
+    {
+        return ;
+    }
+    if(leftorright == 0 && my_tree_node->leftchild!=NULL)
+    { /*  这里要把一颗子树的左右两颗子树都删除了 */
+        Delete_Child(my_tree_node->leftchild, 0);
+        Delete_Child(my_tree_node->leftchild, 1);
+    }
+    if(leftorright == 1 && my_tree_node->rightchild != NULL)
+    {
+        Delete_Child(my_tree_node->rightchild,0);
+        Delete_Child(my_tree_node->rightchild,1);
+    }
+    free(my_tree_node);
+    return ;
+}		/* -----  end of function Delete_Child  ----- */
