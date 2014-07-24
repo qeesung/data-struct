@@ -79,6 +79,8 @@ Enqueue ( Queue my_queue, Tree tree_node )
     }
     new_list_node ->tree_node.name = tree_node ->name;
     new_list_node ->tree_node.age = tree_node->age;
+    new_list_node ->tree_node.leftchild = tree_node->leftchild;
+    new_list_node ->tree_node.rightchild = tree_node->rightchild;
 
     my_queue->rear->next= new_list_node;
     my_queue->rear = new_list_node;
@@ -104,7 +106,7 @@ Dequeue ( Queue my_queue )
     }
     if(my_queue->front == my_queue->rear)
     {
-        fprintf(stderr, "\n the queue is empty \n" );
+ //       fprintf(stderr, "\n the queue is empty \n" );
         return NULL;
     }
     
@@ -117,6 +119,8 @@ Dequeue ( Queue my_queue )
     {
         dequeue_tree -> name = my_queue->rear->tree_node.name;
         dequeue_tree -> age = my_queue->rear->tree_node.age;
+        dequeue_tree -> leftchild = my_queue->rear->tree_node.leftchild;
+        dequeue_tree -> rightchild = my_queue->rear->tree_node.rightchild;
         free(my_queue->rear);
         my_queue->rear= my_queue->front;
     }
@@ -125,6 +129,8 @@ Dequeue ( Queue my_queue )
         temp = my_queue->front->next->next;
         dequeue_tree->name = my_queue->front->next->tree_node.name;
         dequeue_tree->age = my_queue->front->next->tree_node.age;
+        dequeue_tree->leftchild = my_queue->front->next->tree_node.leftchild;
+        dequeue_tree->rightchild = my_queue->front->next->tree_node.rightchild;
         free(my_queue->front->next);
         my_queue->front->next=temp;
     }
