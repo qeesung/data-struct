@@ -52,29 +52,28 @@ Init_Bithrtree ( )
  *  Description:  assign for every tree node
  * =====================================================================================
  */
-    void
-Create_Bithrtree ( Tree tree,int leftorright, char * data )
+
+void Create_Bithrtree(Tree tree)
 {
+    char input_string[2];
     Tree_node new_tree_node;
-    if(tree==NULL)
-    {
-        fprintf(stderr, "\n the tree node have not init yet \n ");
+    printf(">");
+    scanf("%s",input_string);
+    if(strcmp(input_string , ".")==0)
         return;
-    }
 
     new_tree_node	= malloc ( sizeof(struct tree_node) );
     if ( new_tree_node==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    new_tree_node->data= data;
+    strcpy(new_tree_node->data , input_string);
+    new_tree_node->leftchild=NULL;
+    new_tree_node->lefttag=0;
+    new_tree_node->rightchild = NULL;
+    new_tree_node->righttag=0;
+    Create_Bithrtree(tree->leftchild);
+    Create_Bithrtree(tree->rightchild);
+    return; 
 
-    if(leftorright == 0)// add leftchild
-        tree->leftchild=new_tree_node;       
-    if(leftorright ==1)// add right child
-        tree->rightchild=new_tree_node;
-    return ;
-}		/* -----  end of function Create_Bithrtree  ----- */
-
-
-
+}

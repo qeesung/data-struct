@@ -19,7 +19,7 @@
 #define _THREAD_BINARY_TREE
 struct tree_node
 {
-    char *  data;
+    char   data[2];
     struct tree_node * leftchild;
     struct tree_node * rightchild;
     int lefttag;
@@ -34,5 +34,7 @@ typedef Tree_node Tree;
 
 Tree Init_Bithrtree();// need create a header node
 Craete_Bithrtree(Tree tree,int leftorright, char * data);// assign for every node
+void Inthreading(Tree tree);
+void Inorder_Threading(Tree_node header,Tree tree);
 
 #endif
