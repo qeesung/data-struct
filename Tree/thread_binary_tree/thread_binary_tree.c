@@ -77,3 +77,30 @@ void Create_Bithrtree(Tree tree)
     return; 
 
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Inthreading
+ *  Description:  Inthreading the tree
+ * =====================================================================================
+ */
+    void
+Inthreading (Tree tree)
+{
+    if(tree == NULL)
+        return ;
+    Inthreading(tree->leftchild);
+    if(tree->leftchild==NULL)
+    {
+        tree->leftchild=pre;
+        tree->lefttag=1;
+    }
+    if(pre->rightchild==NULL)
+    {
+        pre->rightchild=tree;
+        pre->righttag=1;
+    }
+    pre=tree;
+    Inthreading(tree->rightchild);
+}		/* -----  end of function Inthreading  ----- */
