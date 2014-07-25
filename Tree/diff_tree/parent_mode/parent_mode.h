@@ -21,7 +21,7 @@
 #define MAX_TREE_SIZE 100
 struct tree_node
 {
-    char data[2];
+    char data;
     int parent;
 };
 typedef struct tree_node * Tree_node;
@@ -30,6 +30,8 @@ struct ptree
 {
     struct tree_node nodes[MAX_TREE_SIZE];
     int number;
-}
+};
 typedef struct ptree * Ptree;
+Ptree Init_Ptree();
+void Create_Ptree(Ptree * my_tree);
 #endif
