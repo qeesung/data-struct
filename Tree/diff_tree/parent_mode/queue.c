@@ -44,8 +44,8 @@ Init_Queue ( )
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    new_queue->front = new_queue->queue->list;
-    new_queue->rear = new_queue->queue->list;
+    new_queue->front = new_queue->queue_list;
+    new_queue->rear = new_queue->queue_list;
     return new_queue;
 }		/* -----  end of function Init_Queue  ----- */
 
@@ -86,17 +86,21 @@ Enqueue ( Queue my_queue , char data, int index )
  *  Description:  dequeue function
  * =====================================================================================
  */
-    Queue
+    List_node
 Dequeue ( Queue my_queue )
 {
-    List_node dequeue_node;
+    List_node dequeue_node=NULL;
     if(my_queue == NULL)
     {
         fprintf(stderr, "\n the queue have not init \n ");
         return NULL;
     }
     if(my_queue->front == my_queue->rear)
-        return ;
+    {
+        fprintf(stderr, "\n the queue is empty\n");
+        return NULL; 
+    }
+
     if(my_queue->front->next == my_queue->rear)
     {
         dequeue_node = my_queue->rear;
@@ -118,14 +122,16 @@ Dequeue ( Queue my_queue )
     void
 Print_Queue( Queue my_queue)
 {
-    if(my_queue==NULL or my_queue->front==my_queue->rear)
+    List_node temp;
+    if(my_queue==NULL ||  my_queue->front==my_queue->rear)
     {
         return ;
     }
-    while(my_queue->front->next!=NULL)
+    temp=my_queue->front;
+    while(temp->next!=NULL)
     {
-        printf("<data:%c ++ index:%d>", my_queue->front->next->data,my_queue->front->next->index);
-        my_queue->front = my_queue->front->next;
+        printf("<data:%c ++ index:%d>\n", temp->next->data,temp->next->index);
+        temp = temp->next;
     }
     return ;
 }		/* -----  end of function Print_Queue  ----- */

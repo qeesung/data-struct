@@ -35,7 +35,7 @@ struct queue
 typedef struct queue * Queue;
 
 Queue Init_Queue();
-Enqueue(Queue my_queue, char data, int index);
-Queue Dequeue(Queue my_queue);
+void Enqueue(Queue my_queue, char data, int index);
+List_node Dequeue(Queue my_queue);
 void Print_Queue(Queue my_queue);
 #endif
