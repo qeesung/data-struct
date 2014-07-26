@@ -159,3 +159,183 @@ Ptree_Depth ( Ptree my_tree)
     }
     return depth+1;
 }		/* -----  end of function Ptree_Depth  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Root
+ *  Description:  get root value
+ * =====================================================================================
+ */
+    char
+Root (Ptree my_tree )
+{
+    if(my_tree== NULL)
+        err_sys("Tree is not init\n");
+    if(my_tree->number ==0)
+    {
+        return (char)0;
+    }
+    return my_tree->nodes[0].data;
+}		/* -----  end of function Root  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Value
+ *  Description:  get a tree node value
+ * =====================================================================================
+ */
+    char
+Value ( Ptree my_tree , int index )
+{
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    return my_tree->nodes[index].data;
+}		/* -----  end of function Value  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Assign
+ *  Description:  assign a tree node
+ * =====================================================================================
+ */
+    void
+Assign ( Ptree my_tree , int index , char new_value )
+{
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    my_tree->nodes[index].data= new_value;
+    return;
+}		/* -----  end of function Assign  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Parent
+ *  Description:  get a node parent value
+ * =====================================================================================
+ */
+    char 
+
+Parent (Ptree my_tree , int index )
+{
+    int p_index;
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    p_index = my_tree->nodes[index].parent;
+    return my_tree->nodes[p_index].data;
+}		/* -----  end of function Parent  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Leftchild
+ *  Description:  get the parent left child
+ * =====================================================================================
+ */
+    char
+Leftchild ( Ptree my_tree , int index , int * child_index)
+{
+    int k;
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    for(k=0;k<my_tree->number;k++)
+    {
+        if(my_tree->nodes[k].parent == index)
+        {
+            *child_index = k; 
+            return my_tree->nodes[k].data;
+        }
+    }
+    printf("can not find the %c leftchild", my_tree->nodes[index].data);
+}		/* -----  end of function Leftchild  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Rightsibling
+ *  Description:  get leftchild all right sibling
+ * =====================================================================================
+ */
+    char *
+Rightsibling ( Ptree my_tree , int sib_index, int * sib_sum )
+{
+    int k=0;
+    char * all_data;
+    *sib_sum=0;
+    int parent;
+    char sib_data;
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    parent = my_tree->nodes[sib_index].parent;
+    sib_data= my_tree->nodes[sib_index].data;
+    if(sib_data!= Leftchild(my_tree, parent))
+        err_sys("the index need to be leftchild\n");
+    for(k=0;k<my_tree->number ; k++)
+    {
+        if(my_tree->nodes[k].parent==parent && my_tree->nodes[k].data!=sib_data)
+        {
+            *sib_sum++;
+            all_data	= realloc (all_data,sizeof(char)*sib_sum);
+            if ( all_data==NULL ) {
+                fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+                exit (EXIT_FAILURE);
+            }
+            all_data[*sib_sum-1]=my_tree->nodes[k].data;
+        }
+    }
+    return all_data;
+}		/* -----  end of function Rightsibling  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Ptree
+ *  Description:  print tree with father and child
+ * =====================================================================================
+ */
+    void
+Print_Ptree (Ptree my_tree )
+{
+    int k;
+    int i;
+    int sib_sum;
+    char * sib_data;
+    int sib_index;
+    char leftchild_data;
+    int leftchild_index;
+    if(my_tree==NULL)
+        err_sys("The tree is not init\n");
+    if(index >= my_tree->number)
+        err_sys("The  index greater than tree size\n");
+    for(k=0;k<my_tree->number;k++)
+    {
+        printf("%c---->children:\t\t",my_tree->nodes[k].data);
+        printf("%c\t\t",Leftchild(my_tree, k,& leftchild_index));
+        sib_data= Rightsibling(my_tree , leftchild_index, &sib_sum);
+        for(i=0;i<sib_sum ;i++)
+        {
+            printf("%c\t\t", sib_data[i]);
+        }
+        printf("\n");
+        free(sib_data);
+
+    }
+
+    return;
+}		/* -----  end of function Print_Ptree  ----- */
