@@ -21,7 +21,19 @@
 #include    <string.h>
 #include    "parent_mode.h"
 #include    "queue.h"
-
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  err_sys
+ *  Description:  deal with the error
+ * =====================================================================================
+ */
+    void
+err_sys (char * string )
+{
+    fprintf(stderr,string);
+    exit(EXIT_FAILURE);
+    return ;		/* -----  end of function err_sys  ----- */
+}
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  Init_Ptree
@@ -96,3 +108,54 @@ Create_Ptree ( Ptree * my_tree )
 
     return ;
 }		/* -----  end of function Create_Ptree  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Ptree_Empty
+ *  Description:  check is the tree is empty
+ * =====================================================================================
+ */
+    int
+Ptree_Empty ( Ptree my_tree )
+{
+    if(my_tree == NULL)
+        err_sys("the tree is not init\n");
+    if(my_tree->number ==0)
+        return 1;
+    else
+        return 0;
+    return ;
+}		/* -----  end of function Ptree_Empty  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Ptree_Depth
+ *  Description:  work out the tree depth
+ * =====================================================================================
+ */
+    void
+Ptree_Depth ( Ptree my_tree)
+{
+    int depth =0 ;
+    int p_index;
+    int k=0;
+    int max_depth=0;
+    if(my_tree == NULL)
+        err_sys("the tree is not init\n ");
+    for(k=0;k<my_tree->number;k++)
+    {
+        p_index=my_tree->nodes[k].parent;
+        while(p_index!=-1)
+        {
+            p_index=my_tree->nodes[p_index];
+            depth++;
+        }
+        if(depth>max)
+            max=depth;
+        depth=0;
+    }
+    return depth+1;
+}		/* -----  end of function Ptree_Depth  ----- */

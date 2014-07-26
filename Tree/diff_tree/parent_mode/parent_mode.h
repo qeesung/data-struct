@@ -34,4 +34,8 @@ struct ptree
 typedef struct ptree * Ptree;
 Ptree Init_Ptree();
 void Create_Ptree(Ptree * my_tree);
+int Ptree_Empty(Ptree my_tree);
+int Ptree_Depth(Ptree my_tree);
+char Root(Ptree my_tree);
+char Value(Ptree my_tree, int index);
 #endif
