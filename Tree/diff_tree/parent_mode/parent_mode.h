@@ -38,4 +38,10 @@ int Ptree_Empty(Ptree my_tree);
 int Ptree_Depth(Ptree my_tree);
 char Root(Ptree my_tree);
 char Value(Ptree my_tree, int index);
+void Assign(Ptree my_tree , int index, char new_value);
+char Parent(Ptree my_tree , int child_index);
+char Leftchild(Ptree my_tree , int parent_index, int *  child_index);
+char* Rightsibling(Ptree my_tree,int sib_index, int * sib_sum);
+void Print_Ptree(Ptree my_tree);
+void Traverse(Ptree my_tree);
 #endif

@@ -136,7 +136,7 @@ Ptree_Empty ( Ptree my_tree )
  *  Description:  work out the tree depth
  * =====================================================================================
  */
-    void
+    int
 Ptree_Depth ( Ptree my_tree)
 {
     int depth =0 ;
@@ -150,14 +150,14 @@ Ptree_Depth ( Ptree my_tree)
         p_index=my_tree->nodes[k].parent;
         while(p_index!=-1)
         {
-            p_index=my_tree->nodes[p_index];
+            p_index=my_tree->nodes[p_index].parent;
             depth++;
         }
-        if(depth>max)
-            max=depth;
+        if(depth>max_depth)
+            max_depth=depth;
         depth=0;
     }
-    return depth+1;
+    return max_depth+1;
 }		/* -----  end of function Ptree_Depth  ----- */
 
 
@@ -260,7 +260,8 @@ Leftchild ( Ptree my_tree , int index , int * child_index)
             return my_tree->nodes[k].data;
         }
     }
-    printf("can not find the %c leftchild", my_tree->nodes[index].data);
+   // printf("can not find the %c leftchild", my_tree->nodes[index].data);
+   return (char)0;
 }		/* -----  end of function Leftchild  ----- */
 
 /* 
@@ -274,28 +275,35 @@ Rightsibling ( Ptree my_tree , int sib_index, int * sib_sum )
 {
     int k=0;
     char * all_data;
-    *sib_sum=0;
+    *sib_sum=1;
     int parent;
     char sib_data;
+    int child_index;
     if(my_tree==NULL)
         err_sys("The tree is not init\n");
-    if(index >= my_tree->number)
+    if(sib_index >= my_tree->number)
         err_sys("The  index greater than tree size\n");
+
+    all_data	= malloc ( sizeof(char) );
+    if ( all_data==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
     parent = my_tree->nodes[sib_index].parent;
     sib_data= my_tree->nodes[sib_index].data;
-    if(sib_data!= Leftchild(my_tree, parent))
+    if(sib_data!= Leftchild(my_tree, parent, &child_index))
         err_sys("the index need to be leftchild\n");
     for(k=0;k<my_tree->number ; k++)
     {
         if(my_tree->nodes[k].parent==parent && my_tree->nodes[k].data!=sib_data)
         {
-            *sib_sum++;
-            all_data	= realloc (all_data,sizeof(char)*sib_sum);
+            (*sib_sum)++;
+            all_data	= realloc (all_data,*sib_sum);
             if ( all_data==NULL ) {
                 fprintf ( stderr, "\ndynamic memory allocation failed\n" );
                 exit (EXIT_FAILURE);
             }
-            all_data[*sib_sum-1]=my_tree->nodes[k].data;
+            all_data[(*sib_sum)-2]=my_tree->nodes[k].data;
         }
     }
     return all_data;
@@ -321,12 +329,16 @@ Print_Ptree (Ptree my_tree )
     int leftchild_index;
     if(my_tree==NULL)
         err_sys("The tree is not init\n");
-    if(index >= my_tree->number)
-        err_sys("The  index greater than tree size\n");
     for(k=0;k<my_tree->number;k++)
     {
         printf("%c---->children:\t\t",my_tree->nodes[k].data);
-        printf("%c\t\t",Leftchild(my_tree, k,& leftchild_index));
+        leftchild_data=Leftchild(my_tree, k , &leftchild_index);
+        if(leftchild_data==(char)0)
+        {
+            printf("\n");
+            continue;
+        }
+        printf("%c\t\t",leftchild_data);
         sib_data= Rightsibling(my_tree , leftchild_index, &sib_sum);
         for(i=0;i<sib_sum ;i++)
         {
@@ -339,3 +351,22 @@ Print_Ptree (Ptree my_tree )
 
     return;
 }		/* -----  end of function Print_Ptree  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Traverse
+ *  Description:  traverse the p tree
+ * =====================================================================================
+ */
+    void
+Traverse ( Ptree my_tree )
+{
+    int k=0;
+    for(k=0;k<my_tree->number;k++)
+    {
+        printf("data:%c\t\t parent:%d\n", my_tree->nodes[k].data,my_tree->nodes[k].parent);
+    }
+    return ;
+}		/* -----  end of function Traverse  ----- */
