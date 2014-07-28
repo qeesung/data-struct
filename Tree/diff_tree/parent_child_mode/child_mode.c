@@ -129,3 +129,59 @@ Create_Ctree ( Ctree * my_tree )
     
     return ;
 }		/* -----  end of function Create_Ctree  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Ctree_Empty
+ *  Description:  检测树是否为空
+ * =====================================================================================
+ */
+    int
+Ctree_Empty ( Ctree my_tree )
+{
+    if(my_tree==NULL)
+        return -1;
+    if(my_tree->number==0)
+        return 1;
+    else
+        return 0;
+    return;
+}		/* -----  end of function Ctree_Empty  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Ctree_Depth
+ *  Description:  求取树的深度
+ * =====================================================================================
+ */
+    int
+Ctree_Depth ( Ctree my_tree )
+{
+    int depth;
+    int max_depthi=0;
+    int k=0;
+    int parent_index=0;
+    if(my_tree == NULL)
+    {
+        fprintf(stderr,"\n th Tree have not init\n");
+        return -1;
+    }
+    for(k=0;k<my_tree->number;k++)
+    {
+        depth=0;
+        parent_index = my_tree->nodes[k].parent;
+        while(parent_index!=-1)
+        {
+            depth++;
+            parent_index = my_tree->nodes[parent_index].parent;
+        }
+        if(depth > max_depth)
+            max_depth = depth;
+
+    }
+    return max_depth+1;
+}		/* -----  end of function Ctree_Depth  ----- */
