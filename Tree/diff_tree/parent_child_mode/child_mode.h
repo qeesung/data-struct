@@ -18,7 +18,8 @@
 
 #ifndef _CHILD_MODE_H
 #define _CHILD_MODE_H
-#define MAX_TREE_SIZE 256
+#define MAX_TREE_SIZE 100
+#define MAX_BUF_SIZE 256
 struct tree_node
 {
     char data;
@@ -34,14 +35,14 @@ struct list_node
 };
 typedef struct list_node * List_node;
 
-struct c_tree
+struct ctree
 {
     struct tree_node nodes[MAX_TREE_SIZE];
     int number;
 
 };
-typedef struct c_tree * C_tree;
-
+typedef struct ctree * Ctree;
+void err_sys(char * err_msg);
 Ctree Init_Ctree();
-Create(Ctree * my_tree);
+void Create_Ctree(Ctree * my_tree);
 #endif

@@ -23,8 +23,9 @@ struct queue_node
 {
     char data;
     int index;
-    List_node point_data;
-}
+    List_node pointer_data;
+    struct queue_node * next;
+};
 typedef struct queue_node * Queue_node;
 struct queue
 {
@@ -33,9 +34,10 @@ struct queue
     Queue_node rear;
 
 };
-
+typedef struct queue * Queue;
+//void err_sys(char * err_msg);
 Queue Init_Queue();
 void Enqueue(Queue my_queue, char data , int index , List_node node_pointer);
 Queue_node Dequeue(Queue my_queue);
-Print_Queue(my_queue);
+void Print_Queue(Queue my_queue);
 #endif

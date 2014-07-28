@@ -26,12 +26,12 @@
  *  Description:  deal with error 
  * =====================================================================================
  */
-    void
+    /* void
 err_sys (char * err_msg) 
 {
     fprintf(stderr, err_msg);
     exit(EXIT_FAILURE);
-}		/* -----  end of function err_sys  ----- */
+}		 -----  end of function err_sys  ----- */
 
 
 /* 
@@ -57,7 +57,7 @@ Init_Queue ( )
     }
     new_queue->front= new_queue->header;
     new_queue->rear= new_queue->header;
-    return new_queue
+    return new_queue;
 
 }		/* -----  end of function Init_Queue  ----- */
 
@@ -75,8 +75,6 @@ Enqueue (Queue my_queue, char data, int index , List_node pointer_data )
     Queue_node new_node;
     if(my_queue==NULL)
         err_sys("the queue have not init yet\n");
-    return;
-
     new_node	= malloc ( sizeof(struct queue_node) );
     if ( new_node==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
@@ -124,11 +122,14 @@ Print_Queue ( Queue my_queue )
     if(my_queue == NULL)
         err_sys("the queue have not init \n ");
     if(my_queue->front == my_queue->rear)
+    {
+        fprintf(stderr, "\n the queue is empty\n");
         return;
+    }
     temp= my_queue->front;
     while(temp->next!=NULL)
     {
-        printf("<%c>:::<%d>\n");
+        printf("<%c>:::<%d>\n" , temp->next->data, temp->next->index);
         temp=temp->next;
     }
 }		/* -----  end of function Print_Queue  ----- */
