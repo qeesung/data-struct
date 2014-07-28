@@ -152,3 +152,71 @@ CStree_Depth (CStree my_tree)
     }
     return max;
 }		/* -----  end of function CStree_Depth  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Root
+ *  Description:  得到根的值
+ * =====================================================================================
+ */
+    char
+Root ( CStree my_tree )
+{
+    if(my_tree == NULL)
+    {
+        return (char)0;
+    }
+    return my_tree->data;
+}		/* -----  end of function Root  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Value
+ *  Description:  得到一个指针的节点的值
+ * =====================================================================================
+ */
+    char
+Value ( Tree_node my_node )
+{
+    if(my_node == NULL)
+        return (char)0;
+    else
+        return my_node->data;
+}		/* -----  end of function Value  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Find_Point
+ *  Description:  找到一个值为old_value 并且返回其指针
+ * =====================================================================================
+ */
+    Tree_node
+Find_Point (CStree my_tree , char data )
+{
+    /*  这里要用到队列来取得所有的值来比较 */
+    Queue my_queue;
+    Queue_node dequeue_node;
+    my_queue = Init_Queue();
+    Tree_node my_tree_node;
+    Tree_node tempsib_tree_node;
+    if(my_tree == NULL)
+        return NULL;
+    Enqueue(my_queue , my_tree);/*  root enqueue */
+
+    while((dequeue_node= Dequeue(my_queue))!=NULL)
+    {
+        my_tree_node = &(dequeue_node->node_data);
+
+        if(my_tree_node->data == data)
+            break;
+        if(my_tree_node->firstchild!=NULL)
+            Enqueue(my_queue , my_tree_node->firstchild);
+        if(my_tree_node->nextsibling!=NULL)
+            Enqueue(my_queue,my_tree_node->nextsibling);
+    }
+    return my_tree_node;
+}		/* -----  end of function Find_Point  ----- */
