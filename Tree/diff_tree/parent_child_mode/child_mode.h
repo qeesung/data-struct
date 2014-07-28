@@ -45,4 +45,14 @@ typedef struct ctree * Ctree;
 void err_sys(char * err_msg);
 Ctree Init_Ctree();
 void Create_Ctree(Ctree * my_tree);
+int Ctree_Empty(Ctree my_tree);
+int Ctree_Depth(Ctree my_tree);
+char Root(Ctree my_tree);
+char Value(Ctree my_tree , int index);
+void Assign(Ctree my_tree , int index , char new_value);
+char Parent(Ctree my_tree , int child_index);
+char Leftchild(Ctree my_tree , int parent_index, int * child_index);
+char * Rightsibling(Ctree my_tree , int leftchild_index );
+void Print_CTree(Ctree my_tree);
+void Traverse_CTree(Ctree my_tree);
 #endif

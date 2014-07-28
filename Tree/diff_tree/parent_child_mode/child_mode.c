@@ -162,7 +162,7 @@ Ctree_Empty ( Ctree my_tree )
 Ctree_Depth ( Ctree my_tree )
 {
     int depth;
-    int max_depthi=0;
+    int max_depth=0;
     int k=0;
     int parent_index=0;
     if(my_tree == NULL)
@@ -200,7 +200,7 @@ Root (Ctree  my_tree )
     if(my_tree==NULL)
     {
         fprintf(stderr,"\nthe tree is not init\n");
-        return char(0);
+        return (char)0;
     }
     else
     return my_tree->nodes[0].data;
@@ -220,7 +220,7 @@ Value ( Ctree my_tree , int index )
     if(my_tree==NULL)
     {
         fprintf(stderr,"\nthe tree is not init\n");
-        return char(0);
+        return (char)0;
     }
     if(index>my_tree->number)
     {
@@ -256,7 +256,7 @@ Assign ( Ctree my_tree , int index , char new_value )
  * =====================================================================================
  */
     char
-Parent ( Ctree my_tree, int child_index;)
+Parent ( Ctree my_tree, int child_index)
 {
     if(my_tree==NULL)
     {
@@ -268,7 +268,7 @@ Parent ( Ctree my_tree, int child_index;)
         fprintf(stderr, "\nTree size should less than max tree size\n");
         return (char)0;
     }
-    return my_tree->nodes[my_tree->nodes[child_index].parent];
+    return my_tree->nodes[my_tree->nodes[child_index].parent].data;
 }		/* -----  end of function Parent  ----- */
 
 
@@ -296,7 +296,8 @@ Leftchild (Ctree my_tree , int parent_index , int * child_index )
     if(my_tree->nodes[parent_index].next->next==NULL)
         return (char)0;
     leftchild_index= my_tree->nodes[parent_index].next->next->child_index;
-    return my_tree->nodes[leftchild_parent].data;
+    *child_index = leftchild_index;
+    return my_tree->nodes[leftchild_index].data;
         
 }		/* -----  end of function Leftchild  ----- */
 
@@ -329,22 +330,23 @@ Rightsibling ( Ctree my_tree , int leftchild_index  )
         exit (EXIT_FAILURE);
      }
     all_data[0]=0;// 记录右兄弟的个数
-    
+    fflush(stdout);
     for(k=0;k<my_tree->number;k++)
     {
-        if(my_tree->nodes[k].next->next->data==leftchild_index)
+        if(my_tree->nodes[k].next->next!=NULL && my_tree->nodes[k].next->next->child_index==leftchild_index)
             break;
     }
     if(k==my_tree->number)
     {
         return NULL;
     }
+    fflush(stdout);
     temp = my_tree->nodes[k].next->next->next;
     k=1;
     while(temp!=NULL)
     {
                 
-        all_data	= malloc ( sizeof(char) * (k+1) );
+        all_data	= realloc (all_data, sizeof(char) * (k+1) );
         if ( all_data==NULL ) {
             fprintf ( stderr, "\ndynamic memory allocation failed\n" );
             exit (EXIT_FAILURE);
@@ -353,6 +355,7 @@ Rightsibling ( Ctree my_tree , int leftchild_index  )
         temp=temp->next;
         k++;
         all_data[0]++;
+        fflush(stdout);
     }
     return all_data;
 }		/* -----  end of function Rightsibling  ----- */
@@ -381,7 +384,7 @@ Print_Ctree ( Ctree my_tree )
         {   
             temp_index = temp->next->child_index;
             printf("%c\t",my_tree->nodes[temp_index]);
-            temp=temp->index;
+            temp=temp->next;
         }
         printf("\n");
     }
@@ -403,6 +406,6 @@ Traverse_Ctree ( Ctree my_tree )
         err_sys("Tree have not init\n ");
     for(k=0;k<my_tree->number;k++)
     {
-        printf("%c\n",my_tree->nodes[k].data);
+        printf("%c\t",my_tree->nodes[k].data);
     }
 }		/* -----  end of function Traverse_Ctree  ----- */
