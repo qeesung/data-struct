@@ -19,6 +19,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"child_sib.h"
+#include"queue.h"
 #include<string.h>
 
 
@@ -54,49 +55,51 @@ Create_CStree (CStree * my_tree )
     char buf[256];
     int k=0;
     int length;
-    if(my_tree ==NULL)
+    Tree_node new_tree_node;
+    if((*my_tree) ==NULL)
         err_msg("\nqueue have not init\n");
     my_queue= Init_Queue();
     printf("Enter root value:");
     scanf("%c%*c",&input_ch);
 
-    my_tree	= malloc ( sizeof(struct tree_node) );
-    if ( my_tree==NULL ) {
+    (*my_tree)	= malloc ( sizeof(struct tree_node) );
+    if ( (*my_tree)==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    my_tree->data = input_ch;
-    my_tree->firstchild = NULL;
-    my_tree->nextsibling = NULL;
-    Enqueue(my_queue, my_tree);
+    (*my_tree)->data = input_ch;
+    (*my_tree)->firstchild = NULL;
+    (*my_tree)->nextsibling = NULL;
+    Enqueue(my_queue, *my_tree);
     while((dequeue_node=Dequeue(my_queue))!=NULL)
     {
         printf("Enter %c chlildren:",dequeue_node->node_data.data);
         fgets(buf , 256 , stdin);
         if(strcmp(buf , ".\n")==0)
             continue;
-        length=strlen(buf);
+        length=strlen(buf)-1;
         /*  创建左孩子 */            
-        dequeue_node->firstchild	= malloc ( sizeof(struct tree_node) );
-        if ( dequeue_node->firstchild==NULL ) {
+        dequeue_node->node_data.firstchild	= malloc ( sizeof(struct tree_node) );
+        if ( dequeue_node->node_data.firstchild==NULL ) {
               fprintf ( stderr, "\ndynamic memory allocation failed\n" );
               exit (EXIT_FAILURE);
          }
-        dequeue_node->firstchild->data = buf[0];
+        dequeue_node->node_data.firstchild->data = buf[0];
         /*  将左孩子入队列 */
-        Enqueue(dequeue_node->firstchild);
+        Enqueue(my_queue, dequeue_node->node_data.firstchild);
+        new_tree_node = &(dequeue_node->node_data);
         for(k=1;k<length;k++)
         {
             /*  创建右兄弟 */
-            dequeue_node->nextsibling	= malloc ( sizeof(struct tree_node) );
-            if ( dequeue_node->nextsibling==NULL ) {
+            new_tree_node->nextsibling	= malloc ( sizeof(struct tree_node) );
+            if ( new_tree_node->nextsibling==NULL ) {
                 fprintf ( stderr, "\ndynamic memory allocation failed\n" );
                 exit (EXIT_FAILURE);
             }
-            dequeue_node->nextsibling->data=buf[k];
+            new_tree_node->nextsibling->data=buf[k];
             /*  将右兄弟入队列 */
-            Enqueue(my_queue,dequeue_node->nextsibling);
-            dequeue_node = dequeue_node->nextsibling;
+            Enqueue(my_queue,new_tree_node->nextsibling);
+            new_tree_node = new_tree_node->nextsibling;
         }
 
 
@@ -105,3 +108,47 @@ Create_CStree (CStree * my_tree )
 
 }		/* -----  end of function Create_CStree  ----- */
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CStree_Empty
+ *  Description:  检测树是否为空
+ * =====================================================================================
+ */
+    int
+CStree_Empty (CStree my_tree )
+{
+    if(my_tree == NULL)
+        return 1;
+    else
+        return 0;
+}		/* -----  end of function CStree_Empty  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CStree_Depth
+ *  Description:  求算树的深度
+ * =====================================================================================
+ */
+    int
+CStree_Depth (CStree my_tree)
+{
+    int max=0;
+    int depth;
+    Tree_node my_tree_node;
+    if(my_tree == NULL)
+        return 0;
+    if(my_tree->firstchild==NULL)
+        return 1;
+    /*  递归求解所有孩子的深度 */
+
+    max=CStree_Depth(my_tree->firstchild);
+    for(my_tree_node=my_tree->nextsibling;my_tree_node!=NULL;my_tree_node = my_tree_node->nextsibling)
+    {
+        depth = CStree_Depth(my_tree_node);
+        if(depth>max)
+            max=depth;
+    }
+    return max;
+}		/* -----  end of function CStree_Depth  ----- */
