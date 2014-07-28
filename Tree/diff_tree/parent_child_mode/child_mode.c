@@ -185,3 +185,224 @@ Ctree_Depth ( Ctree my_tree )
     }
     return max_depth+1;
 }		/* -----  end of function Ctree_Depth  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Root
+ *  Description:  得到根的数据
+ * =====================================================================================
+ */
+    char
+Root (Ctree  my_tree )
+{
+    if(my_tree==NULL)
+    {
+        fprintf(stderr,"\nthe tree is not init\n");
+        return char(0);
+    }
+    else
+    return my_tree->nodes[0].data;
+}		/* -----  end of function Root  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Value
+ *  Description:  得到一个点的值
+ * =====================================================================================
+ */
+    char 
+Value ( Ctree my_tree , int index )
+{
+    if(my_tree==NULL)
+    {
+        fprintf(stderr,"\nthe tree is not init\n");
+        return char(0);
+    }
+    if(index>my_tree->number)
+    {
+        fprintf(stderr,"\nthe index should less than %d\n",my_tree->number);
+        return;
+    }
+    return my_tree->nodes[index].data;
+}		/* -----  end of function Value  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Assign
+ *  Description:  为一个点重新赋值
+ * =====================================================================================
+ */
+    void
+Assign ( Ctree my_tree , int index , char new_value )
+{
+    if(my_tree == NULL)
+        err_sys("the tree is not init\n");
+    if(index>my_tree->number)
+        err_sys("index should less than tree max size\n");
+    my_tree->nodes[index].data=new_value;
+    return;
+}		/* -----  end of function Assign  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Parent
+ *  Description:  得到子节点的父亲的值
+ * =====================================================================================
+ */
+    char
+Parent ( Ctree my_tree, int child_index;)
+{
+    if(my_tree==NULL)
+    {
+        fprintf(stderr,"\nthe tree have not inited\n");
+        return (char)0;
+    }
+    if(child_index > my_tree->number)
+    {
+        fprintf(stderr, "\nTree size should less than max tree size\n");
+        return (char)0;
+    }
+    return my_tree->nodes[my_tree->nodes[child_index].parent];
+}		/* -----  end of function Parent  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Leftchild
+ *  Description:  得到父亲的左孩子
+ * =====================================================================================
+ */
+    char
+Leftchild (Ctree my_tree , int parent_index , int * child_index )
+{
+    int leftchild_index;
+    if(my_tree == NULL)
+    {
+        fprintf(stderr, "\nTree have not init\n");
+        return (char)0;
+    }
+    if(parent_index>my_tree->number)
+    {
+        fprintf(stderr, "\npanrer_index should less than max tree size\n");
+        return (char)0;
+    }
+    if(my_tree->nodes[parent_index].next->next==NULL)
+        return (char)0;
+    leftchild_index= my_tree->nodes[parent_index].next->next->child_index;
+    return my_tree->nodes[leftchild_parent].data;
+        
+}		/* -----  end of function Leftchild  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Rightsibling
+ *  Description:  得到右兄弟的所有值， 传入到数组中返回
+ * =====================================================================================
+ */
+    char *
+Rightsibling ( Ctree my_tree , int leftchild_index  )
+{
+    int k=0;
+    char * all_data;
+    List_node temp;
+    if(my_tree == NULL)
+    {
+        fprintf(stderr,"\nTree have not init\n");
+        return NULL;
+    }
+    if(leftchild_index>my_tree->number)
+    {
+        fprintf(stderr, "\nTree size should less than max tree size\n");
+        return NULL;
+    }
+    
+    all_data	= malloc ( sizeof(char) );
+    if ( all_data==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+     }
+    all_data[0]=0;// 记录右兄弟的个数
+    
+    for(k=0;k<my_tree->number;k++)
+    {
+        if(my_tree->nodes[k].next->next->data==leftchild_index)
+            break;
+    }
+    if(k==my_tree->number)
+    {
+        return NULL;
+    }
+    temp = my_tree->nodes[k].next->next->next;
+    k=1;
+    while(temp!=NULL)
+    {
+                
+        all_data	= malloc ( sizeof(char) * (k+1) );
+        if ( all_data==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+        all_data[k]=my_tree->nodes[temp->child_index].data;
+        temp=temp->next;
+        k++;
+        all_data[0]++;
+    }
+    return all_data;
+}		/* -----  end of function Rightsibling  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Ctree
+ *  Description:  完全的打印一棵树
+ * =====================================================================================
+ */
+    void
+Print_Ctree ( Ctree my_tree )
+{
+    if(my_tree == NULL)
+        err_sys("\nTree have not init\n");
+    int k=0;
+    int temp_index;
+    List_node temp;
+    for(k=0;k<my_tree->number;k++)
+    {
+        printf("%c:::----->>>>\t",my_tree->nodes[k].data);
+        temp=my_tree->nodes[k].next;
+        while(temp->next!=NULL)
+        {   
+            temp_index = temp->next->child_index;
+            printf("%c\t",my_tree->nodes[temp_index]);
+            temp=temp->index;
+        }
+        printf("\n");
+    }
+    return;
+}		/* -----  end of function Print_Ctree  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Traverse_Ctree
+ *  Description:  遍历整个树
+ * =====================================================================================
+ */
+    void
+Traverse_Ctree ( Ctree my_tree )
+{
+    int k=0;
+    if(my_tree == NULL)
+        err_sys("Tree have not init\n ");
+    for(k=0;k<my_tree->number;k++)
+    {
+        printf("%c\n",my_tree->nodes[k].data);
+    }
+}		/* -----  end of function Traverse_Ctree  ----- */
