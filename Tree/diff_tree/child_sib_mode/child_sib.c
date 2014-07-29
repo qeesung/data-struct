@@ -220,3 +220,65 @@ Find_Point (CStree my_tree , char data )
     }
     return my_tree_node;
 }		/* -----  end of function Find_Point  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Assign
+ *  Description: 为一个点重新赋值
+ * =====================================================================================
+ */
+    void
+Assign ( CStree my_tree , char old_value , char new_value )
+{
+    Tree_node find_point;
+    if(my_tree == NULL)
+        err_msg("The node is empty\n");
+    if((find_point=Find_Point(my_tree, old_value))!=NULL)
+        find_point->data = new_value;
+    return;
+    
+}		/* -----  end of function Assign  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Parent()
+ *  Description:  找到一个孩子的父亲
+ * =====================================================================================
+ */
+    char
+Parent( CStree my_tree , char child_value )
+{
+    Queue my_queue;
+    Queue_node dequeue_node;
+    Tree_node my_node;
+    Tree_node temp;
+    if(my_tree == NULL)
+    {
+        fprintf(stderr, "\nThe tree have not init \n");
+        return (char)0;
+    }
+    /*  这里需要队列来实现 */
+    my_queue= Init_Queue();
+    Enqueue(my_queue , my_tree);
+    while((dequeue_node = Dequeue(my_queue))!=NULL)
+    {
+        my_node = &(dequeue_node->node_data);
+        if(my_node->leftchild==NULL)
+            continue;
+        if(my_node->firstchild->data == child_value)
+            return my_node->data;
+        Enqueue(my_queue,my_node->firstchild);
+        temp = my_node->nextsibling;
+        while(temp!=NULL)
+        {
+            if(temp->data == child_value)
+                return my_node->data;
+            if(temp->firstchild!=NULL)
+                Enqueue(temp->firstchild);
+            temp = temp->nextsibling;
+        }
+    }
+}		/* -----  end of function Parent()  ----- */
