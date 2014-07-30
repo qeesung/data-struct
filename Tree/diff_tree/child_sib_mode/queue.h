@@ -22,7 +22,7 @@
 
 struct queue_node
 {
-    struct tree_node node_data;
+    struct tree_node *  node_data;
     struct queue_node * next;
 };
 typedef struct queue_node * Queue_node;

@@ -79,9 +79,10 @@ Enqueue (Queue my_queue, Tree_node my_node)
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    new_node->node_data.data = my_node->data;
-    new_node->node_data.firstchild = my_node->firstchild;
-    new_node->node_data.nextsibling = my_node->nextsibling;
+    //new_node->node_data.data = my_node->data;
+    //new_node->node_data.firstchild = my_node->firstchild;
+    //new_node->node_data.nextsibling = my_node->nextsibling;
+    new_node->node_data = my_node;
 
     my_queue->rear->next=new_node;
     my_queue->rear = new_node;
@@ -133,7 +134,7 @@ Print_Queue ( Queue my_queue)
     temp=my_queue->front;
     while(temp->next!=NULL)
     {
-        printf("<::%c::>\t",temp->next->node_data.data);
+        printf("<::%c::>\t",temp->next->node_data->data);
         temp=temp->next;
     }
     return;
