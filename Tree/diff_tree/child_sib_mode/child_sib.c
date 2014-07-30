@@ -261,6 +261,8 @@ Parent( CStree my_tree , char child_value )
         return (char)0;
     }
     /*  这里需要队列来实现 */
+    if(my_tree -> data == child_value)
+        return (char)0;
     my_queue= Init_Queue();
     Enqueue(my_queue , my_tree);
     while((dequeue_node = Dequeue(my_queue))!=NULL)
