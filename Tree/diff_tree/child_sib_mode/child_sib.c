@@ -284,3 +284,63 @@ Parent( CStree my_tree , char child_value )
         }
     }
 }		/* -----  end of function Parent()  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Leftchild
+ *  Description:  返回第一个孩子
+ * =====================================================================================
+ */
+    char
+Leftchild ( Tree_node my_tree_node )
+{
+    if(my_tree_node == NULL)
+        err_msg("\nThe tree node is not exists\n");
+    if(my_tree_node->firstchild!=NULL)
+        return my_tree_node->data;
+    return (char)0;
+}		/* -----  end of function Leftchild  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Rightsibling
+ *  Description:  返回除左孩子以外的全部右兄弟
+ * =====================================================================================
+ */
+    char *
+Rightsibling (Tree_node my_tree_node)
+{
+    char * sib_data;
+    int k=0;
+    Tree_node temp;
+    if(my_tree_node == NULL)
+        err_msg("\nThe tree node is not exists\n");
+
+    sib_data	= malloc ( sizeof(char) );
+    if ( sib_data==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    sib_data[0]=0;
+    temp = my_tree_node ->nextsibling;
+    k=1;
+    while(temp!=NULL)
+    {
+        
+        sib_data	= realloc (sib_data, sizeof(char) * (k+1));
+        if ( sib_data==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+        sib_data[k]=temp->data;
+        sib_data[0]++;
+    }
+    return sib_data;
+    
+}		/* -----  end of function Rightsibling  ----- */
+
+
+
