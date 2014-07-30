@@ -344,3 +344,66 @@ Rightsibling (Tree_node my_tree_node)
 
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Postorder_Traverse
+ *  Description:  后序遍历树, 先遍历孩子， 然后再访问父亲
+ * =====================================================================================
+ */
+    void
+Postorder_Traverse ( CStree my_tree )
+{
+    Tree_node temp;
+    if(my_tree == NULL)
+            return;
+    Postorder_Traverse(my_tree->leftchild);
+    temp = my_tree->nextsibling;
+    while(temp!=NULL)
+    {
+        Postorder_Traverse(temp);
+        temp=temp->nextsibling;
+    }
+    printf("%c\t\t",my_tree->data);
+    fflush(stdout);
+
+}		/* -----  end of function Postorder_Traverse  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Levelorder_Traverse
+ *  Description:  层序遍历一个树
+ * =====================================================================================
+ */
+    void
+Levelorder_Traverse ( CStree my_tree )
+{
+    Queue my_queue;
+    Queue_node dequeue_node;
+    Tree_node my_node;
+    Tree_node temp;
+
+    if(my_tree == NULL)
+        err_msg("\nThe tree have not init\n");
+    my_queue = Init_Queue();
+    Enqueue(my_queue, my_tree);
+    while((dequeue_node = Dequeue())!=NULL)
+    {
+        my_node = &(dequeue_node->node_data);
+        printf("%c\t",my_node->data);
+        if(my_node->firstchild!=NULL)
+            Enqueue(my_queue , my_node->firstchild);
+        temp = my_node->nextsibling;
+        while(temp!=NULL)
+        {
+            printf("%c\t", temp->data);
+            if(temp->firstchild!=NULL)
+                Enqueue(my-queue,temp->firstchild);
+            temp=temp->nextsibling;
+        }
+    }
+    printf("\n");
+    return;
+}		/* -----  end of function Levelorder_Traverse  ----- */
+
+
+
