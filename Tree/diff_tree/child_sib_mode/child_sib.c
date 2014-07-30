@@ -143,10 +143,10 @@ CStree_Depth (CStree my_tree)
         return 1;
     /*  递归求解所有孩子的深度 */
 
-    max=CStree_Depth(my_tree->firstchild);
+    max=CStree_Depth(my_tree->firstchild)+1;
     for(my_tree_node=my_tree->nextsibling;my_tree_node!=NULL;my_tree_node = my_tree_node->nextsibling)
     {
-        depth = CStree_Depth(my_tree_node);
+        depth = CStree_Depth(my_tree_node)+1;
         if(depth>max)
             max=depth;
     }
@@ -299,7 +299,7 @@ Leftchild ( Tree_node my_tree_node )
     if(my_tree_node == NULL)
         err_msg("\nThe tree node is not exists\n");
     if(my_tree_node->firstchild!=NULL)
-        return my_tree_node->data;
+        return my_tree_node->firstchild->data;
     return (char)0;
 }		/* -----  end of function Leftchild  ----- */
 
@@ -336,7 +336,9 @@ Rightsibling (Tree_node my_tree_node)
             exit (EXIT_FAILURE);
         }
         sib_data[k]=temp->data;
+        k++;
         sib_data[0]++;
+        temp=temp->nextsibling;
     }
     return sib_data;
     
