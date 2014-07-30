@@ -73,21 +73,21 @@ Create_CStree (CStree * my_tree )
     Enqueue(my_queue, *my_tree);
     while((dequeue_node=Dequeue(my_queue))!=NULL)
     {
-        printf("Enter %c chlildren:",dequeue_node->node_data.data);
+        printf("Enter %c chlildren:",dequeue_node->node_data->data);
         fgets(buf , 256 , stdin);
         if(strcmp(buf , ".\n")==0)
             continue;
         length=strlen(buf)-1;
         /*  创建左孩子 */            
-        dequeue_node->node_data.firstchild	= malloc ( sizeof(struct tree_node) );
-        if ( dequeue_node->node_data.firstchild==NULL ) {
+        dequeue_node->node_data->firstchild	= malloc ( sizeof(struct tree_node) );
+        if ( dequeue_node->node_data->firstchild==NULL ) {
               fprintf ( stderr, "\ndynamic memory allocation failed\n" );
               exit (EXIT_FAILURE);
          }
-        dequeue_node->node_data.firstchild->data = buf[0];
+        dequeue_node->node_data->firstchild->data = buf[0];
         /*  将左孩子入队列 */
-        Enqueue(my_queue, dequeue_node->node_data.firstchild);
-        new_tree_node = &(dequeue_node->node_data);
+        Enqueue(my_queue, dequeue_node->node_data->firstchild);
+        new_tree_node = dequeue_node->node_data;
         for(k=1;k<length;k++)
         {
             /*  创建右兄弟 */
@@ -135,7 +135,7 @@ CStree_Empty (CStree my_tree )
 CStree_Depth (CStree my_tree)
 {
     int max=0;
-    int depth;
+    int depth=0;
     Tree_node my_tree_node;
     if(my_tree == NULL)
         return 0;
@@ -209,7 +209,7 @@ Find_Point (CStree my_tree , char data )
 
     while((dequeue_node= Dequeue(my_queue))!=NULL)
     {
-        my_tree_node = &(dequeue_node->node_data);
+        my_tree_node = dequeue_node->node_data;
 
         if(my_tree_node->data == data)
             break;
@@ -267,8 +267,8 @@ Parent( CStree my_tree , char child_value )
     Enqueue(my_queue , my_tree);
     while((dequeue_node = Dequeue(my_queue))!=NULL)
     {
-        my_node = &(dequeue_node->node_data);
-        if(my_node->leftchild==NULL)
+        my_node = dequeue_node->node_data;
+        if(my_node->firstchild==NULL)
             continue;
         if(my_node->firstchild->data == child_value)
             return my_node->data;
@@ -279,7 +279,7 @@ Parent( CStree my_tree , char child_value )
             if(temp->data == child_value)
                 return my_node->data;
             if(temp->firstchild!=NULL)
-                Enqueue(temp->firstchild);
+                Enqueue(my_queue,temp->firstchild);
             temp = temp->nextsibling;
         }
     }
@@ -356,14 +356,18 @@ Postorder_Traverse ( CStree my_tree )
     Tree_node temp;
     if(my_tree == NULL)
             return;
-    Postorder_Traverse(my_tree->leftchild);
+    if(my_tree->firstchild!=NULL)
+        Postorder_Traverse(my_tree->firstchild);
+    else
+        goto last;
     temp = my_tree->nextsibling;
     while(temp!=NULL)
     {
         Postorder_Traverse(temp);
         temp=temp->nextsibling;
     }
-    printf("%c\t\t",my_tree->data);
+last:
+    printf("%c\t",my_tree->data);
     fflush(stdout);
 
 }		/* -----  end of function Postorder_Traverse  ----- */
@@ -385,19 +389,23 @@ Levelorder_Traverse ( CStree my_tree )
     if(my_tree == NULL)
         err_msg("\nThe tree have not init\n");
     my_queue = Init_Queue();
+    printf("%c\t",my_tree->data);
     Enqueue(my_queue, my_tree);
-    while((dequeue_node = Dequeue())!=NULL)
+    while((dequeue_node = Dequeue(my_queue))!=NULL)
     {
-        my_node = &(dequeue_node->node_data);
-        printf("%c\t",my_node->data);
+        my_node = dequeue_node->node_data;
         if(my_node->firstchild!=NULL)
+        {
+            printf("%c\t",my_node->firstchild->data);
             Enqueue(my_queue , my_node->firstchild);
+        }
+        else
+            continue;
         temp = my_node->nextsibling;
         while(temp!=NULL)
         {
             printf("%c\t", temp->data);
-            if(temp->firstchild!=NULL)
-                Enqueue(my-queue,temp->firstchild);
+            Enqueue(my_queue,temp);
             temp=temp->nextsibling;
         }
     }
