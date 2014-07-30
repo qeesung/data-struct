@@ -35,7 +35,7 @@ int CStree_Depth(CStree my_tree);
 char Root(CStree my_tree);
 char Value(Tree_node tree_node);
 Tree_node Find_Point(CStree my_tree , char data);
-Tree_node Assign(CStree my_tree , char old_value , char new_value);
+void Assign(CStree my_tree , char old_value , char new_value);
 char Parent(CStree my_tree , char data);
 char Leftchild(Tree_node my_tree_node);
 char * Rightsibling(Tree_node my_tree_node);
