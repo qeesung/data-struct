@@ -27,7 +27,6 @@
  *  Description:  将初始值赋值链表
  * =====================================================================================
  */
-    void
 void Init_Distance_List ( List distance_list )
 {
     Insert_List(distance_list , 1);
@@ -48,3 +47,29 @@ void Init_Distance_List ( List distance_list )
 }		/* -----  end of function void Init_Distance_List  ----- */
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete
+ *  Description:  将链表里面的一个元素删除
+ * =====================================================================================
+ */
+    void
+Delete ( List distance_list , int data )
+{
+    Delete_List(distance_list , data);
+    return ;
+}		/* -----  end of function Delete  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert
+ *  Description:  在链表里面插入一个数据
+ * =====================================================================================
+ */
+    void
+Insert ( List distance_list , int data )
+{
+    Insert_List(distance_list , data);
+    return;
+}		/* -----  end of function Insert  ----- */
