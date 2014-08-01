@@ -178,3 +178,28 @@ Print_List ( List my_list )
     }
     printf("\n");
 }		/* -----  end of function Print_List  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Max
+ *  Description:  得到链表里面最大的元素，并返回
+ * =====================================================================================
+ */
+    int
+Get_Max (List my_list )
+{
+    if(my_list == NULL)
+        err_msg("\nList have not init\n");
+    if(List_Empty(my_list))
+    {
+        fprintf(stderr,"\nThe list is empty\n");
+        return -1;
+    }
+    while(my_list->next!=NULL)
+    {
+       my_list = my_list->next; 
+    }
+    return my_list->data;
+}		/* -----  end of function Get_Max  ----- */
