@@ -157,3 +157,24 @@ Check_Ele (List my_list, int data )
     }
     return count;
 }		/* -----  end of function Check_Ele  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_List
+ *  Description:  打印链表的全部信息
+ * =====================================================================================
+ */
+    void
+Print_List ( List my_list )
+{
+    if(my_list == NULL)
+        err_msg("\nlist have not init\n");
+    while(my_list->next!=NULL)
+    {
+        printf("%d\t",my_list->next->data);
+        my_list =my_list->next;
+    }
+    printf("\n");
+}		/* -----  end of function Print_List  ----- */

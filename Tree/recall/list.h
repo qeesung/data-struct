@@ -25,10 +25,12 @@ struct list_node
 typedef struct list_node * List_node;
 typedef List_node List;
 
+void err_msg(char * info);
 List Init_list();
 void Insert_List(List my_list , int data);
 void Delete_List(List my_list , int data);
 int List_Empty(List my_list);
 int Check_Ele(List my_list , int data);
+void Print_List(List my_list);
 
 #endif
