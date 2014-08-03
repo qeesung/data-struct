@@ -31,9 +31,9 @@ struct graph
 };
 typedef struct graph * Graph;
 
+void err_msg(char * msg);
 Graph Init_Graph();
-void Create_DG(Graph my_graph , char * filename);
-void Create_DN(Graph my_graph , char * filename);
-void Create_UDG(Graph my_graph , char * filename);
-void Create_UDN(Graph my_graph , char * filename);
+int Locate_vertex(Graph my_graph, char * vertex_name);
+void Create_Graph(Graph my_graph , char * filename);
+void Create_Net(Graph my_graph , char * filename);
 #endif
