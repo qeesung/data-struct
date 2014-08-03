@@ -31,5 +31,8 @@ struct graph
 typedef struct graph * Graph;
 
 Graph Init_Graph();
-void Create_Graph(Graph * my_graph);
+void Create_DG(Graph my_graph , char * filename);
+void Create_DN(Graph my_graph , char * filename);
+void Create_UDG(Graph my_graph , char * filename);
+void Create_UDN(Graph my_graph , char * filename);
 #endif
