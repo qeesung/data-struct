@@ -225,3 +225,46 @@ Create_Net ( Graph my_graph , char * filename )
 
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Graph
+ *  Description:  打印一个图的全部信息
+ * =====================================================================================
+ */
+    void
+Print_Graph ( Graph my_graph )
+{
+    int k=0;
+    int m=0;
+    if(my_graph == NULL)
+        err_msg("\nGraph have not init\n");
+    printf("顶点数为:%d\n",my_graph->vertex_number);
+    printf("弧数为:%d\n",my_graph->arcs_number);
+    printf("图的类新为:");
+    switch(my_graph->kind)
+    {
+        case DN:printf("%s\n","有向网");
+            break;
+        case UDN:printf("%s\n","无向网");
+            break;
+        case DG:printf("%s\n","有向图");
+            break;
+        case UDG:printf("%s\n","无向图");
+            break;
+        default:printf("unknown graph kind\n");
+    }
+    printf("图的每个顶点名字为：");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        printf("%s\t",my_graph->vertex_name[k]);
+    }
+    printf("\n");
+    printf("对应的矩阵为:");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        for(m=0;m<graph->vertex_number;m++)
+            printf("%d\t",my_graph->arcs[k][m]);
+        printf("\n");
+    }
+
+}		/* -----  end of function Print_Graph  ----- */

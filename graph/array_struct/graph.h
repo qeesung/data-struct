@@ -36,4 +36,5 @@ Graph Init_Graph();
 int Locate_vertex(Graph my_graph, char * vertex_name);
 void Create_Graph(Graph my_graph , char * filename);
 void Create_Net(Graph my_graph , char * filename);
+void Print_Graph(Graph my_graph);
 #endif
