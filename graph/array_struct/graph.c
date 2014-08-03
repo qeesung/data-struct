@@ -19,7 +19,8 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    "graph.h"
-
+#include    <string.h>
+#include    <limits.h>
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  err_msg
@@ -61,13 +62,14 @@ Init_Graph ( )
     int
 Locate_vertex ( Graph my_graph , char * vertex_name)
 {
+    int k=0;
     for(k=0;k<my_graph->vertex_number ;k++)
     {
-        if(strcmp(vertex_name , my_graph->vertex_name[k])==0)
+        if(strcmp(my_graph->vertex_name[k],vertex_name)==0)
             return k;
         
     }
-    fprintf(stderr , "can not find the point%s \n",vertex_name);
+    fprintf(stderr , "can not find the point : %s \n",vertex_name);
     exit(EXIT_FAILURE);
 }		/* -----  end of function Locate_vertex  ----- */
 
@@ -93,7 +95,7 @@ Create_Graph ( Graph  my_graph, char * filename )
     if(filename == NULL)
         err_msg("filename can not be empty\n");
     if((my_file = fopen(filename , "r"))==NULL)
-        err_msg("open the file :%s failed \n",filename);
+        err_msg("open the file failed \n");
     /*  得到点的个数 */
     if(fgets(buf , 256 , my_file)==NULL)
         err_msg("read file error\n");
@@ -108,38 +110,40 @@ Create_Graph ( Graph  my_graph, char * filename )
         err_msg("read file error\n");
     my_graph->arcs_number = atoi(buf);
     /*   得到这个图的类型， 有向 还是无向 */
-    if(fgets(buf , 256 , my_buf )==NULL)
+    if(fgets(buf , 256 , my_file )==NULL)
         err_msg("read file error\n");
-    if(strcmp(buf , "DG")==0)
+    if(strcmp(buf , "DG\n")==0)
         my_graph->kind = DG;
     else
         my_graph->kind = UDG;
     /*  得到每个节点的名字 */
-    for(k=0;k<graph->vertex_number ; k++)
+    for(k=0;k<my_graph->vertex_number ; k++)
     {
         if(fgets(buf ,256 , my_file)==NULL)
             err_msg("read the file error\n");
+        buf[2]='\0';
         strcpy(my_graph->vertex_name[k], buf);
+        printf("%s\n",my_graph->vertex_name[k]);
     }
     /*  初始话矩阵 */
-    for(k=0;k<arcs_number ;k++)
+    for(k=0;k<my_graph->arcs_number ;k++)
     {
-       for(m=0;m<arcs_number ;m++)
+       for(m=0;m<my_graph->arcs_number ;m++)
         my_graph->arcs[k][m] =0 ;
     }
     /* 得到矩阵的信息  */
     for(k=0;k<my_graph->arcs_number;k++)
     {
-       if( fscanf(my_file , "%s,%s",buf, buf2)==EOF)
+       if( fscanf(my_file , "%s%s",buf, buf2)==EOF)
        {
            free(my_graph);
            err_msg("read the file error\n");
        }
-       i = locate_vertex(my_graph , buf);
-       j = locate_vertex(my_graph , buf2);
-       graph->arcs[i][j] = 1;
+       i = Locate_vertex(my_graph , buf);
+       j = Locate_vertex(my_graph , buf2);
+       my_graph->arcs[i][j] = 1;
        if(my_graph->kind == UDG)
-           graph->arcs[j][i] = 1;
+           my_graph->arcs[j][i] = 1;
     }
 
 
@@ -159,6 +163,7 @@ Create_Graph ( Graph  my_graph, char * filename )
     void
 Create_Net ( Graph my_graph , char * filename )
 {
+
     FILE * my_file;
     char buf[256];
     char buf2[256];
@@ -172,7 +177,7 @@ Create_Net ( Graph my_graph , char * filename )
     if(filename == NULL)
         err_msg("filename can not be empty\n");
     if((my_file = fopen(filename , "r"))==NULL)
-        err_msg("open the file :%s failed \n",filename);
+        err_msg("open the file failed \n");
     /*  得到点的个数 */
     if(fgets(buf , 256 , my_file)==NULL)
         err_msg("read file error\n");
@@ -187,38 +192,40 @@ Create_Net ( Graph my_graph , char * filename )
         err_msg("read file error\n");
     my_graph->arcs_number = atoi(buf);
     /*   得到这个网的类型， 有向 还是无向 */
-    if(fgets(buf , 256 , my_buf )==NULL)
+    if(fgets(buf , 256 , my_file )==NULL)
         err_msg("read file error\n");
-    if(strcmp(buf , "DN")==0)
+    if(strcmp(buf , "DN\n")==0)
         my_graph->kind = DN;
     else
         my_graph->kind = UDN;
     /*  得到每个节点的名字 */
-    for(k=0;k<graph->vertex_number ; k++)
+    for(k=0;k<my_graph->vertex_number ; k++)
     {
         if(fgets(buf ,256 , my_file)==NULL)
             err_msg("read the file error\n");
+        buf[2]='\0';
         strcpy(my_graph->vertex_name[k], buf);
+        printf("%s\n",my_graph->vertex_name[k]);
     }
     /*  初始话矩阵 */
-    for(k=0;k<arcs_number ;k++)
+    for(k=0;k<my_graph->arcs_number ;k++)
     {
-       for(m=0;m<arcs_number ;m++)
+       for(m=0;m<my_graph->arcs_number ;m++)
         my_graph->arcs[k][m] =INT_MAX ;
     }
     /* 得到矩阵的信息  */
     for(k=0;k<my_graph->arcs_number;k++)
     {
-       if( fscanf(my_file , "%s,%s %d",buf, buf2, &weight)==EOF)
+       if( fscanf(my_file , "%s%s %d",buf, buf2, &weight)==EOF)
        {
            free(my_graph);
            err_msg("read the file error\n");
        }
-       i = locate_vertex(my_graph , buf);
-       j = locate_vertex(my_graph , buf2);
-       graph->arcs[i][j] = weight;
+       i = Locate_vertex(my_graph , buf);
+       j = Locate_vertex(my_graph , buf2);
+       my_graph->arcs[i][j] = weight;
        if(my_graph->kind == UDN)
-           graph->arcs[j][i] = weight;
+           my_graph->arcs[j][i] = weight;
     }
 
 }		/* -----  end of function Create_DN  ----- */
@@ -254,15 +261,15 @@ Print_Graph ( Graph my_graph )
         default:printf("unknown graph kind\n");
     }
     printf("图的每个顶点名字为：");
-    for(k=0;k<graph->vertex_number;k++)
+    for(k=0;k<my_graph->vertex_number;k++)
     {
         printf("%s\t",my_graph->vertex_name[k]);
     }
     printf("\n");
-    printf("对应的矩阵为:");
-    for(k=0;k<graph->vertex_number;k++)
+    printf("对应的矩阵为:\n");
+    for(k=0;k<my_graph->vertex_number;k++)
     {
-        for(m=0;m<graph->vertex_number;m++)
+        for(m=0;m<my_graph->vertex_number;m++)
             printf("%d\t",my_graph->arcs[k][m]);
         printf("\n");
     }
