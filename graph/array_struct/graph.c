@@ -275,3 +275,110 @@ Print_Graph ( Graph my_graph )
     }
 
 }		/* -----  end of function Print_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_Graph
+ *  Description:  摧毁一个图
+ * =====================================================================================
+ */
+    void
+Destory_Graph ( Graph my_graph )
+{
+    int k1,k2;
+    if(my_graph == NULL)
+        err_msg("\nGraph have not init\n:");
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        my_graph->vertex_name[k1] = NULL;
+    }
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        for(k2=0;k2<my_graph->vertex_number;k2++)
+        {
+            my_graph->arcs[k1][k2]=0;
+        }
+    }
+    my_graph->vertex_number =0;
+    my_graph->arcs_number =0;
+    return ;
+    
+    
+}		/* -----  end of function Destory_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Vertex
+ *  Description:  得到一个点的名字信息
+ * =====================================================================================
+ */
+    char *
+Get_Vertex ( Graph my_graph , int index)
+{
+    char * get_name;
+    int length;
+    if(my_graph == NULL)
+        err_msg("\nThe graph have not init\n");
+    if(index > my_graph->vertex_number)
+        err_msg("\nindex should less than graph vertex number\n");
+    length = strlen(my_graph->vertex_name[index]);
+
+    get_name	= malloc ( sizeof(char) * (length+1) );
+    if ( get_name==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    if(strcpy(get_name , my_graph->vertex_name[index])==NULL)
+    {
+        fprintf(stderr,"strcpy error\n")
+            return NULL;
+    }
+    get_name[length] = '\0';
+    return get_name;
+}		/* -----  end of function Get_Vertex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Put_Vertex
+ *  Description:  将一个点重新赋值
+ * =====================================================================================
+ */
+    void
+Put_Vertex ( Graph my_graph , Vertex_name old_name , Vertex_name new_name )
+{
+    int index;
+    if(my_graph == NULL)
+        err_msg("\nThe graph have not init\n");
+    index = Locate_Vertex(my_graph ,old_name);
+    strcpy(my_graph->vertex_name[index],new_name);
+    return;
+}		/* -----  end of function Put_Vertex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_First_Adjacent
+ *  Description:  得到相邻的第一个点的索引
+ * =====================================================================================
+ */
+    int
+Get_First_Adjacent (Graph my_graph , Vertex_name my_name )
+{
+    int index ;
+    int k=0;
+    if(my_graph == NULL)
+        err_msg("The graph is empty\n");
+    index = Locate_Vertex(my_graph , my_name);
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(my_graph->arcs[index][k]==1)
+            return k;
+    }
+    return -1;
+}		/* -----  end of function Get_First_Adjacent  ----- */
+
