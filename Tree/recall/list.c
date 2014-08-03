@@ -53,6 +53,7 @@ Init_List ( )
         exit (EXIT_FAILURE);
     }
 
+    new_list->next=NULL;
     return new_list;
 }		/* -----  end of function Init_List  ----- */
 
@@ -203,3 +204,28 @@ Get_Max (List my_list )
     }
     return my_list->data;
 }		/* -----  end of function Get_Max  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_List
+ *  Description:  将链表摧毁
+ * =====================================================================================
+ */
+    void
+Destory_List (List my_list )
+{
+    List_node temp;
+    if(my_list == NULL)
+        err_msg("\nlist have not init\n");
+    temp = my_list->next;
+    while(temp!=NULL)
+    {
+        my_list = temp->next;
+        free(temp);
+        temp=my_list;
+    }
+    return ;
+
+}		/* -----  end of function Destory_List  ----- */

@@ -33,4 +33,5 @@ int List_Empty(List my_list);
 int Check_Ele(List my_list , int data);
 void Print_List(List my_list);
 int Get_Max(List my_list);
+void Destory_List(List my_list);
 #endif

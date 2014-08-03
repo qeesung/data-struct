@@ -18,10 +18,11 @@
 
 #ifndef _RECALL_H
 #define _RECALL_H
-#define POINT_ARRAY_SIZE
+#define POINT_ARRAY_SIZE 7
 #include    "list.h"
 void Init_Distance_List(List distance_list);
 void Delete(List distance_list, int data);
 void Insert(List distance_list, int data);
-
+int Turnpike(int point[], List distance_list , int array_size);
+int Recall(int point[], List distance_list , int array_size , int left , int right);
 #endif
