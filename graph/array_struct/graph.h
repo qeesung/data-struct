@@ -37,4 +37,12 @@ int Locate_vertex(Graph my_graph, char * vertex_name);
 void Create_Graph(Graph my_graph , char * filename);
 void Create_Net(Graph my_graph , char * filename);
 void Print_Graph(Graph my_graph);
+void Destory_Graph(Graph my_graph);
+char * Get_Vertex(Graph my_graph , int index );
+void Put_Vertex(Graph my_graph , Vertex_name old_name , Vertex_name new_name);
+int Get_First_Adjacent(Graph my_graph , Vertex_name name);
+int Get_Next_Adjacent(Graph my_graph , Vertex_name name_i , Vertex_name name_j);
+void Insert_Vertex(Graph my_graph , Vertex_name new_name);
+void Insert_Arcs(Graph my_graph , Vertex_name from , Vertex_name to);
+
 #endif
