@@ -68,6 +68,8 @@ Locate_Vertex (Graph my_graph, Vertex_name my_name)
         if(strcmp(my_graph->vertex_name[k],my_name)==0)
             return k;
     }
+    printf("Get the %s\n location failed\n");
+    fflush(stdout);
     return -1;
 }		/* -----  end of function Locate_Vertex  ----- */
 
@@ -83,11 +85,13 @@ Locate_Vertex (Graph my_graph, Vertex_name my_name)
 Create_Graph (Graph my_graph , char * filename)
 {
     FILE * myfile;
-    int k1 , int k2;
+    int k1 ;
+    int k2;
     char buf1[10];
     char buf2[10];
     int length;
     int kind_value;
+    int weight;
     int index1, index2;
     if(my_graph == NULL)
     {
@@ -99,7 +103,7 @@ Create_Graph (Graph my_graph , char * filename)
         fprintf(stderr,"\nEnter the filename\n");
         return;
     }
-    if((my_file = fopen(filename , "r"))==NULL)
+    if((myfile = fopen(filename , "r"))==NULL)
     {
         fprintf(stderr,"open the file:%s failed\n",filename);
         return ;
@@ -177,13 +181,13 @@ Create_Graph (Graph my_graph , char * filename)
         /*  graph kind */
         if(my_graph->kind == DG || my_graph->kind == UDG)
         {
-            if(fscanf(myfile, "%s%s", buf1, buf2)==NULL)
+            if(fscanf(myfile, "%s%s", buf1, buf2)==EOF)
             {
                 fprintf(stderr,"read the file error\n");
                 return;
             }
             length = strlen(buf2);
-            buf2[length-1]='\0';
+            buf2[length]='\0';
             index1 = Locate_Vertex(my_graph , buf1);
             index2 = Locate_Vertex(my_graph , buf2);
             if(index1 == -1 || index2 ==-1)
@@ -192,13 +196,13 @@ Create_Graph (Graph my_graph , char * filename)
                 return ;
             }
             my_graph->arcs[index1][index2]=1;
-            if(my_graph->kind == DG)
+            if(my_graph->kind == UDG)
                 my_graph->arcs[index2][index1]=1;
         }
         else
         {
             /*  net kind */
-            if(fscanf(myfile, "%s%s %d", buf1 , buf2 ,&weight)==NULL)
+            if(fscanf(myfile, "%s%s %d", buf1 , buf2 ,&weight)==EOF)
             {
                 fprintf(stderr,"\nread the file error\n");
                 return ;
@@ -215,9 +219,7 @@ Create_Graph (Graph my_graph , char * filename)
                 my_graph->arcs[index2][index1]=weight;
         }
 
-        }
-
-    }
+     }
        
     return;
 }		/* -----  end of function Create_Graph  ----- */
@@ -240,7 +242,7 @@ Print_Graph (Graph my_graph )
         return ;
     }
     printf("Vertex_number:%d\n",my_graph->vertex_number);
-    printf("Arcs_number:%d\n",my_graph->Arcs_number);
+    printf("Arcs_number:%d\n",my_graph->arcs_number);
     printf("Graph kind:");
     switch(my_graph->kind)
     {
@@ -259,8 +261,9 @@ Print_Graph (Graph my_graph )
     printf("Vertex name:\t");
     for(k1=0;k1<my_graph->vertex_number;k1++)
     {
-        printf("%s\n",my_graph->vertex_name[k1]);
+        printf("%s\t",my_graph->vertex_name[k1]);
     }
+    printf("\n");
     printf("Adjacent Matrix:\n");
     for(k1=0;k1<my_graph->vertex_number;k1++)
     {
