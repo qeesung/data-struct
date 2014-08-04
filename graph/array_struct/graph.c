@@ -414,3 +414,77 @@ Get_Next_Adjacent ( Graph my_graph , Vertex_name i , Vertex_name j)
      fprintf(stderr,"\n can not find next adjacent point\n");
      return -1;
 }		/* -----  end of function Get_Next_Adjacent  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Vertex
+ *  Description:  在图中插入一个点
+ * =====================================================================================
+ */
+    void
+Insert_Vertex (Graph my_graph , Vertex_name new_name  )
+{
+    int k1;
+    int kind;
+    if(my_graph->vertex_number >=MAX_GRAPH_SIZE)
+    {
+        fprintf(stderr,"\nThe vertex number should less than max graph size :%d\n",MAX_GRAPH_SIZE);
+        return ;
+    }
+    if(my_graph->kind%2==0)
+        kind = 0;
+    else
+        kind = INT_MAX;
+    strcpy(my_graph->vertex_name[vertex_number],new_name);
+    for(k1=0;k1<my_graph->vertex_number+1;k1++)
+    {
+        my_graph->arcs[k1][my_graph->vertex_numer]=kind;
+        my_graph->arcs[my_graph->vertex_number][k1]=kind;
+    }
+    my_graph->vertex_numberfrom ++;
+    return ;
+}		/* -----  end of function Insert_Vertex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Arcs
+ *  Description:  插入两个点之间的一条弧
+ * =====================================================================================
+ */
+    void
+Insert_Arcs ( Graph my_graph , Vertex_name from , Vertex_name to )
+{
+    int index_from;
+    int index_to;
+    int kind;
+    int UorN;
+    int weight;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return;
+    }
+    index_from = Locate_vertex(my_graph , from);
+    index_to = Locate_vertex(my_graph , to);
+    if(my_graph->kind%2==0)
+        kind = 1;
+    else
+    {
+        printf("Enter the new arcs weight:");
+        scanf("%d",&weight);
+        kind = weight;
+    }
+    if(my_graph->kind >=2)
+        UorN = 1;//U
+    else
+        UorN = 0;//N
+    my_graph->arcs[index_from][index_to]=kind;
+    if(UorN ==1)
+        my_graph->arcs[index_to][index_form]=kind;
+    my_graph->arcs_number++;
+    
+    
+}		/* -----  end of function Insert_Arcs  ----- */
