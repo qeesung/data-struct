@@ -382,3 +382,35 @@ Get_First_Adjacent (Graph my_graph , Vertex_name my_name )
     return -1;
 }		/* -----  end of function Get_First_Adjacent  ----- */
 
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Next_Adjacent
+ *  Description:  得到某一个点：
+ * =====================================================================================
+ */
+    int
+Get_Next_Adjacent ( Graph my_graph , Vertex_name i , Vertex_name j)
+{
+    int k1, k2;
+    int index_i ;
+    int index_j ;
+    int kind;
+    if(my_graph == NULL)
+        err_msg("Graph have not init\n");
+    index_i = Locate_vertex(my_graph , i);
+    index_j = Locate_vertex(my_graph , j);
+    if(my_graph->kind%2==0)
+        kind =0;
+    else
+        kind = INT_MAX;
+    k1= index_i;
+     for(k2=index_j+1;k2<vertex_number;k2++ )
+     {
+         if(my_graph->arcs[k1][k2]==kind)
+             return k2;
+     }
+     fprintf(stderr,"\n can not find next adjacent point\n");
+     return -1;
+}		/* -----  end of function Get_Next_Adjacent  ----- */
