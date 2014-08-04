@@ -70,3 +70,206 @@ Locate_Vertex (Graph my_graph, Vertex_name my_name)
     }
     return -1;
 }		/* -----  end of function Locate_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Create_Graph
+ *  Description:  由数据文件创建一个图
+ * =====================================================================================
+ */
+    void
+Create_Graph (Graph my_graph , char * filename)
+{
+    FILE * myfile;
+    int k1 , int k2;
+    char buf1[10];
+    char buf2[10];
+    int length;
+    int kind_value;
+    int index1, index2;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return;
+    }
+    if(filename == NULL)
+    {
+        fprintf(stderr,"\nEnter the filename\n");
+        return;
+    }
+    if((my_file = fopen(filename , "r"))==NULL)
+    {
+        fprintf(stderr,"open the file:%s failed\n",filename);
+        return ;
+    }
+    /*  get the vertex number  */
+    if(fgets(buf1 , 10 , myfile)==NULL)
+    {
+        fprintf(stderr,"read the file error\n");
+        return;
+    }
+    my_graph->vertex_number = atoi(buf1);
+    /*  get the arcs number */
+    if(fgets(buf1 , 10 , myfile)==NULL)
+    {
+        fprintf(stderr,"read the file error\n");
+        return;
+    }
+    my_graph->arcs_number = atoi(buf1);
+    /*  get the graph kind */
+    if(fgets(buf1 , 10 , myfile)==NULL)
+    {
+        fprintf(stderr,"read the file error\n");
+        return;
+    }
+    length = strlen(buf1);
+    buf1[length-1]='\0';//除掉回车符号
+    if(strcmp(buf1, "DN")==0)
+        my_graph->kind=DN;
+    else
+    {
+        if(strcmp(buf1 , "DG")==0)
+            my_graph->kind = DG;
+        else
+        {
+            if(strcmp(buf1,"UDG")==0)
+                my_graph->kind = UDG;
+            else
+            {
+                if(strcmp(buf1, "UDN")==0)
+                    my_graph->kind = UDN;
+                else
+                {
+                    fprintf(stderr,"wrong graph kind \n");
+                    return;
+                }
+            }
+        }
+    }
+
+    /*  get the vertex name */
+    for(k1=0;k1<my_graph->vertex_number ; k1++)
+    {
+        if(fgets(buf1 , 10 , myfile)==NULL)
+        {
+            fprintf(stderr,"read the file error\n");
+            return ;
+        }
+        length = strlen(buf1);
+        buf1[length-1]='\0';
+        strcpy(my_graph->vertex_name[k1],buf1);
+    }
+    /*  init the arcs matrix */
+    if(my_graph->kind == DG || my_graph->kind == UDG)
+        kind_value = 0;
+    else
+        kind_value = INT_MAX;
+    for(k1=0;k1<my_graph->vertex_number ;k1++)
+    {
+         for(k2=0;k2<my_graph->vertex_number;k2++)
+             my_graph->arcs[k1][k2]=kind_value;
+    }
+    /*  get the arcs matrix info */
+    for(k1 =0 ;k1<my_graph->arcs_number ;k1++)
+    {
+        /*  graph kind */
+        if(my_graph->kind == DG || my_graph->kind == UDG)
+        {
+            if(fscanf(myfile, "%s%s", buf1, buf2)==NULL)
+            {
+                fprintf(stderr,"read the file error\n");
+                return;
+            }
+            length = strlen(buf2);
+            buf2[length-1]='\0';
+            index1 = Locate_Vertex(my_graph , buf1);
+            index2 = Locate_Vertex(my_graph , buf2);
+            if(index1 == -1 || index2 ==-1)
+            {
+                fprintf(stderr,"Get the location failed\n");
+                return ;
+            }
+            my_graph->arcs[index1][index2]=1;
+            if(my_graph->kind == DG)
+                my_graph->arcs[index2][index1]=1;
+        }
+        else
+        {
+            /*  net kind */
+            if(fscanf(myfile, "%s%s %d", buf1 , buf2 ,&weight)==NULL)
+            {
+                fprintf(stderr,"\nread the file error\n");
+                return ;
+            }
+            index1 = Locate_Vertex(my_graph , buf1);
+            index2 = Locate_Vertex(my_graph , buf2);
+            if(index1 ==-1 || index2 ==-1)
+            {
+                fprintf(stderr,"Get the location failed\n");
+                return ;
+            }
+            my_graph->arcs[index1][index2]=weight;
+            if(my_graph->kind == UDN)
+                my_graph->arcs[index2][index1]=weight;
+        }
+
+        }
+
+    }
+       
+    return;
+}		/* -----  end of function Create_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Graph
+ *  Description:  将一个图的全部信息打印出来
+ * =====================================================================================
+ */
+    void
+Print_Graph (Graph my_graph )
+{
+    int k1 ,k2;
+    if(my_graph ==NULL)
+    {
+        fprintf(stderr,"the graph have not init\n");
+        return ;
+    }
+    printf("Vertex_number:%d\n",my_graph->vertex_number);
+    printf("Arcs_number:%d\n",my_graph->Arcs_number);
+    printf("Graph kind:");
+    switch(my_graph->kind)
+    {
+        case DG:printf("direct graph\n");
+            break;
+        case DN:printf("direct net\n");
+            break;
+        case UDG:printf("undirect graph\n");
+            break;
+        case UDN:printf("undirect net\n");
+            break;
+        default:
+            printf("unknown graph kind\n");
+    }
+
+    printf("Vertex name:\t");
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        printf("%s\n",my_graph->vertex_name[k1]);
+    }
+    printf("Adjacent Matrix:\n");
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        for(k2=0;k2<my_graph->vertex_number;k2++)
+        {
+            printf("%d\t",my_graph->arcs[k1][k2]);
+        }
+        printf("\n");
+    }
+    return;
+
+}		/* -----  end of function Print_Graph  ----- */
