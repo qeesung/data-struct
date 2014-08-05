@@ -22,6 +22,7 @@
 #include    <string.h>
 #include    <limits.h>
 
+int visited[MAX_GRAPH_SIZE]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -590,5 +591,78 @@ Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2 )
     my_graph->arcs[index1][index2]=kind_value;
     if(my_graph->kind >=2)
         my_graph->arcs[index2][index1]=kind_value;
+    my_graph->arcs--;
     return;
 }		/* -----  end of function Delete_Arcs()  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Visit
+ *  Description:  一个点的访问函数
+ * =====================================================================================
+ */
+    void
+Visit ( Vertex_name my_name )
+{
+    printf("%s\n", my_name);
+    return;
+}		/* -----  end of function Visit  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS
+ *  Description:  深度遍历
+ * =====================================================================================
+ */
+    void
+DFS ( Graph my_graph , int index_start )
+{
+    int adjacent;    
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph hav enot init\n");
+        return;
+    }
+    if(index_start>my_graph->vertex_number)
+    {
+        fprintf(stderr,"The index start should less than %d\n",my_graph->vertex_number);
+        return;
+    }
+    visited[index_start] = 1;
+    Visit(my_graph->vertex_name[index_start]);
+    for(adjacent=First_Adjacent(my_Graph,my_graph->vertex_name[index_start]);\
+            adjacent!=-1;\
+            adjacent = Next_Adjacent(my_graph , my_graph->vertex_name[index_start],my_graph->vertex_name[adjacent]))
+        if(visited[adjacent]==0)
+            DFS(my_graph, index_start);
+}		/* -----  end of function DFS  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS_Traverse
+ *  Description:  深度遍历
+ * =====================================================================================
+ */
+    void
+DFS_Traverse ( Graph my_graph , my_func visit )
+{
+    int k=0;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\n the Graph have not init\n");
+        return;
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+        visited[k]=0;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(visited[k]==0)
+            DFS(my_graph , k);
+    }
+}		/* -----  end of function DFS_Traverse  ----- */
+

@@ -20,6 +20,7 @@
 #define MAX_GRAPH_SIZE 20
 typedef enum {DG , DN , UDG , UDN} Graph_kind;
 typedef char Vertex_name[20];
+typedef void (* my_func)(Vertex_name); 
 struct graph
 {
     Vertex_name vertex_name[MAX_GRAPH_SIZE];
@@ -43,4 +44,7 @@ void Insert_Vertex(Graph my_graph , Vertex_name my_name);
 void Delete_Vertex(Graph my_graph , Vertex_name my_name);
 void Insert_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2);
 void Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2);
+void Visit(Vertex_name my_name);
+void DFS(Graph my_graph ,int index_start);
+void DFS_Traverse(Graph my_graph , my_func my_visit);
 #endif
