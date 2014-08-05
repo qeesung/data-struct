@@ -199,7 +199,11 @@ Create_Graph (Graph my_graph , char * filename)
             }
             my_graph->arcs[index1][index2]=1;
             if(my_graph->kind == UDG)
+            {
+            
                 my_graph->arcs[index2][index1]=1;
+                my_graph->arcs_number++;
+            }
         }
         else
         {
@@ -218,7 +222,11 @@ Create_Graph (Graph my_graph , char * filename)
             }
             my_graph->arcs[index1][index2]=weight;
             if(my_graph->kind == UDN)
+            {
+                
                 my_graph->arcs[index2][index1]=weight;
+                my_graph->arcs_number++;
+            }
         }
 
      }
@@ -242,6 +250,11 @@ Print_Graph (Graph my_graph )
     {
         fprintf(stderr,"the graph have not init\n");
         return ;
+    }
+    if(my_graph->vertex_number ==0 && my_graph->arcs_number ==0)
+    {
+        printf("\nThe graph is not exists\n");
+        return;
     }
     printf("Vertex_number:%d\n",my_graph->vertex_number);
     printf("Arcs_number:%d\n",my_graph->arcs_number);
@@ -288,7 +301,7 @@ Print_Graph (Graph my_graph )
  * =====================================================================================
  */
     void
-Destory_Graph (Graph my_graph )
+Destory_Graph(Graph my_graph )
 {
     int k1 ,k2,kind_value;
     if(my_graph == NULL)
@@ -299,14 +312,15 @@ Destory_Graph (Graph my_graph )
     /*  clear vertex name */
     for(k1=0;k1<my_graph->vertex_number;k1++)
     {
-        my_graph->vertex_name[k1]=NULL;
+       // my_graph->vertex_name[k1]=;
+       strcpy(my_graph->vertex_name[k1]," ");
     }
     /* revalue the arcs */
     if(my_graph->kind %2 ==0)
         kind_value = 0;
     else
         kind_value = INT_MAX;
-    for(k1=0;k1<my_graoh->vertex_number ;k1++)
+    for(k1=0;k1<my_graph->vertex_number ;k1++)
     {
         for(k2=0;k2<my_graph->vertex_number;k2++)
         {
@@ -339,7 +353,7 @@ Get_Vertex ( Graph my_graph , int index )
         fprintf(stderr,"The index should less than the %d\n", my_graph->vertex_number);
         return NULL;
     }
-    return my_graph->vertex_name;
+    return my_graph->vertex_name[index];
 }		/* -----  end of function Get_Vertex  ----- */
 
 /* 
@@ -373,7 +387,7 @@ Put_Vertex ( Graph my_graph , Vertex_name old_name , Vertex_name new_name )
  * =====================================================================================
  */
     int
-First_Adjacent ( Grapg my_graph , Vertex_name my_name )
+First_Adjacent ( Graph my_graph , Vertex_name my_name )
 {
     int index;
     int k;
@@ -387,7 +401,7 @@ First_Adjacent ( Grapg my_graph , Vertex_name my_name )
         return -1;
     for(k=0;k<my_graph->vertex_number;k++)
     {
-        if(my_graph->arcs[index][k]!=1 &&  my_graph->arcs[index][k]!=INT_MAX)
+        if(my_graph->arcs[index][k]!=0 && my_graph->arcs[index][k]!=INT_MAX)
             return k;
     }
     return -1;
@@ -402,7 +416,7 @@ First_Adjacent ( Grapg my_graph , Vertex_name my_name )
  * =====================================================================================
  */
     int
-Next_Aajacent ( Graph my_graph , Vertex_name from_name , Vertex_name to_name )
+Next_Adjacent ( Graph my_graph , Vertex_name from_name , Vertex_name to_name )
 {
     int k=0;
     int index1;
@@ -449,11 +463,11 @@ Insert_Vertex (Graph my_graph , Vertex_name my_name )
     if(my_graph->kind %2 ==0)
         kind_value = 0;
     else
-        kind_value INT_MAX;
-    strcpy(my_graph->vertex_name[vertex_number],my_name);
+        kind_value =INT_MAX;
+    strcpy(my_graph->vertex_name[my_graph->vertex_number],my_name);
     for(k=0;k<=my_graph->vertex_number;k++)
     {
-        my_graph->arcs[k][my_graph->veretx_numer]=kind_value;
+        my_graph->arcs[k][my_graph->vertex_number]=kind_value;
         my_graph->arcs[my_graph->vertex_number][k]=kind_value;
     }
     my_graph->vertex_number ++;
@@ -489,14 +503,23 @@ Delete_Vertex ( Graph my_graph , Vertex_name my_name )
     /*  移动整个名字数组 */
     while(index_temp <= my_graph->vertex_number-2)
     {
-        strcpy(my_graph->vertex_name[index], my_graph->vertex_name[index+1]);
+        strcpy(my_graph->vertex_name[index_temp], my_graph->vertex_name[index_temp+1]);
+        index_temp++;
     }
     /*  移动邻接矩阵 */
-    // 全部向左移动
-    for(k1=0;k1<my_graph->vertex_number;k1++)
+    for(k1==0;k1<my_graph->vertex_number;k1++)
     {
         if(my_graph->arcs[k1][index]!=0 && my_graph->arcs[k1][index]!=INT_MAX)
             my_graph->arcs_number--;
+    }
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        if(my_graph->arcs[index][k1]!=0 && my_graph->arcs[index][k1]!=INT_MAX)
+            my_graph->arcs_number--;
+    }
+    // 全部向左移动
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
         for(k2=index;k2<my_graph->vertex_number-1;k2++)
         {
             my_graph->arcs[k1][k2]=my_graph->arcs[k1][k2+1];
@@ -507,8 +530,6 @@ Delete_Vertex ( Graph my_graph , Vertex_name my_name )
    {
         for(k2=0;k2<my_graph->vertex_number-1;k2++)
         {
-            if(my_graph->arcs[index][k2]!=0 && my_graph->arcs[index][k2]!=INT_MAX)
-                 my_graph->arcs_number--;
             my_graph->arcs[k1][k2]=my_graph->arcs[k1+1][k2];
         }
    }
@@ -592,7 +613,7 @@ Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2 )
     my_graph->arcs[index1][index2]=kind_value;
     if(my_graph->kind >=2)
         my_graph->arcs[index2][index1]=kind_value;
-    my_graph->arcs--;
+    my_graph->arcs_number--;
     return;
 }		/* -----  end of function Delete_Arcs()  ----- */
 
@@ -635,11 +656,11 @@ DFS ( Graph my_graph , int index_start )
     }
     visited[index_start] = 1;
     Visit(my_graph->vertex_name[index_start]);
-    for(adjacent=First_Adjacent(my_Graph,my_graph->vertex_name[index_start]);\
+    for(adjacent=First_Adjacent(my_graph,my_graph->vertex_name[index_start]);\
             adjacent!=-1;\
             adjacent = Next_Adjacent(my_graph , my_graph->vertex_name[index_start],my_graph->vertex_name[adjacent]))
         if(visited[adjacent]==0)
-            DFS(my_graph, index_start);
+            DFS(my_graph, adjacent);
 }		/* -----  end of function DFS  ----- */
 
 
@@ -692,6 +713,7 @@ BFS_Traverse ( Graph my_graph , my_func my_visit )
         visited[k] =0;
     }
     my_queue = Init_Queue();
+    Enqueue(my_queue, 0);
     while((dequeue_node= Dequeue(my_queue))!=NULL)
     {
        /*if(visited[dequeue_node->index]==0)
@@ -700,7 +722,7 @@ BFS_Traverse ( Graph my_graph , my_func my_visit )
             visited[dequeue_node->index]=1;
         }*/
         adjacent = First_Adjacent(my_graph,my_graph->vertex_name[dequeue_node->index]);
-        while(adajcent!=-1)
+        while(adjacent!=-1)
         {
             if(visited[adjacent]!=1)
             {
@@ -708,6 +730,7 @@ BFS_Traverse ( Graph my_graph , my_func my_visit )
                 visited[adjacent]=1;
                 Enqueue(my_queue,adjacent);
             }
+            adjacent=Next_Adjacent(my_graph ,Get_Vertex(my_graph , dequeue_node->index), Get_Vertex(my_graph , adjacent));
         }
 
     }
