@@ -361,3 +361,63 @@ Put_Vertex ( Graph my_graph , Vertex_name old_name , Vertex_name new_name )
     strcpy(my_graph->vertex_name[index],new_name);
     return;
 }		/* -----  end of function Put_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  First_Adjacent
+ *  Description:  得到第一个邻接点的索引
+ * =====================================================================================
+ */
+    int
+First_Adjacent ( Grapg my_graph , Vertex_name my_name )
+{
+    int index;
+    int k;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return -1;
+    }
+    index = Locate_Vertex(my_graph , my_name);
+    if(index == -1)
+        return -1;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(my_graph->arcs[index][k]!=1 &&  my_graph->arcs[index][k]!=INT_MAX)
+            return k;
+    }
+    return -1;
+}		/* -----  end of function First_Adjacent  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Next_Aajacent
+ *  Description:  得到一条弧的下一个邻接点 -1为没有找到
+ * =====================================================================================
+ */
+    int
+Next_Aajacent ( Graph my_graph , Vertex_name from_name , Vertex_name to_name )
+{
+    int k=0;
+    int index1;
+    int index2;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return -1;
+    }
+    index1 = Locate_Vertex(my_graph , from_name);
+    index2 = Locate_Vertex(my_graph , to_name);
+    if(index1 == -1 || index2 ==-1)
+        return -1;
+    for(k=index2+1;k<my_graph->vertex_number ;k++)
+    {
+        if(my_graph->arcs[index1][k]!=0 && my_graph->arcs[index1][k]!=INT_MAX)
+            return k;
+    }
+    return -1;
+}		/* -----  end of function Next_Aajacent  ----- */

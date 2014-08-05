@@ -37,4 +37,6 @@ void Print_Graph(Graph my_graph);
 void Destory_Graoh(Graph my_graph);
 char * Get_Vertex(Graph my_graph ,int index);
 void Put_Vertex(Graph my_graph , Vertex_name old_name , Vertex_name new_name);
+int First_Adjacent(Graph my_graph , Vertex_name my_name);
+int Next_Adjacent(Graph my_graph , Vertex_name name_from , Vertex_name name_to);
 #endif
