@@ -512,3 +512,83 @@ Delete_Vertex ( Graph my_graph , Vertex_name my_name )
    }
    my_graph->vertex_number--;
 }		/* -----  end of function Delete_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Arcs()
+ *  Description:  插入一条弧线
+ * =====================================================================================
+ */
+    void
+Insert_Arcs( Graph my_graph , Vertex_name name1, Vertex_name name2)
+{
+    int index1 ;
+    int index2;
+    int kind_value;
+    int weight;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return ;
+    }
+    index1 =Locate_Vertex(my_graph , name1);
+    index2 = Locate_Vertex(my_graph , name2);
+    if(index1 == -1 || index2==-1)
+        return;
+    if(my_graph->kind %2 ==0)
+        kind_value = 1;
+    else
+    {
+        printf("Enter the arcs weight:");
+        scanf("%d\n",&weight);
+    }
+    if(my_graph->arcs[index1][index2]!=0 && my_graph->arcs[index1][index2]!=INT_MAX)
+    {
+        fprintf(stderr,"\nThe arcs have been exists\n");
+        return;
+    }
+    my_graph->arcs[index1][index2]=kind_value;
+    if(my_graph->kind >=2)
+        my_graph->arcs[index2][index1]=kind_value;
+    my_graph->arcs_number ++;
+}		/* -----  end of function Insert_Arcs()  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Arcs()
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2 )
+{
+    int index1 ;
+    int index2;
+    int kind_value;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return ;
+    }
+    index1 = Locate_Vertex(my_graph, name1);
+    index2 = Locate_Vertex(my_graph , name2);
+    if(index1 ==-1 || index2 ==-1)
+        return;
+    if(my_graph->kind%2==0)
+        kind_value =0;
+    else
+        kind_value = INT_MAX;
+    if(my_graph->arcs[index1][index2]==kind_value)
+    {
+        fprintf(stderr, "\nThe arcs is not exists\n");
+        return;
+    }
+    my_graph->arcs[index1][index2]=kind_value;
+    if(my_graph->kind >=2)
+        my_graph->arcs[index2][index1]=kind_value;
+    return;
+}		/* -----  end of function Delete_Arcs()  ----- */

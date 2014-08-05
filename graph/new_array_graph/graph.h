@@ -41,4 +41,6 @@ int First_Adjacent(Graph my_graph , Vertex_name my_name);
 int Next_Adjacent(Graph my_graph , Vertex_name name_from , Vertex_name name_to);
 void Insert_Vertex(Graph my_graph , Vertex_name my_name);
 void Delete_Vertex(Graph my_graph , Vertex_name my_name);
+void Insert_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2);
+void Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2);
 #endif
