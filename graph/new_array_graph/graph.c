@@ -276,3 +276,88 @@ Print_Graph (Graph my_graph )
     return;
 
 }		/* -----  end of function Print_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_Graph
+ *  Description:  摧毁一张图
+ * =====================================================================================
+ */
+    void
+Destory_Graph (Graph my_graph )
+{
+    int k1 ,k2,kind_value;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"the graph have not init\n");
+        return;
+    }
+    /*  clear vertex name */
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        my_graph->vertex_name[k1]=NULL;
+    }
+    /* revalue the arcs */
+    if(my_graph->kind %2 ==0)
+        kind_value = 0;
+    else
+        kind_value = INT_MAX;
+    for(k1=0;k1<my_graoh->vertex_number ;k1++)
+    {
+        for(k2=0;k2<my_graph->vertex_number;k2++)
+        {
+            my_graph->arcs[k1][k2]=kind_value;
+        }
+    }
+    my_graph->vertex_number=0;
+    my_graph->arcs_number=0;
+
+}		/* -----  end of function Destory_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Vertex
+ *  Description:  得到一个点的索引 返回-1的时候就是没有找到这个点
+ * =====================================================================================
+ */
+   char *
+Get_Vertex ( Graph my_graph , int index )
+{
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return NULL;
+    }
+    if(index>my_graph->vertex_number)
+    {
+        fprintf(stderr,"The index should less than the %d\n", my_graph->vertex_number);
+        return NULL;
+    }
+    return my_graph->vertex_name;
+}		/* -----  end of function Get_Vertex  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Put_Vertex
+ *  Description:  为一个点重新设置信息 （现在就是设置对应的名字）
+ * =====================================================================================
+ */
+    void
+Put_Vertex ( Graph my_graph , Vertex_name old_name , Vertex_name new_name )
+{
+    int index;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"the graph have not init\n");
+        return ;
+    }
+    index = Locate_Vertex(my_graph ,old_name);
+    if(index==-1)
+        return;
+    strcpy(my_graph->vertex_name[index],new_name);
+    return;
+}		/* -----  end of function Put_Vertex  ----- */

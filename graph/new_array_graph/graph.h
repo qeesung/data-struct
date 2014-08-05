@@ -34,5 +34,7 @@ Graph Init_Graph();
 int Locate_Vertex(Graph my_graph , Vertex_name my_name);
 void Create_Graph(Graph my_graph , char * filename);
 void Print_Graph(Graph my_graph);
-
+void Destory_Graoh(Graph my_graph);
+char * Get_Vertex(Graph my_graph ,int index);
+void Put_Vertex(Graph my_graph , Vertex_name old_name , Vertex_name new_name);
 #endif
