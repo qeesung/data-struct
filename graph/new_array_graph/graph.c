@@ -21,6 +21,7 @@
 #include    "graph.h"
 #include    <string.h>
 #include    <limits.h>
+#include    "queue.h"
 
 int visited[MAX_GRAPH_SIZE]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -666,3 +667,50 @@ DFS_Traverse ( Graph my_graph , my_func visit )
     }
 }		/* -----  end of function DFS_Traverse  ----- */
 
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  BFS_Traverse
+ *  Description:  广度优先非递归遍历图
+ * =====================================================================================
+ */
+    void
+BFS_Traverse ( Graph my_graph , my_func my_visit )
+{
+    Queue my_queue;
+    List_node dequeue_node;
+    int k=0;
+    int adjacent;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\n the Graph have not init\n");
+        return;
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        visited[k] =0;
+    }
+    my_queue = Init_Queue();
+    while((dequeue_node= Dequeue(my_queue))!=NULL)
+    {
+       /*if(visited[dequeue_node->index]==0)
+        {
+            my_visit(my_graph->vertex_name[dequeue_node->index]);
+            visited[dequeue_node->index]=1;
+        }*/
+        adjacent = First_Adjacent(my_graph,my_graph->vertex_name[dequeue_node->index]);
+        while(adajcent!=-1)
+        {
+            if(visited[adjacent]!=1)
+            {
+                my_visit(my_graph->vertex_name[adjacent]);
+                visited[adjacent]=1;
+                Enqueue(my_queue,adjacent);
+            }
+        }
+
+    }
+    printf("\n");
+    return;
+}		/* -----  end of function BFS_Traverse  ----- */

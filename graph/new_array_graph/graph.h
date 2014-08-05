@@ -47,4 +47,5 @@ void Delete_Arcs(Graph my_graph , Vertex_name name1 , Vertex_name name2);
 void Visit(Vertex_name my_name);
 void DFS(Graph my_graph ,int index_start);
 void DFS_Traverse(Graph my_graph , my_func my_visit);
+void BFS_Traverse(Graph my_graph , my_func my_visit);
 #endif
