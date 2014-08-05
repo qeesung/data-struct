@@ -421,3 +421,94 @@ Next_Aajacent ( Graph my_graph , Vertex_name from_name , Vertex_name to_name )
     }
     return -1;
 }		/* -----  end of function Next_Aajacent  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Vertex
+ *  Description:  插入一个点
+ * =====================================================================================
+ */
+    void
+Insert_Vertex (Graph my_graph , Vertex_name my_name )
+{
+    int k;
+    int kind_value ;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return ;
+    }
+    if(my_graph->vertex_number>=MAX_GRAPH_SIZE)
+    {
+        fprintf(stderr,"\nThe graph size should less than %d\n",MAX_GRAPH_SIZE);
+        return;
+    }   
+    if(my_graph->kind %2 ==0)
+        kind_value = 0;
+    else
+        kind_value INT_MAX;
+    strcpy(my_graph->vertex_name[vertex_number],my_name);
+    for(k=0;k<=my_graph->vertex_number;k++)
+    {
+        my_graph->arcs[k][my_graph->veretx_numer]=kind_value;
+        my_graph->arcs[my_graph->vertex_number][k]=kind_value;
+    }
+    my_graph->vertex_number ++;
+
+}		/* -----  end of function Insert_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Vertex
+ *  Description:  删除一个点
+ * =====================================================================================
+ */
+    void
+Delete_Vertex ( Graph my_graph , Vertex_name my_name )
+{
+    int index ;
+    int kind_value ;
+    int temp;
+    int index_temp;
+    int k1=0;
+    int k2=0;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return;
+    }
+    index = Locate_Vertex(my_graph , my_name);
+    if(index == -1)
+        return;
+    index_temp = index;
+    /*  移动整个名字数组 */
+    while(index_temp <= my_graph->vertex_number-2)
+    {
+        strcpy(my_graph->vertex_name[index], my_graph->vertex_name[index+1]);
+    }
+    /*  移动邻接矩阵 */
+    // 全部向左移动
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        if(my_graph->arcs[k1][index]!=0 && my_graph->arcs[k1][index]!=INT_MAX)
+            my_graph->arcs_number--;
+        for(k2=index;k2<my_graph->vertex_number-1;k2++)
+        {
+            my_graph->arcs[k1][k2]=my_graph->arcs[k1][k2+1];
+        }
+    }
+    // 全部向右移动
+   for(k1=index;k1<my_graph->vertex_number;k1++)
+   {
+        for(k2=0;k2<my_graph->vertex_number-1;k2++)
+        {
+            if(my_graph->arcs[index][k2]!=0 && my_graph->arcs[index][k2]!=INT_MAX)
+                 my_graph->arcs_number--;
+            my_graph->arcs[k1][k2]=my_graph->arcs[k1+1][k2];
+        }
+   }
+   my_graph->vertex_number--;
+}		/* -----  end of function Delete_Vertex  ----- */

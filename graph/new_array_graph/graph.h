@@ -39,4 +39,6 @@ char * Get_Vertex(Graph my_graph ,int index);
 void Put_Vertex(Graph my_graph , Vertex_name old_name , Vertex_name new_name);
 int First_Adjacent(Graph my_graph , Vertex_name my_name);
 int Next_Adjacent(Graph my_graph , Vertex_name name_from , Vertex_name name_to);
+void Insert_Vertex(Graph my_graph , Vertex_name my_name);
+void Delete_Vertex(Graph my_graph , Vertex_name my_name);
 #endif
