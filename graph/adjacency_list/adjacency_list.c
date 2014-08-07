@@ -20,7 +20,8 @@
 #include    <stdlib.h>
 #include    <string.h>
 #include    "adjacency_list.h"
-
+#include    "queue.h"
+int visited[MAX_GRAPH_SIZE];
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  init_error
@@ -421,7 +422,7 @@ Next_Adjver ( Graph my_graph , Vertex_name name1 , Vertex_name name2 )
         return -1;
     }
     temp = my_graph->nodes[index].adj_list;
-    while(temp->next!=NULL && strcmp(Get_Vertex(my_graph , temp->next->index), name2)!=NULL)
+    while(temp->next!=NULL && strcmp(Get_Vertex(my_graph , temp->next->index), name2)!=0)
     {
         temp=temp->next;
     }
@@ -445,7 +446,7 @@ Insert_Ver ( Graph my_graph, Vertex_name new_name )
 {
     if(init_error(my_graph))
         return;
-    if(my_graph->veretx_number >= MAX_GRAPH_SIZE)
+    if(my_graph->vertex_number >= MAX_GRAPH_SIZE)
     {
         fprintf(stderr, "\ngraph is full\n");
         return;
@@ -486,9 +487,10 @@ Delete_Ver ( Graph my_graph , Vertex_name del_name )
         temp = my_graph->nodes[k].adj_list;
         while(temp->next!=NULL)
         {
+            
            if(temp->next->index > index)
            {
-                temp->next->index --;
+                temp->next->index--;
            }
            else
            {
@@ -498,8 +500,11 @@ Delete_Ver ( Graph my_graph , Vertex_name del_name )
                     free(temp->next);
                     temp->next =temp1;
                 }
+
            }
-           temp = temp->next;
+           temp=temp->next;
+           if(temp == NULL)
+               break;
         }
         
     }
@@ -511,11 +516,13 @@ Delete_Ver ( Graph my_graph , Vertex_name del_name )
         free(temp);
         temp = temp1;
     }
+    temp=NULL;
     /*  开始将数组向上移动 */
     for(k = index ; k<my_graph->vertex_number-1 ; k++)
     {
        my_graph->nodes[k]= my_graph->nodes[k+1]; 
     }
+    my_graph->vertex_number--;
     return;
 
 }		/* -----  end of function Delete_Ver  ----- */
@@ -536,10 +543,10 @@ Insert_Arcs ( Graph my_graph , Vertex_name name_from, Vertex_name name_to )
     List_node temp,temp1;
     List_node new_node;
     int weight;
-    if(init_error(my_gragh))
+    if(init_error(my_graph))
         return;
     if(name_from == NULL || name_to == NULL)
-        return -1;
+        return ;
     index1= Locate_Vertex(my_graph,name_from);
     index2= Locate_Vertex(my_graph ,name_to);
     if(index1==-1 || index2==-1)
@@ -553,6 +560,7 @@ Insert_Arcs ( Graph my_graph , Vertex_name name_from, Vertex_name name_to )
     {
         if(temp->next->index == index2)
             return;
+        temp= temp->next;
     }
     temp = my_graph->nodes[index1].adj_list;
     
@@ -614,7 +622,7 @@ Delete_Arcs ( Graph my_graph , Vertex_name name_from , Vertex_name name_to )
         return;
     }
     temp = my_graph->nodes[index1].adj_list ;
-    while(temp->next!=NULL || temp->next->index !=index2)
+    while(temp->next!=NULL &&  temp->next->index !=index2)
     {
         temp=temp->next;
     }
@@ -630,11 +638,13 @@ Delete_Arcs ( Graph my_graph , Vertex_name name_from , Vertex_name name_to )
     if(my_graph ->kind >1)
     {
         temp = my_graph->nodes[index2].adj_list ;
-        while(temp->next!=NULL || temp->next->index !=index1)
+        while(temp->next!=NULL && temp->next->index !=index1)
         {
             temp=temp->next;
         }
-            /*  找到了这条弧  删除 */
+        /*  找到了这条弧  删除 */
+        if(temp->next==NULL)
+            return ;
         temp1 = temp->next->next;
         free(temp->next);
         temp->next=temp1;
@@ -643,3 +653,117 @@ Delete_Arcs ( Graph my_graph , Vertex_name name_from , Vertex_name name_to )
     my_graph->arcs_number--;
 
 }		/* -----  end of function Delete_Arcs  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Init_Visited_Array
+ *  Description:  初始化我的访问数组
+ * =====================================================================================
+ */
+    void
+Init_Visited_Array (  )
+{
+    int k=0;
+    for(k=0;k<MAX_GRAPH_SIZE;k++)
+    {
+        visited[k]=0;
+    }
+    return;
+}		/* -----  end of function Init_Visited_Array  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Visit
+ *  Description:  我的节点访问函数
+ * =====================================================================================
+ */
+    void
+Visit ( Vertex_name my_name )
+{
+    printf("%s\n",my_name );
+    return;
+}		/* -----  end of function Visit  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS
+ *  Description:  深度遍历 从任意一个点开始
+ * =====================================================================================
+ */
+    void
+DFS ( Graph my_graph , int index , my_func visit)
+{
+    List_node temp;
+    if(init_error(my_graph))
+        return ;
+    if(index >= my_graph->vertex_number)
+        return;
+    if(visited[index]==1)
+        return;
+    visit(my_graph->nodes[index].vertex_name);
+    visited[index]=1;/*   表明已经访问过了 */
+    temp = my_graph->nodes[index].adj_list;
+    while(temp->next != NULL)
+    {
+        DFS(my_graph , temp->next->index, visit);
+        temp = temp->next;
+    }
+}		/* -----  end of function DFS  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS_Traverse
+ *  Description:  深度遍历 从第一颗开始
+ * =====================================================================================
+ */
+    void
+DFS_Traverse ( Graph my_graph , my_func visit)
+{
+    int k=0;
+    if(init_error(my_graph))
+        return;
+    Init_Visited_Array();
+    for(k=0;k<my_graph->vertex_number ;k++)
+    {
+        DFS(my_graph  , k , visit);
+    }
+    return;
+}		/* -----  end of function DFS_Traverse  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  BFS_Traverse
+ *  Description:  广度遍历
+ * =====================================================================================
+ */
+    void
+BFS_Traverse ( Graph my_graph , my_func  visit )
+{
+    List_node temp;
+    Queue my_queue;
+    Queue_list_node dequeue_node;
+    /*  这里需要一个队列 */
+    if(init_error(my_graph))
+        return ;
+    Init_Visited_Array();;
+    my_queue=Init_Queue();
+    Enqueue(my_queue , 0);
+    while((dequeue_node= Dequeue(my_queue))!=NULL)
+    {
+        if(visited[dequeue_node->index]==1)
+            continue;
+        visit(Get_Vertex(my_graph , dequeue_node->index));
+        visited[dequeue_node->index]=1;
+        temp = my_graph->nodes[dequeue_node->index].adj_list;
+        while(temp->next!=NULL)
+        {
+            if(visited[temp->next->index]!=1)
+                Enqueue(my_queue, temp->next->index);
+            temp=temp->next;
+        }
+    }
+    return ;
+}		/* -----  end of function BFS_Traverse  ----- */
+
