@@ -86,7 +86,7 @@ Init_Graph (  )
         }
     }
     new_graph->vertex_number =0;
-    new_graph->arcs_numebr =0;
+    new_graph->arcs_number =0;
     return new_graph;
 }		/* -----  end of function Init_Graph  ----- */
 
@@ -99,7 +99,7 @@ Init_Graph (  )
  * =====================================================================================
  */
     int
-Craete_Graph ( Graph my_graph  , char * filename )
+Create_Graph ( Graph my_graph  , char * filename )
 {
     List_node temp;
     List_node new_node;
@@ -133,7 +133,7 @@ Craete_Graph ( Graph my_graph  , char * filename )
         fprintf(stderr, "\n fgets error\n");
         return -1;
     }
-    my_graph->arcs_numer = atoi(buf);
+    my_graph->arcs_number = atoi(buf);
     /*  读取图的类型 */
     if(fgets(buf , 20 , myfile)==NULL)
     {
@@ -170,6 +170,8 @@ Craete_Graph ( Graph my_graph  , char * filename )
             fprintf(stderr, "\nfgets error\n");
             return -1;
         }
+        length = strlen(buf);
+        buf[length-1]='\0';
         strcpy(my_graph->nodes[k].vertex_name , buf);
     }
     /*  获取弧的信息 */
@@ -179,13 +181,14 @@ Craete_Graph ( Graph my_graph  , char * filename )
         if(my_graph->kind == DG || my_graph->kind == UDG)
         {
             fscanf(myfile , "%s%s",buf , buf_aim);
-            length = strlen(buf_aim);
-            buf_aim[length-1]='\0';
             index1 = Locate_Vertex(my_graph , buf);
             index2 = Locate_Vertex(my_graph , buf_aim);
             if(index1 ==-1 || index2==-1)
+            {
+                fprintf(stderr,"\nLocate error\n");
                 return -1;
-
+                
+            }
             new_node	= malloc ( sizeof(struct list_node) );
             if ( new_node==NULL ) {
                 fprintf ( stderr, "\ndynamic memory allocation failed\n" );
@@ -214,7 +217,7 @@ Craete_Graph ( Graph my_graph  , char * filename )
         {
             fscanf(myfile , "%s%s %d", buf , buf_aim , &weight);
             index1 = Locate_Vertex(my_graph,buf);
-            index2 = Locate_vertex(my_graph , buf_aim);
+            index2 = Locate_Vertex(my_graph , buf_aim);
             if(index1 ==-1 || index2==-1)
                 return -1;
             
@@ -244,6 +247,7 @@ Craete_Graph ( Graph my_graph  , char * filename )
 
         }
     }
+    printf("create graph done\n");
     return 1;
 }		/* -----  end of function Craete_Graph  ----- */
 
@@ -309,7 +313,7 @@ Print_Graph ( Graph my_graph )
     List_node temp;
     if(init_error(my_graph))
         return;
-    printf("graph vertex_number is : %d\n", my_graph->veretex_number);
+    printf("graph vertex_number is : %d\n", my_graph->vertex_number);
     printf("graph arcs number is :%d\n", my_graph->arcs_number);
     printf("graph kind is :");
     switch(my_graph->kind)
@@ -328,13 +332,68 @@ Print_Graph ( Graph my_graph )
     for(k=0;k<my_graph->vertex_number;k++)
     {
         printf("%s",my_graph->nodes[k].vertex_name);
-        temp my_graph->nodes[k].adj_list;
+        temp= my_graph->nodes[k].adj_list;
         while(temp->next!=NULL)
         {
-            printf("---->%s",Get_Vertex(temp->next->index));
+            if(my_graph->kind %2 ==0)
+                printf("---->%s",Get_Vertex(my_graph , temp->next->index));
+            else
+                printf("----%d--->%s", temp->next->weight, Get_Vertex(my_graph , temp->next->index));
+            temp = temp->next;
         }
         printf("\n");
     }
     return ;
 
 }		/* -----  end of function Print_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Put_Vertex
+ *  Description:  将一个点重新赋值
+ * =====================================================================================
+ */
+    void
+Put_Vertex ( Graph my_graph , Vertex_name old_name , Vertex_name new_name)
+{
+    int index;
+    if(init_error(my_graph))
+        return ;
+    index = Locate_Vertex(my_graph , old_name );
+    if(index == -1)
+    {
+        fprintf(stderr, "\n can not find the vertex %s \n", old_name);
+        return ;
+    }
+    strcpy(my_graph->nodes[index].vertex_name, new_name);
+    return;
+}		/* -----  end of function Put_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  First_Adjver
+ *  Description:  得到一个点的第一个邻接点
+ * =====================================================================================
+ */
+    int
+First_Adjver ( Graph my_graph , Vertex_name my_name )
+{
+    int index;
+    if(init_error(my_graph))
+        return -1;
+    index = Locate_Vertex(my_graph , my_name);
+    if(index ==-1)
+    {
+        fprintf(stderr, "\n can not find %s vertex \n", my_name);
+        return -1;
+    }
+    if(my_graph->nodes[index].adj_list->next!=NULL)
+        return my_graph->nodes[index].adj_list->next->index;
+    else
+        return -1;
+}		/* -----  end of function First_Adjver  ----- */
+
