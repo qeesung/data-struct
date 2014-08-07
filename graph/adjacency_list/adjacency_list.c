@@ -246,3 +246,33 @@ Craete_Graph ( Graph my_graph  , char * filename )
     }
     return 1;
 }		/* -----  end of function Craete_Graph  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_Graph
+ *  Description:  摧毁一张图
+ * =====================================================================================
+ */
+    void
+Destory_Graph ( Graph my_graph )
+{
+    List_node temp;
+    List_node temp1;
+    int k=0;
+    if(init_error(my_graph))
+        return ;
+    for(k=0;k<my_graph->vertex_number ;k++)
+    {
+        temp = my_graph->nodes[k].adj_list;
+        while(temp!=NULL)
+        {
+            temp1 = temp->next;
+            free(temp);
+            temp=temp1;
+        }
+    }
+    free(my_graph);
+    my_graph = NULL;
+
+}		/* -----  end of function Destory_Graph  ----- */
