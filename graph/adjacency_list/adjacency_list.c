@@ -276,3 +276,65 @@ Destory_Graph ( Graph my_graph )
     my_graph = NULL;
 
 }		/* -----  end of function Destory_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Vertex
+ *  Description:  得到一个点的名字
+ * =====================================================================================
+ */
+    char * 
+Get_Vertex (Graph my_graph , int index )
+{
+    if(init_error(my_graph))
+        return NULL;
+    if(index > my_graph->vertex_number)
+        return NULL;
+    return my_graph->nodes[index].vertex_name;
+}		/* -----  end of function Get_Vertex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Graph
+ *  Description:  打印一张图
+ * =====================================================================================
+ */
+    void
+Print_Graph ( Graph my_graph )
+{
+    int k;
+    List_node temp;
+    if(init_error(my_graph))
+        return;
+    printf("graph vertex_number is : %d\n", my_graph->veretex_number);
+    printf("graph arcs number is :%d\n", my_graph->arcs_number);
+    printf("graph kind is :");
+    switch(my_graph->kind)
+    {
+        case DG:printf("DG\n");
+            break;
+        case UDG:printf("UDG\n");
+            break;
+        case DN:printf("DN\n");
+            break;
+        case UDN:printf("UDN\n");
+            break;
+        default:
+            printf("unknows graph kind\n");
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        printf("%s",my_graph->nodes[k].vertex_name);
+        temp my_graph->nodes[k].adj_list;
+        while(temp->next!=NULL)
+        {
+            printf("---->%s",Get_Vertex(temp->next->index));
+        }
+        printf("\n");
+    }
+    return ;
+
+}		/* -----  end of function Print_Graph  ----- */
