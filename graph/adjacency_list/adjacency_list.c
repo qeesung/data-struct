@@ -84,6 +84,7 @@ Init_Graph (  )
             fprintf ( stderr, "\ndynamic memory allocation failed\n" );
             exit (EXIT_FAILURE);
         }
+        new_graph->nodes[k].adj_list->next=NULL;
     }
     new_graph->vertex_number =0;
     new_graph->arcs_number =0;
@@ -397,3 +398,124 @@ First_Adjver ( Graph my_graph , Vertex_name my_name )
         return -1;
 }		/* -----  end of function First_Adjver  ----- */
 
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Next_Adjver
+ *  Description:  得到一条弧的下一个的邻接点
+ * =====================================================================================
+ */
+    int
+Next_Adjver ( Graph my_graph , Vertex_name name1 , Vertex_name name2 )
+{
+    List_node temp;
+    int index;
+    if(init_error(my_graph))
+        return -1;
+    if(name1 == NULL || name2==NULL)
+        return -1;
+    if((index = Locate_Vertex(my_graph , name1))==-1)
+    {
+        fprintf(stderr,"\n can not find the %s vertex\n", name1);
+        return -1;
+    }
+    temp = my_graph->nodes[index].adj_list;
+    while(temp->next!=NULL && strcmp(Get_Vertex(my_graph , temp->next->index), name2)!=NULL)
+    {
+        temp=temp->next;
+    }
+    if(temp->next==NULL)
+        return -1;
+    if(temp->next->next!=NULL)
+        return temp->next->next->index;
+    else
+        return -1;
+}		/* -----  end of function Next_Adjver  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Ver
+ *  Description:  在图里插入一个点 
+ * =====================================================================================
+ */
+    void
+Insert_Ver ( Graph my_graph, Vertex_name new_name )
+{
+    if(init_error(my_graph))
+        return;
+    if(my_graph->veretx_number >= MAX_GRAPH_SIZE)
+    {
+        fprintf(stderr, "\ngraph is full\n");
+        return;
+    }
+    strcpy(my_graph->nodes[my_graph->vertex_number].vertex_name , new_name);
+    my_graph->vertex_number++;
+    return ;
+}		/* -----  end of function Insert_Ver  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Ver
+ *  Description:  删除一个点 并且弧全部删除掉
+ * =====================================================================================
+ */
+    void
+Delete_Ver ( Graph my_graph , Vertex_name del_name )
+{
+    int index;
+    int k=0;
+    List_node temp;
+    List_node temp1;
+    if(init_error(my_graph))
+        return;
+    if(del_name == NULL)
+        return;
+    if((index = Locate_Vertex(my_graph , del_name))==-1)
+    {
+        fprintf(stderr, "\ncan not find the %s vertex\n", del_name);
+        return;
+    }
+    /*  首先删除掉所有的无向图的对称边 */
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(k==index)
+            continue;
+        temp = my_graph->nodes[k].adj_list;
+        while(temp->next!=NULL)
+        {
+           if(temp->next->index > index)
+           {
+                temp->next->index --;
+           }
+           else
+           {
+                if(temp->next->index == index)
+                {
+                    temp1 = temp->next->next;
+                    free(temp->next);
+                    temp->next =temp1;
+                }
+           }
+           temp = temp->next;
+        }
+        
+    }
+    /*  现在删除掉点对应的所有邻接点 */
+    temp = my_graph->nodes[index].adj_list;
+    while(temp!=NULL)
+    {
+        temp1= temp->next;
+        free(temp);
+        temp = temp1;
+    }
+    /*  开始将数组向上移动 */
+    for(k = index ; k<my_graph->vertex_number-1 ; k++)
+    {
+       my_graph->nodes[k]= my_graph->nodes[k+1]; 
+    }
+    return;
+
+}		/* -----  end of function Delete_Ver  ----- */
