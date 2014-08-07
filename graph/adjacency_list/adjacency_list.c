@@ -519,3 +519,127 @@ Delete_Ver ( Graph my_graph , Vertex_name del_name )
     return;
 
 }		/* -----  end of function Delete_Ver  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Arcs
+ *  Description:  插入一条弧
+ * =====================================================================================
+ */
+    void
+Insert_Arcs ( Graph my_graph , Vertex_name name_from, Vertex_name name_to )
+{
+    int index1 ;
+    int index2;
+    List_node temp,temp1;
+    List_node new_node;
+    int weight;
+    if(init_error(my_gragh))
+        return;
+    if(name_from == NULL || name_to == NULL)
+        return -1;
+    index1= Locate_Vertex(my_graph,name_from);
+    index2= Locate_Vertex(my_graph ,name_to);
+    if(index1==-1 || index2==-1)
+    {
+        fprintf(stderr,"\ncan not find the %s or %s vertex\n", name_from, name_to);
+        return;
+    }
+    temp = my_graph->nodes[index1].adj_list;
+    /*   检测这条弧是否已经存在 */
+    while(temp->next!=NULL)
+    {
+        if(temp->next->index == index2)
+            return;
+    }
+    temp = my_graph->nodes[index1].adj_list;
+    
+    new_node	= malloc ( sizeof(struct list_node) );
+    if ( new_node==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    new_node -> index = index2;
+    if(my_graph->kind % 2 !=0)
+    {
+        printf("Enter the arcs weight:");
+        scanf("%d", &weight);
+        new_node->weight = weight;
+    }
+    temp1= temp->next;
+    temp->next=new_node;
+    temp->next->next = temp1;
+    if(my_graph->kind >1)
+    {
+        temp = my_graph->nodes[index2].adj_list;
+        
+        new_node	= malloc ( sizeof(struct list_node) );
+        if ( new_node==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+        new_node -> index = index1;
+        if(my_graph->kind %2 !=0)
+            new_node->weight = weight;
+        temp1 = temp->next;
+        temp->next = new_node;
+        temp->next->next = temp1;
+    }
+    my_graph->arcs_number++;
+}		/* -----  end of function Insert_Arcs  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Arcs
+ *  Description:  删除对应的弧线
+ * =====================================================================================
+ */
+    void
+Delete_Arcs ( Graph my_graph , Vertex_name name_from , Vertex_name name_to )
+{
+    int index1 ;
+    int index2;
+    List_node temp;
+    List_node temp1;
+    if(init_error(my_graph))
+        return;
+    index1 = Locate_Vertex(my_graph , name_from );
+    index2 = Locate_Vertex(my_graph , name_to );
+    if(index1 ==-1 || index2==-1)
+    {
+        fprintf(stderr, "\ncan not find %s or %s vertex \n", name_from , name_to);
+        return;
+    }
+    temp = my_graph->nodes[index1].adj_list ;
+    while(temp->next!=NULL || temp->next->index !=index2)
+    {
+        temp=temp->next;
+    }
+    if(temp->next==NULL)/*  找不到这条弧 */
+        return ;
+    else
+    {
+        /*  找到了这条弧  删除 */
+        temp1 = temp->next->next;
+        free(temp->next);
+        temp->next=temp1;
+    }
+    if(my_graph ->kind >1)
+    {
+        temp = my_graph->nodes[index2].adj_list ;
+        while(temp->next!=NULL || temp->next->index !=index1)
+        {
+            temp=temp->next;
+        }
+            /*  找到了这条弧  删除 */
+        temp1 = temp->next->next;
+        free(temp->next);
+        temp->next=temp1;
+
+    }
+    my_graph->arcs_number--;
+
+}		/* -----  end of function Delete_Arcs  ----- */
