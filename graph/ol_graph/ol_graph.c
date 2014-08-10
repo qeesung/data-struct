@@ -294,3 +294,111 @@ Next_Adj (Graph graph , int index1 , int index2 )
         return -1;
     return temp->next_tail->tail;
 }		/* -----  end of function Next_Adj  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Ver
+ *  Description:  插入一个新的点
+ * =====================================================================================
+ */
+    void
+Insert_Ver ( Graph graph , Vertex_name new_name )
+{
+    int index;
+    if(init_error(graph))
+        return ;
+    if(graph->vertex_number > = MAX_GRAPH_SIZE)
+    {
+        fprintf(stderr,"grapg size should less than %d\n", MAX_GRAPH_SIZE);
+        return;
+    }
+    if((index = Locate_Vertex(graph , new_name))!=-1)
+        return ;
+    strcpy(graph->nodes[graph->vertex_numer].vertex_name , new_name);
+    graph->vertex_number++;
+}		/* -----  end of function Insert_Ver  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Ver
+ *  Description:  删除一个已经存在的点
+ * =====================================================================================
+ */
+    void
+Delete_Ver ( Graph graph , Vertex_name name )
+{
+    int index;
+    int k;
+    List_node temp1;
+    List_node temp2;
+    if(init_error(graph))
+        return;
+    if((index = Locate_Vertex(graph , name))==-1)
+        return;
+    /* 现在将全部与点index相关联的删除 */
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        if(k == index)
+            continue;
+        temp1 = graph->nodes[k].first_out;
+        if(temp1==NULL)
+            continue;
+        if(temp1!=NULL || temp1->head !=index)
+        {
+            if(temp1->head> index )
+                temp1->head--;
+            while(temp1->next_tail!=NULL)
+            {
+
+                if(temp1->next_tail->head>index)
+                    temp1->next_tail->head--;
+                else
+                {
+                    if(temp1->next_tail->head==index)
+                    {
+                        temp2= temp1->next_tail->next;
+                        free(temp1->next_tail);
+                        temp1->next_tail = temp2;
+                    }
+                }
+                temp1= temp1->next_tail;
+            }
+                
+        }
+        
+        else
+        {
+            temp1 = graph->nodes[k].firstout->next_tail;
+            free(graph->nodes[k].first_out);
+            graph->nodes[k].first_out = temp1;
+            while(temp1!=NULL)
+            {
+                if(temp1->head > index)
+                    temp1->head --;
+                temp1=temp1->next_tail;
+            }
+            
+        
+        }
+
+    }
+    /*  将index的全部点删除 */
+    temp1 = graph->nodes[index].firstout;
+    while(temp1!=NULL)
+    {
+        temp2= temp1->next_tail;
+        free(temp1);
+        temp1=temp2;
+    }
+    /*  全部点向上移动 */
+    for(k=index+1;k<graph->vertex_numer-1;k++)
+    {
+        graph->nodes[k]= graph->nodes[k+1];
+    }
+    graph->vertex_number--;
+    return;
+}		/* -----  end of function Delete_Ver  ----- */
+
