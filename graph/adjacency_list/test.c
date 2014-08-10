@@ -20,6 +20,7 @@
 #include    <stdio.h>
 #include    <string.h>
 #include    "adjacency_list.h"
+#include    "child_sib_mode/child_sib.h"
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  main
@@ -30,6 +31,8 @@
 main ( int argc, char *argv[] )
 {
     Graph my_graph;
+    CStree my_tree;
+    my_tree= Init_CStree();
     if((my_graph=Init_Graph())==NULL)
         return -1;
     if(Create_Graph(my_graph , "./udn_graph.info")==-1)
@@ -83,5 +86,8 @@ main ( int argc, char *argv[] )
     DFS_Traverse(my_graph , Visit);
     printf("********BFS_Traverse********\n");
     BFS_Traverse(my_graph , Visit);
+    printf("*********DFS_Forest***********\n");
+    DFS_Forest(my_graph , &my_tree);
+    Postorder_Traverse(my_tree);
     return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
