@@ -1,0 +1,2 @@
+ 因为之前的孩子兄弟树的实现问题（里面数据采用char，而我的图的信息采用Vertexi_name）
+ 现在暂时不测试实现DF_Forest() & DFS_Tree() 函数
