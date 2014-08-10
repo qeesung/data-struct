@@ -245,3 +245,52 @@ Put_Vertex ( Graph graph , Vertex_name old_name , Vertex_name new_name )
     return ;
     
 }		/* -----  end of function Put_Vertex  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  First_Adj
+ *  Description:  得到一个点的第一个邻接点
+ * =====================================================================================
+ */
+    int
+First_Adj ( Graph graph , int index)
+{
+    if(init_error(graph))
+        return -1;
+    if(index >= graph->vertex_number)
+        return -1;
+    if(graph->ndoes[index].firstout==NULL)
+        return -1;
+    return graph->nodes[index].firstout->head;
+}		/* -----  end of function First_Adj  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Next_Adj
+ *  Description:  得到下一个邻接点
+ * =====================================================================================
+ */
+    int
+Next_Adj (Graph graph , int index1 , int index2 )
+{
+    List_node temp;
+    if(init_error(graph))
+        return -1;
+    if(index1 >= graph->vertex__number || index2 >= graph->vertex_numer)
+        return -1;
+    if((temp = graph->nodes[index].firstout)==NULL)
+        return -1;
+    while(temp!=NULL && temp->head != index2)
+    {
+        temp = temp->next_tail;
+    }
+    if(temp== NULL)
+        return -1;
+    if(temp->next_tail==NULL)
+        return -1;
+    return temp->next_tail->tail;
+}		/* -----  end of function Next_Adj  ----- */
