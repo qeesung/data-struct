@@ -207,3 +207,41 @@ Destory_Graph (Graph graph )
     graph=NULL;
     return ;
 }		/* -----  end of function Destory_Graph  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Get_Vertex
+ *  Description:  得到一个点的信息 （名字）
+ * =====================================================================================
+ */
+    Vertex_name
+Get_Vertex ( Graph graph , int index )
+{
+    if(init_error(graph))
+        return NULL;
+    if(index >= graph->vertex_number)
+        return NULL;
+    return graph->nodesp[index].vertex_name;
+}		/* -----  end of function Get_Vertex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Put_Vertex
+ *  Description:    将一个点重命名
+ * =====================================================================================
+ */
+    void
+Put_Vertex ( Graph graph , Vertex_name old_name , Vertex_name new_name )
+{
+    int index;
+    if(init_error(graph))
+        return;
+    index =Locate_Vertex(graph , old_name);
+    if(index ==-1)
+        return;
+    strcpy(graph->nodes[index].vertex_name , new_name);
+    return ;
+    
+}		/* -----  end of function Put_Vertex  ----- */
