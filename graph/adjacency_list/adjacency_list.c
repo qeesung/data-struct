@@ -21,6 +21,7 @@
 #include    <string.h>
 #include    "adjacency_list.h"
 #include    "queue.h"
+#include    "child_sib_mode/child_sib.h"
 int visited[MAX_GRAPH_SIZE];
 /* 
  * ===  FUNCTION  ======================================================================
@@ -767,3 +768,86 @@ BFS_Traverse ( Graph my_graph , my_func  visit )
     return ;
 }		/* -----  end of function BFS_Traverse  ----- */
 
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS_Forest
+ *  Description:  最小生成森林
+ * =====================================================================================
+ */
+    void
+DFS_Forest ( Graph my_graph , CStree * my_tree )
+{
+    Tree_node new_node;
+    Tree_node temp_node;
+    int k;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        visited[k]=0;
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+
+        if(visited[k]==1)
+            continue;
+        new_node	= malloc ( sizeof(struct tree_node) );
+        if ( new_node==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+        new_node->firstchild = NULL;
+        new_node->nextsibling = NULL;
+        new_node->data = Get_Vertex(my_graph , k);
+        if(*my_tree == NULL)// root
+            *my_tree = new_node;
+        else
+            temp_node->nextsibling = new_node;
+
+        temp_node = new_node;
+        // 现在开始最小生成树
+        GFS_Tree(my_graph, k , &temp_node);
+
+    }
+    return <+return_value+>;
+}		/* -----  end of function DFS_Forest  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS_Tree
+ *  Description:  从一个节点生成一棵树
+ * =====================================================================================
+ */
+    void
+DFS_Tree ( Graph my_graph , int index ,Tree_node * my_tree_node )
+{
+    Tree_node new_node;
+    int k;
+    int first = 0;
+    for(k=FirstAdjver(my_graph , index);k!=-1;k=Next_Adjver(my_graph , Get_Vertex(my_graph , index), Get_Vertex(my_graph, k)))
+    {
+        if(visited[k]==1)
+            continue;
+            
+        new_node	= malloc ( sizeof(struct tree_node) );
+        if ( new_node==NULL ) {
+            fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+            exit (EXIT_FAILURE);
+        }
+        new_node->firstchild = NULL;
+        new_node->nextsibling = NULL;
+        new_node->data = Get_Vertex(my_graph , k);
+        if(first== 0)
+        {
+            (*my_tree_node)->firstchild = new_node;
+            first= 1;
+        }
+        else
+            (*my_tree_node)->nextsibling = new_node;
+        *my_tree_node = new_node;
+        DFS_Tree(my_graph , k , &new_node);
+    }
+}		/* -----  end of function DFS_Tree  ----- */
