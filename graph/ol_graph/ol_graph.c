@@ -402,3 +402,109 @@ Delete_Ver ( Graph graph , Vertex_name name )
     return;
 }		/* -----  end of function Delete_Ver  ----- */
 
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Insert_Arc
+ *  Description:  插入一条弧
+ * =====================================================================================
+ */
+    void
+Insert_Arc (Graph  graph , Vertex_name name1, Vertex_name name2 )
+{
+    int index1;
+    int index2;
+    List_node new_node;
+    int weight;
+    if(init_error(graph))
+        return;
+    index1=Locate_Vertex(graph , name1);
+    index2=Locate_Vertex(graph , name2);
+    if(index1 == -1 || index2 == -1)
+        return ;
+
+    new_node	= malloc ( sizeof(struct list_node) );
+    if ( new_node==NULL ) {
+        fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+        exit (EXIT_FAILURE);
+    }
+    new_node->tail = index1;
+    new_node->head = index2;
+    new_node->next_tail = graph->nodes[index1].first_out;
+    new_node->next_head = graph->nodes[index2].first_in;
+    if(graph->kind == DN)
+    {
+        printf("Enter new arc weight:");
+        scanf("%d", &weight);
+        new_node->weight = weight;
+    }
+    graph->nodes[index1].first_out = new_node;
+    graph->nodes[index2].first_in = new_node;
+    graph->arcs_number ++;
+}		/* -----  end of function Insert_Arc  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Delete_Arc
+ *  Description:   删除一条弧线
+ * =====================================================================================
+ */
+    void
+Delete_Arc ( Graph graph , Vertex_name name1, Vertex_name name2 )
+{
+    int index1;
+    int index2;
+    List_node temp1;
+    List_node temp2;
+    List_node temp3;
+    List_node temp4;
+    if(init_error(graph))
+        return;
+    index1= Locate_Vertex(graph ,name1);
+    index2= Locate_Vertex(graph ,name2);
+    if(index1 == -1 || index2== -1)
+        return;
+    /* 首先操作index2的指针变化*/
+    temp1= graph->nodes[index2].first_in;
+    if(temp1==NULL)
+        return;
+    while(temp1!=NULL && temp1->head != index2)
+    {
+        temp2=temp1;
+        temp1=temp1->next_head;
+    }
+    if(temp1==NULL)
+        return;
+    temp2->next_head = temp1->next_head;
+    /* index1饿得指针变化 */
+    temp1=graph->nodes[index1].first_out;
+    if(temp1== NULL)
+        return;
+    if(temp1->head != index2)
+    {
+        while(temp1->next_tail!=NULL && temp1->next_tail->head!=index2)
+        {
+            temp1 = temp1->next_tail;
+        }
+        if(temp1->next_tail==NULL)
+            return;
+        temp3=temp1->next_tail->next_tail;
+        free(temp1->next_tail);
+        temp1->next_tail = temp3;
+    }
+    else
+    {
+        temp2 = temp1->next_tail;
+        free(temp1);
+        graph->nodes[index1].firstout=temp2;
+    }
+
+    graph->arcs_number--;
+    return;
+}		/* -----  end of function Delete_Arc  ----- */
+
+
