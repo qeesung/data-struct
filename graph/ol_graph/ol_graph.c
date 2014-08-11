@@ -508,3 +508,97 @@ Delete_Arc ( Graph graph , Vertex_name name1, Vertex_name name2 )
 }		/* -----  end of function Delete_Arc  ----- */
 
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS
+ *  Description:  dfs 
+ * =====================================================================================
+ */
+    void
+DFS ( Graph graph , int index )
+{
+    int k;
+    List_node temp;
+    if(init_error(graph))
+        return;
+    if(index >= graph->vertex_numer)
+        return;
+    if(visited[index]==1)
+        return;
+    temp = graph->nodes[index].first_out;
+    while(temp!=NULL)
+    {
+        Visit(Get_Vertex(graph , temp->tail));
+        visited[temp->tail]=1;
+        if(graph->nodes[temp->tail].first_out==NULL)
+            continue;
+        DFS(graph , graph->nodes[temp->tail].first_out->tail);
+    }
+    return;
+}		/* -----  end of function DFS  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DFS_Traverse
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+DFS_Traverse ( Graph graph )
+{
+    int k=0;
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        visited[k]=0;
+    }
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        if(visited[k]==1)
+            continue;
+        DFS(graph , k);
+    }
+    return;
+}		/* -----  end of function DFS_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  BFS_Traverse
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+BFS_Traverse (Graph graph )
+{
+    int k;
+    List_node temp;
+    Queue_list_node dequeue_node;
+    Queue my_queue;
+    my_queue = Init_Queue();
+    Enqueue(my_queue , 0);
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        visited[k]=0;
+    }
+    while((dequeue_node = Dequeue())!=NULL)
+    {
+       if(visited[dequeue_node->index]==1)
+           continue;
+    
+       Visit(Get_Vertex(graph , dequeue_node->index));
+       visited[dequeue_node->index]=1;
+       temp = graph->nodes[index].first_out;
+       while(temp!=NULL)
+       {
+            if(visited[temp->tail]==1)
+                continue;
+            Enqueue(my_queue, temp->tail);
+            temp=temp->next_tail;
+       }
+    }
+        
+}		/* -----  end of function BFS_Traverse  ----- */
