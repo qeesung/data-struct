@@ -602,3 +602,72 @@ BFS_Traverse (Graph graph )
     }
         
 }		/* -----  end of function BFS_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_Graph
+ *  Description:  打印一张图
+ * =====================================================================================
+ */
+    void
+Print_Graph (Graph graph )
+{
+    int k;
+    List_node temp;
+    if(init_error(graph))
+        return;
+    printf("graph vertex number is %d\n", graph->vertex_number);
+    printf("graph arcs number is %d\n", graph->arcs_number);
+    printf("graph kind is :");
+    if(graph->kind == DG)
+        printf("DG\n");
+    else
+        printf("DN\n");
+    printd("Vertex name is :");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        printf("\t%s\t", graph=->nodes[k].vertex_name);
+    }
+    printf("\n");
+    /* first_out---------------------------------> */
+    printf("/* first_out---------------------------------> */\n");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        printf("%s::::::::", graph->nodes[k].vertex_number);
+        temp = graph->nodes[k].first_out;
+        if(graph->kind==DG)
+        while(temp!=NULL)
+        {
+            printf("{%s------>%s}",graph->nodes[k].vertex_name,Get_Vertex(graph , temp->tail));
+            temp=temp->next_tail;
+        }
+        else
+        while(temp!=NULL)
+        {
+            printf("{%s---%d--->%s}",graph->nodes[k].vertex_name,temp->weight,Get_Vertex(graph , temp->tail));
+            temp=temp->next_tail;
+        }
+
+    }
+    printf("/* first_in---------------------------------> */\n");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        printf("%s::::::::", graph->nodes[k].vertex_number);
+        temp = graph->nodes[k].first_in;
+        if(graph->kind==DG)
+        while(temp!=NULL)
+        {
+            printf("{%s------>%s}",graph->nodes[k].vertex_name,Get_Vertex(graph , temp->head));
+            temp=temp->next_head;
+        }
+        else
+        while(temp!=NULL)
+        {
+            printf("{%s---%d--->%s}",graph->nodes[k].vertex_name,temp->weight,Get_Vertex(graph , temp->head));
+            temp=temp->next_head;
+        }
+
+    }
+}		/* -----  end of function Print_Graph  ----- */
