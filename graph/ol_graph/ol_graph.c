@@ -20,7 +20,8 @@
 #include<stdlib.h>
 #include<string.h>
 #include"ol_graph.h"
-
+#include"queue.h"
+int visited[20];
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -78,10 +79,10 @@ Locate_Vertex (Graph graph , Vertex_name name )
         return -1;
     for(k=0;k<graph->vertex_number;k++)
     {
-        if(strmp(name ,graph->nodes[k].vertex_name)==0)
+        if(strcmp(name ,graph->nodes[k].vertex_name)==0)
             return k;
     }
-    fprintf(stderr, "\n can not find %s\n", name);
+    fprintf(stderr, "can not find %s\n", name);
     return -1;
 }		/* -----  end of function Locate_Vertex  ----- */
 
@@ -97,7 +98,8 @@ Create_Graph ( Graph graph , char * filename )
 {
     FILE * myfile;
     int length;
-    int k;
+    int k ;
+    int k1;
     char buf1[20];
     char buf2[20];
     int weight;
@@ -105,6 +107,7 @@ Create_Graph ( Graph graph , char * filename )
     int index1;
     int index2;
     List_node new_node;
+    List_node temp;
     if(init_error(graph))
         return;
     if(filename == NULL)
@@ -143,7 +146,7 @@ Create_Graph ( Graph graph , char * filename )
     for(k=0;k<graph->vertex_number;k++)
     {
         fscanf(myfile , "%s", buf1);
-        strcmp(graph->nodes[k].vertex_name , buf1);
+        strcpy(graph->nodes[k].vertex_name , buf1);
     }
     /* 读取弧的信息 */
     for(k=0;k<graph->arcs_number;k++)
@@ -158,6 +161,7 @@ Create_Graph ( Graph graph , char * filename )
         }
         index1 = Locate_Vertex(graph , buf1);
         index2 = Locate_Vertex(graph , buf2);
+        printf("%d----->%d\n",index1, index2);
         if(index1 == -1 && index2 ==-1)
             return;
 
@@ -166,13 +170,25 @@ Create_Graph ( Graph graph , char * filename )
             fprintf ( stderr, "\ndynamic memory allocation failed\n" );
             exit (EXIT_FAILURE);
         }
-        new_node->head = index1;
-        new_node->tail  = index2;
+        new_node->head = index2;
+        new_node->tail  = index1;
         new_node->next_head = graph->nodes[index2].first_in;
         new_node->next_tail = graph->nodes[index1].first_out;
         new_node->weight = weight;
-        graph->nodes[index1].first_in=new_node;
-        graph->nodes[index2].first_out = new_node;
+        graph->nodes[index1].first_out=new_node;
+        graph->nodes[index2].first_in = new_node;
+/*    for(k1=0;k1<graph->vertex_number;k1++)
+    {
+        temp = graph->nodes[k1].first_out;
+        if(temp == NULL)
+            continue;
+        while(temp!=NULL)
+        {
+            printf("%d:::%d\t",temp->tail, temp->head);
+            temp=temp->next_tail;
+        }
+        printf("\n");
+    } */
     }
     return;
 
@@ -187,15 +203,15 @@ Create_Graph ( Graph graph , char * filename )
  * =====================================================================================
  */
     void
-Destory_Graph (Graph graph )
+Destory_Graph (Graph *graph )
 {
     List_node temp, temp1;
     int k=0;
-    if(init_error(graph ))
+    if(init_error(*graph ))
         return ;
-    for(k=0;k<graph->vertex_number;k++)
+    for(k=0;k<(*graph)->vertex_number;k++)
     {
-        temp = graph->nodes[k].first_out;
+        temp = (*graph)->nodes[k].first_out;
         while(temp!=NULL)
         {
            temp1= temp->next_tail;
@@ -203,8 +219,8 @@ Destory_Graph (Graph graph )
            temp = temp1;
         }
     }
-    free(graph);
-    graph=NULL;
+    free(*graph);
+    *graph=NULL;
     return ;
 }		/* -----  end of function Destory_Graph  ----- */
 
@@ -215,14 +231,14 @@ Destory_Graph (Graph graph )
  *  Description:  得到一个点的信息 （名字）
  * =====================================================================================
  */
-    Vertex_name
+    char *
 Get_Vertex ( Graph graph , int index )
 {
     if(init_error(graph))
         return NULL;
     if(index >= graph->vertex_number)
         return NULL;
-    return graph->nodesp[index].vertex_name;
+    return graph->nodes[index].vertex_name;
 }		/* -----  end of function Get_Vertex  ----- */
 
 
@@ -261,9 +277,9 @@ First_Adj ( Graph graph , int index)
         return -1;
     if(index >= graph->vertex_number)
         return -1;
-    if(graph->ndoes[index].firstout==NULL)
+    if(graph->nodes[index].first_out==NULL)
         return -1;
-    return graph->nodes[index].firstout->head;
+    return graph->nodes[index].first_out->head;
 }		/* -----  end of function First_Adj  ----- */
 
 
@@ -280,9 +296,9 @@ Next_Adj (Graph graph , int index1 , int index2 )
     List_node temp;
     if(init_error(graph))
         return -1;
-    if(index1 >= graph->vertex__number || index2 >= graph->vertex_numer)
+    if(index1 >= graph->vertex_number || index2 >= graph->vertex_number)
         return -1;
-    if((temp = graph->nodes[index].firstout)==NULL)
+    if((temp = graph->nodes[index1].first_out)==NULL)
         return -1;
     while(temp!=NULL && temp->head != index2)
     {
@@ -292,7 +308,7 @@ Next_Adj (Graph graph , int index1 , int index2 )
         return -1;
     if(temp->next_tail==NULL)
         return -1;
-    return temp->next_tail->tail;
+    return temp->next_tail->head;
 }		/* -----  end of function Next_Adj  ----- */
 
 
@@ -308,14 +324,14 @@ Insert_Ver ( Graph graph , Vertex_name new_name )
     int index;
     if(init_error(graph))
         return ;
-    if(graph->vertex_number > = MAX_GRAPH_SIZE)
+    if(graph->vertex_number >= MAX_GRAPH_SIZE)
     {
         fprintf(stderr,"grapg size should less than %d\n", MAX_GRAPH_SIZE);
         return;
     }
     if((index = Locate_Vertex(graph , new_name))!=-1)
         return ;
-    strcpy(graph->nodes[graph->vertex_numer].vertex_name , new_name);
+    strcpy(graph->nodes[graph->vertex_number].vertex_name , new_name);
     graph->vertex_number++;
 }		/* -----  end of function Insert_Ver  ----- */
 
@@ -338,6 +354,25 @@ Delete_Ver ( Graph graph , Vertex_name name )
         return;
     if((index = Locate_Vertex(graph , name))==-1)
         return;
+    printf("The vertex %s will be deleted\n",Get_Vertex(graph , index));
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        temp1 = graph->nodes[k].first_in;
+        if(temp1==NULL)
+            continue;
+        if(temp1->tail==index)
+        {
+            graph->nodes[k].first_in = temp1->next_head;
+        }
+        while(temp1!=NULL && temp1->tail!=index)
+        {
+            temp2=temp1;
+            temp1 = temp1->next_head;
+        }
+        if(temp1==NULL)
+            continue;
+        temp2->next_head  = temp1->next_head;
+    }
     /* 现在将全部与点index相关联的删除 */
     for(k=0;k<graph->vertex_number;k++)
     {
@@ -346,38 +381,52 @@ Delete_Ver ( Graph graph , Vertex_name name )
         temp1 = graph->nodes[k].first_out;
         if(temp1==NULL)
             continue;
-        if(temp1!=NULL || temp1->head !=index)
+        if(temp1->head !=index)
         {
             if(temp1->head> index )
                 temp1->head--;
+            if(temp1->tail> index )
+                temp1->tail--;
             while(temp1->next_tail!=NULL)
             {
 
-                if(temp1->next_tail->head>index)
-                    temp1->next_tail->head--;
+                if(temp1->next_tail->head>index || temp1->next_tail->tail>index)
+                {
+                    if(temp1->next_tail->head>index)
+                        temp1->next_tail->head--;
+                    else
+                        temp1->next_tail->tail--;
+                }
                 else
                 {
                     if(temp1->next_tail->head==index)
                     {
-                        temp2= temp1->next_tail->next;
+                        temp2= temp1->next_tail->next_tail;
                         free(temp1->next_tail);
                         temp1->next_tail = temp2;
+                        graph->arcs_number--;
                     }
                 }
                 temp1= temp1->next_tail;
+                if(temp1==NULL)
+                    break;
             }
                 
         }
         
         else
         {
-            temp1 = graph->nodes[k].firstout->next_tail;
+            temp1 = graph->nodes[k].first_out->next_tail;
             free(graph->nodes[k].first_out);
             graph->nodes[k].first_out = temp1;
+            graph->arcs_number--;
+
             while(temp1!=NULL)
             {
                 if(temp1->head > index)
                     temp1->head --;
+                if(temp1->tail > index)
+                    temp1->tail --;
                 temp1=temp1->next_tail;
             }
             
@@ -386,15 +435,16 @@ Delete_Ver ( Graph graph , Vertex_name name )
 
     }
     /*  将index的全部点删除 */
-    temp1 = graph->nodes[index].firstout;
+    temp1 = graph->nodes[index].first_out;
     while(temp1!=NULL)
     {
         temp2= temp1->next_tail;
         free(temp1);
         temp1=temp2;
+        graph->arcs_number--;
     }
     /*  全部点向上移动 */
-    for(k=index+1;k<graph->vertex_numer-1;k++)
+    for(k=index;k<graph->vertex_number-1;k++)
     {
         graph->nodes[k]= graph->nodes[k+1];
     }
@@ -472,7 +522,12 @@ Delete_Arc ( Graph graph , Vertex_name name1, Vertex_name name2 )
     temp1= graph->nodes[index2].first_in;
     if(temp1==NULL)
         return;
-    while(temp1!=NULL && temp1->head != index2)
+    if(temp1->tail == index1)
+    {
+        graph->nodes[index2].first_in = temp1->next_head;
+        goto next;
+    }
+    while(temp1!=NULL && temp1->tail != index1)
     {
         temp2=temp1;
         temp1=temp1->next_head;
@@ -480,6 +535,7 @@ Delete_Arc ( Graph graph , Vertex_name name1, Vertex_name name2 )
     if(temp1==NULL)
         return;
     temp2->next_head = temp1->next_head;
+next:
     /* index1饿得指针变化 */
     temp1=graph->nodes[index1].first_out;
     if(temp1== NULL)
@@ -500,7 +556,7 @@ Delete_Arc ( Graph graph , Vertex_name name1, Vertex_name name2 )
     {
         temp2 = temp1->next_tail;
         free(temp1);
-        graph->nodes[index1].firstout=temp2;
+        graph->nodes[index1].first_out=temp2;
     }
 
     graph->arcs_number--;
@@ -522,18 +578,29 @@ DFS ( Graph graph , int index )
     List_node temp;
     if(init_error(graph))
         return;
-    if(index >= graph->vertex_numer)
+    if(index >= graph->vertex_number)
         return;
     if(visited[index]==1)
         return;
+    else
+    {
+        Visit(Get_Vertex(graph , index));
+        visited[index]=1;
+    }
     temp = graph->nodes[index].first_out;
     while(temp!=NULL)
     {
-        Visit(Get_Vertex(graph , temp->tail));
-        visited[temp->tail]=1;
-        if(graph->nodes[temp->tail].first_out==NULL)
+        if(visited[temp->head]==1)
+        {
+            temp= temp->next_tail;
             continue;
-        DFS(graph , graph->nodes[temp->tail].first_out->tail);
+        }
+        Visit(Get_Vertex(graph , temp->head));
+        visited[temp->head]=1;
+        if(graph->nodes[temp->head].first_out==NULL)
+            continue;
+        DFS(graph , graph->nodes[temp->head].first_out->head);
+        temp= temp->next_tail;
     }
     return;
 }		/* -----  end of function DFS  ----- */
@@ -584,19 +651,21 @@ BFS_Traverse (Graph graph )
     {
         visited[k]=0;
     }
-    while((dequeue_node = Dequeue())!=NULL)
+    while((dequeue_node = Dequeue(my_queue))!=NULL)
     {
        if(visited[dequeue_node->index]==1)
            continue;
-    
        Visit(Get_Vertex(graph , dequeue_node->index));
        visited[dequeue_node->index]=1;
-       temp = graph->nodes[index].first_out;
+       temp = graph->nodes[dequeue_node->index].first_out;
        while(temp!=NULL)
        {
-            if(visited[temp->tail]==1)
+            if(visited[temp->head]==1)
+            {
+                temp=temp->next_tail;
                 continue;
-            Enqueue(my_queue, temp->tail);
+            }
+            Enqueue(my_queue, temp->head);
             temp=temp->next_tail;
        }
     }
@@ -625,49 +694,66 @@ Print_Graph (Graph graph )
         printf("DG\n");
     else
         printf("DN\n");
-    printd("Vertex name is :");
+    printf("Vertex name is :");
     for(k=0;k<graph->vertex_number;k++)
     {
-        printf("\t%s\t", graph=->nodes[k].vertex_name);
+        printf("\t%s\t", graph->nodes[k].vertex_name);
     }
     printf("\n");
     /* first_out---------------------------------> */
     printf("/* first_out---------------------------------> */\n");
     for(k=0;k<graph->vertex_number;k++)
     {
-        printf("%s::::::::", graph->nodes[k].vertex_number);
+        printf("%s::::::::", graph->nodes[k].vertex_name);
         temp = graph->nodes[k].first_out;
         if(graph->kind==DG)
         while(temp!=NULL)
         {
-            printf("{%s------>%s}",graph->nodes[k].vertex_name,Get_Vertex(graph , temp->tail));
-            temp=temp->next_tail;
-        }
-        else
-        while(temp!=NULL)
-        {
-            printf("{%s---%d--->%s}",graph->nodes[k].vertex_name,temp->weight,Get_Vertex(graph , temp->tail));
-            temp=temp->next_tail;
-        }
-
-    }
-    printf("/* first_in---------------------------------> */\n");
-    for(k=0;k<graph->vertex_number;k++)
-    {
-        printf("%s::::::::", graph->nodes[k].vertex_number);
-        temp = graph->nodes[k].first_in;
-        if(graph->kind==DG)
-        while(temp!=NULL)
-        {
             printf("{%s------>%s}",graph->nodes[k].vertex_name,Get_Vertex(graph , temp->head));
-            temp=temp->next_head;
+            temp=temp->next_tail;
         }
         else
         while(temp!=NULL)
         {
             printf("{%s---%d--->%s}",graph->nodes[k].vertex_name,temp->weight,Get_Vertex(graph , temp->head));
+            temp=temp->next_tail;
+        }
+        printf("\n");
+
+    }
+    printf("/* first_in---------------------------------> */\n");
+    for(k=0;k<graph->vertex_number;k++)
+    {
+        printf("%s::::::::", graph->nodes[k].vertex_name);
+        temp = graph->nodes[k].first_in;
+        if(graph->kind==DG)
+        while(temp!=NULL)
+        {
+            printf("{%s------>%s}",Get_Vertex(graph , temp->tail),graph->nodes[k].vertex_name);
             temp=temp->next_head;
         }
+        else
+        while(temp!=NULL)
+        {
+            printf("{%s---%d--->%s}",Get_Vertex(graph , temp->tail),temp->weight,graph->nodes[k].vertex_name);
+            temp=temp->next_head;
+        }
+        printf("\n");
 
     }
 }		/* -----  end of function Print_Graph  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Visit
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+Visit (char * my_name )
+{
+    printf("%s", my_name);
+    printf("\n");
+}		/* -----  end of function Visit  ----- */
