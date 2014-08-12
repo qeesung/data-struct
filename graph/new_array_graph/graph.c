@@ -113,21 +113,21 @@ Create_Graph (Graph my_graph , char * filename)
     /*  get the vertex number  */
     if(fgets(buf1 , 10 , myfile)==NULL)
     {
-        fprintf(stderr,"read the file error\n");
+        fprintf(stderr,"1read the file error\n");
         return;
     }
     my_graph->vertex_number = atoi(buf1);
     /*  get the arcs number */
     if(fgets(buf1 , 10 , myfile)==NULL)
     {
-        fprintf(stderr,"read the file error\n");
+        fprintf(stderr,"2read the file error\n");
         return;
     }
     my_graph->arcs_number = atoi(buf1);
     /*  get the graph kind */
     if(fgets(buf1 , 10 , myfile)==NULL)
     {
-        fprintf(stderr,"read the file error\n");
+        fprintf(stderr,"3read the file error\n");
         return;
     }
     length = strlen(buf1);
@@ -160,7 +160,7 @@ Create_Graph (Graph my_graph , char * filename)
     {
         if(fgets(buf1 , 10 , myfile)==NULL)
         {
-            fprintf(stderr,"read the file error\n");
+            fprintf(stderr,"4read the file error\n");
             return ;
         }
         length = strlen(buf1);
@@ -185,7 +185,7 @@ Create_Graph (Graph my_graph , char * filename)
         {
             if(fscanf(myfile, "%s%s", buf1, buf2)==EOF)
             {
-                fprintf(stderr,"read the file error\n");
+                fprintf(stderr,"5read the file error\n");
                 return;
             }
             length = strlen(buf2);
@@ -210,7 +210,7 @@ Create_Graph (Graph my_graph , char * filename)
             /*  net kind */
             if(fscanf(myfile, "%s%s %d", buf1 , buf2 ,&weight)==EOF)
             {
-                fprintf(stderr,"\nread the file error\n");
+                fprintf(stderr,"\n6read the file error\n");
                 return ;
             }
             index1 = Locate_Vertex(my_graph , buf1);
@@ -737,3 +737,248 @@ BFS_Traverse ( Graph my_graph , my_func my_visit )
     printf("\n");
     return;
 }		/* -----  end of function BFS_Traverse  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Prim
+ *  Description:  prim 
+ * =====================================================================================
+ */
+    void
+Prim ( Graph my_graph )
+{
+
+    if(my_graph == NULL)
+    {
+        fprintf(stderr, "\nthe graph have not init\n");
+        return ;
+    }
+    if(my_graph->kind != UDN )
+    {
+        fprintf(stderr, "\nThe graph must to be UDN kind for my prim\n");
+        return;
+    }
+    struct close_edge my_edge[my_graph->vertex_number];
+    List called;
+    List ncalled;
+    int k=0;
+    int min = INT_MAX-1;
+    int min_arcs;
+    int all_sum=0;
+    int k1;
+    /* 从第一个点开始初始化my_edge 数组 */
+    called = Init_List();
+    ncalled = Init_List();
+    Insert_List(called , 0);
+    for(k=1;k<my_graph->vertex_number;k++)
+    {
+         my_edge[k].weight= my_graph->arcs[0][k] ;
+         my_edge[k].index = 0;
+         Insert_List(ncalled, k);
+    }
+    while(!List_Empty(ncalled))
+    {
+        /*  现在需要找到最小的那个 */
+        for(k=1;k<my_graph->vertex_number;k++)
+        {
+            if(my_edge[k].weight < min)
+            {
+                min = my_edge[k].weight;
+                min_arcs = my_edge[k].index;
+                k1 = k;
+            }
+        }
+        /* 找到了最小 */
+        all_sum += min;
+        printf("%s---%d--->%s\n", Get_Vertex(my_graph,min_arcs), min , Get_Vertex(my_graph , k1));
+        min = INT_MAX-1;
+        Delete_List(ncalled, k1);
+        Insert_List(called , k1);
+        my_edge[k1].weight = INT_MAX;
+        printf("ncalled:");
+        Print_List(ncalled);
+        printf("called:");
+        Print_List(called);
+        /* 更新我的my_edge数组 */
+        for(k=1;k<my_graph->vertex_number;k++)
+        {
+            if(In_List(called , k))
+                continue;
+            if(my_graph->arcs[k1][k] < my_edge[k].weight)
+               {
+                my_edge[k].weight = my_graph->arcs[k1][k];
+                my_edge[k].index = k1;
+               }
+        }
+        /*for(k=1;k<my_graph->vertex_number ;k++)
+        {
+            printf("weight:%d  index:%d\n", my_edge[k].weight , my_edge[k].index);
+        }*/
+        printf("\n****************************\n");
+    }
+    printf("the min length is %d \n" , all_sum);
+    return;
+
+}		/* -----  end of function Prim  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Prim1
+ *  Description:  prim算法
+ * =====================================================================================
+ */
+    void
+Prim1 (Graph my_graph , Vertex_name name1 )
+{
+    int index;
+    int k;
+    if(my_graph == NULL)
+    {
+        fprintf(stderr, "The graph have not init\n");
+        return;
+    }
+    int called[my_graph->vertex_number];
+    int ncalled[my_graph->vertex_number];
+    struct close_edge my_edge[my_graph->vertex_number];
+    int empty=0;
+    int min  = INT_MAX-1;
+    int k1;
+    int min_index;
+    int all_sum=0;
+    if((index = Locate_Vertex(my_graph , name1))==-1)
+        return;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        ncalled[k]=1;
+        called[k]=0;
+    }
+    ncalled[index] = 0;
+    called[index]= 1;
+    /* 初始化边界数组 */
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(k== index)
+            continue;
+        my_edge[k].weight = my_graph->arcs[index][k];
+        my_edge[k].index = index;
+    }
+    while(!empty)
+    {
+        /* 下面检测是否还有点尚未合并 */
+        /*   下面找到值最小的边  */
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(called[k]==1)/* 这个点已经合并过 */
+                continue;
+            if(my_edge[k].weight < min)
+            {
+                min = my_edge[k].weight;
+                min_index = my_edge[k].index;
+                k1 = k;
+            }
+        }
+        /* 打印出这个找到的点 */
+        printf("%s---%d--->%s\n", Get_Vertex(my_graph , min_index),min , Get_Vertex(my_graph , k1));
+        all_sum+=min;
+        min = INT_MAX -1;
+        called[k1] = 1;
+        ncalled[k1] = 0;
+        /* 现在更新边界数组 */
+        for(k =0; k<my_graph->vertex_number;k++)
+        {
+            if(called[k]==1)
+                continue;
+            if(my_graph->arcs[k1][k] < my_edge[k].weight)
+            {
+                my_edge[k].weight = my_graph->arcs[k1][k];
+                my_edge[k].index  = k1;
+            }
+        }
+        empty = 1;
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(ncalled[k]==1)
+                empty = 0;
+        }
+    }
+    printf("the minniset path is %d\n", all_sum);
+
+}		/* -----  end of function Prim1  ----- */
+
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Kruskal
+ *  Description:  kruskal算法
+ * =====================================================================================
+ */
+    void
+Kruskal (Graph my_graph )
+{
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"\nThe graph have not init\n");
+        return;
+    }
+    int set[my_graph->vertex_number];
+    int k;
+    int i , j;
+    int min=INT_MAX;
+    int x, y;
+    int all_sum=0;
+    int number;
+    /* 初始化set数组 */
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        set[k] = k;
+    }
+    while(1)
+    {
+        for(i=0;i<my_graph->vertex_number;i++)
+        {
+            for(j=i+1;j<my_graph->vertex_number;j++)
+            {
+
+                if(my_graph->arcs[i][j] < min)
+                {
+                    x = i;
+                    y = j;
+                    min = my_graph->arcs[i][j];
+                }
+                
+            }
+        }
+        /* 得到最小的边以后，现在检测是否属于一个集合  */
+        
+        if(min == INT_MAX)
+            return;
+        my_graph->arcs[x][y] = INT_MAX;
+        if(set[x] == set[y])
+        {
+              min= INT_MAX;
+              continue;
+        }
+        printf("%s---%d--->%s\n",Get_Vertex(my_graph , x), min , Get_Vertex(my_graph , y));
+        all_sum+=min;
+        /* 将集合融合 */
+        number = set[y];
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(set[k]== number)
+                set[k] = set[x];
+        }
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            printf("#%d:::%d\t", k , set[k]);
+        }
+        printf("\n");
+        min= INT_MAX;
+    }
+
+}		/* -----  end of function Kruskal  ----- */

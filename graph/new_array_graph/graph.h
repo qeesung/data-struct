@@ -31,6 +31,12 @@ struct graph
 };
 typedef struct graph * Graph;
 
+struct close_edge
+{
+    int index;
+    int weight;
+};
+
 Graph Init_Graph();
 int Locate_Vertex(Graph my_graph , Vertex_name my_name);
 void Create_Graph(Graph my_graph , char * filename);
@@ -48,4 +54,5 @@ void Visit(Vertex_name my_name);
 void DFS(Graph my_graph ,int index_start);
 void DFS_Traverse(Graph my_graph , my_func my_visit);
 void BFS_Traverse(Graph my_graph , my_func my_visit);
+void Prim(Graph);
 #endif
