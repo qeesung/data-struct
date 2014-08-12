@@ -37,4 +37,10 @@ Queue Init_Queue();
 void Enqueue(Queue my_queue,int index);
 List_node Dequeue(Queue my_queue);
 void Print_Queue(Queue my_queue);
+List Init_List();
+void Insert_List(List , int );
+void Delete_List(List, int);
+int List_Empty(List);
+int In_List(List , int);
+void Print_List(List);
 #endif
