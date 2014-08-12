@@ -1,9 +1,14 @@
-
-graph:test.c graph.o queue.o
-	gcc test.c graph.o queue.o -o graph
+kruskal:test_kruskal.o graph.o queue.o
+	gcc test_kruskal.o graph.o queue.o -o kruskal
+prim:test_prim.o graph.o queue.o
+	gcc test_prim.o graph.o queue.o -o prim
+graph:test.o graph.o queue.o
+	gcc test.o graph.o queue.o -o graph
 test.o:graph.h
 graph.o:graph.h queue.h
 queue.o:queue.h
+test_prim.o:graph.h
+test_kruskal.o:graph.h
 
 .PHONY:clean
 clean:
