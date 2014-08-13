@@ -53,7 +53,7 @@ init_error ( Graph graph )
 Init_Graph (  )
 {
     Graph new_graph;
-
+    int k;
     new_graph	= malloc ( sizeof(struct ol_graph) );
     if ( new_graph==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
@@ -61,6 +61,12 @@ Init_Graph (  )
     }
     new_graph->vertex_number =0;
     new_graph->arcs_number =0;
+    for(k=0;k<MAX_GRAPH_SIZE;k++)
+    {
+        new_graph->nodes[k].first_in=NULL;
+        new_graph->nodes[k].first_out=NULL;
+    }
+    
     return new_graph;
 }		/* -----  end of function Init_Graph  ----- */
 
@@ -357,12 +363,15 @@ Delete_Ver ( Graph graph , Vertex_name name )
     printf("The vertex %s will be deleted\n",Get_Vertex(graph , index));
     for(k=0;k<graph->vertex_number;k++)
     {
+        if( k == index)
+            continue;
         temp1 = graph->nodes[k].first_in;
         if(temp1==NULL)
             continue;
         if(temp1->tail==index)
         {
             graph->nodes[k].first_in = temp1->next_head;
+            continue;
         }
         while(temp1!=NULL && temp1->tail!=index)
         {
@@ -394,7 +403,7 @@ Delete_Ver ( Graph graph , Vertex_name name )
                 {
                     if(temp1->next_tail->head>index)
                         temp1->next_tail->head--;
-                    else
+                    if(temp1->next_tail->tail >index)
                         temp1->next_tail->tail--;
                 }
                 else
@@ -757,3 +766,28 @@ Visit (char * my_name )
     printf("%s", my_name);
     printf("\n");
 }		/* -----  end of function Visit  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Topo_Sort
+ *  Description:  拓扑排序
+ * =====================================================================================
+ */
+    void
+Topo_Sort ( Graph my_graph )
+{
+    int k = 0 ;
+    while(my_graph->vertex_number!=0)
+    {
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(my_graph->nodes[k].first_in==NULL)
+            {
+                printf("%s\t",Get_Vertex(my_graph , k)); 
+                Delete_Ver(my_graph,Get_Vertex(my_graph , k));
+            }
+        }
+    }
+}		/* -----  end of function Topo_Sort  ----- */

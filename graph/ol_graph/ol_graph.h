@@ -64,4 +64,5 @@ void DFS_Traverse(Graph);
 void BFS_Traverse(Graph);
 void Print_Graph(Graph);
 void Visit(char *);
+void Topo_Sort(Graph);
 #endif
