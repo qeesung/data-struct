@@ -22,6 +22,7 @@
 #include    "adjacency_list.h"
 #include    "queue.h"
 #include    "child_sib_mode/child_sib.h"
+#include    <limits.h>
 int visited[MAX_GRAPH_SIZE];
 /* 
  * ===  FUNCTION  ======================================================================
@@ -776,7 +777,7 @@ BFS_Traverse ( Graph my_graph , my_func  visit )
  *         Name:  DFS_Forest
  *  Description:  最小生成森林
  * =====================================================================================
- */
+ *
     void
 DFS_Forest ( Graph my_graph , CStree * my_tree )
 {
@@ -810,7 +811,7 @@ DFS_Forest ( Graph my_graph , CStree * my_tree )
         GFS_Tree(my_graph, k , &temp_node);
 
     }
-    return <+return_value+>;
+    return;
 }		/* -----  end of function DFS_Forest  ----- */
 
 
@@ -820,7 +821,7 @@ DFS_Forest ( Graph my_graph , CStree * my_tree )
  *         Name:  DFS_Tree
  *  Description:  从一个节点生成一棵树
  * =====================================================================================
- */
+ *
     void
 DFS_Tree ( Graph my_graph , int index ,Tree_node * my_tree_node )
 {
@@ -851,3 +852,71 @@ DFS_Tree ( Graph my_graph , int index ,Tree_node * my_tree_node )
         DFS_Tree(my_graph , k , &new_node);
     }
 }		/* -----  end of function DFS_Tree  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Topo_Sort
+ *  Description:  拓扑排序
+ * =====================================================================================
+ */
+    void
+Topo_Sort ( Graph my_graph )
+{
+    if(my_graph == NULL)
+    {
+        fprintf(stderr, "\nThe graph have not init\n");
+        return;
+    }
+    int indegree[my_graph->vertex_number];
+    int k;
+    int count=0;
+    List_node temp;
+    /* 初始化我的入度数组 */
+    for(k=0;k<my_graph->vertex_number;k++)
+        indegree[k]=0;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        temp = my_graph->nodes[k].adj_list;
+        while(temp->next!=NULL)
+        {
+            indegree[temp->next->index]++;
+            temp = temp->next;
+        }
+    
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        printf("#%d::%d\t",k,indegree[k]);
+    }
+    printf("\n");
+    fflush(stdout);
+
+
+    while(count <= my_graph->vertex_number)
+    {
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(indegree[k]==INT_MAX)
+            {
+                count++;
+                continue;
+            }
+            if(indegree[k]==0)
+            {
+               printf("%s\t",Get_Vertex(my_graph , k));
+               indegree[k]=INT_MAX;
+               temp=my_graph->nodes[k].adj_list;
+               count++;
+               while(temp->next!=NULL)
+               {
+                    indegree[temp->next->index]--;
+                    temp = temp->next;
+               }
+            }
+        }
+    }
+
+
+}		/* -----  end of function Topo_Sort  ----- */

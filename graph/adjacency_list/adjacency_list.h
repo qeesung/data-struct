@@ -70,4 +70,5 @@ void DFS_Traverse(Graph my_graph , my_func visit);
 void BFS_Traverse(Graph my_graph, my_func visit);
 void DFS_Forest(Graph my_graph, CStree * T);
 void DFS_Tree(Graph , int , CStree * T);
+void Topo_Sort(Graph my_graph);
 #endif
