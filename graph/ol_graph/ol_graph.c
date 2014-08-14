@@ -21,6 +21,7 @@
 #include<string.h>
 #include"ol_graph.h"
 #include"queue.h"
+#include<limits.h>
 int visited[20];
 
 /* 
@@ -791,3 +792,134 @@ Topo_Sort ( Graph my_graph )
         }
     }
 }		/* -----  end of function Topo_Sort  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Critical_Path
+ *  Description:  找到关键路径
+ * =====================================================================================
+ */
+    void
+Critical_Path ( Graph my_graph )
+{
+    if(my_graph == NULL)
+        return;
+    int e[my_graph->vertex_number];
+    int l[my_graph->vertex_number];
+    int k=0;
+    int max=0;
+    int indegree[my_graph->vertex_number];
+    int outdegree[my_graph->vertex_number];
+    int count=0;
+    int min =0;
+    List_node temp;
+    /* 现在建立入度的数组数据 */
+    for(k=0;k<my_graph->vertex_number;k++)
+        indegree[k]=0;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        temp = my_graph->nodes[k].first_in;
+        while(temp!=NULL)
+        {
+           indegree[k]++;
+           temp = temp->next_head;
+        }
+    }
+    printf("Indgree array :");
+    for(k=0;k<my_graph->vertex_number;k++)
+        printf("%d\t",indegree[k]);
+    printf("\n");
+    /* 建立出度数组 */
+    for(k=0;k<my_graph->vertex_number;k++)
+        outdegree[k]=0;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        temp = my_graph->nodes[k].first_out;
+        while(temp!=NULL)
+        {
+            outdegree[k]++;
+            temp = temp->next_tail;
+        }
+    }
+    printf("outdgree array :");
+    for(k=0;k<my_graph->vertex_number;k++)
+        printf("%d\t",outdegree[k]);
+    printf("\n");
+    /* 建立最早发生的数组  */
+    for(k=0;k<my_graph->vertex_number;k++)
+        e[k]=0;
+    while(count < my_graph->vertex_number)
+    {
+        for(k=0;k<my_graph->vertex_number;k++)
+        {
+            if(indegree[k]==INT_MAX)
+                continue;
+            if(indegree[k]==0)
+            {
+                indegree[k]=INT_MAX;
+                /* 更新我的入度数组 */
+                temp = my_graph->nodes[k].first_out;
+                while(temp!=NULL)
+                {
+                    indegree[temp->head]--;
+                    if(e[k]+temp->weight > e[temp->head])
+                        e[temp->head] = e[k]+temp->weight;
+                    temp = temp->next_tail;
+                }
+                count++;
+                /* 现在来更新最早发生数组  */
+            }
+        }
+    }
+    printf("e array :");
+    for(k=0;k<my_graph->vertex_number;k++)
+        printf("%d\t",e[k]);
+    printf("\n");
+    fflush(stdout);
+    /* 开始建立最晚发生数组 */
+    count =0 ;
+    for(k=0;k<my_graph->vertex_number;k++)
+        l[k]=INT_MAX;
+    l[0]=0;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if(outdegree[k] ==0)
+            l[k]=e[k];
+    }
+    while(count < my_graph->vertex_number)
+    {
+        for(k=0;k<my_graph->vertex_number; k++)
+        {
+            if(outdegree[k]==INT_MAX)
+                continue;
+            if(outdegree[k]==0)
+            {
+                outdegree[k]=INT_MAX;
+                temp = my_graph->nodes[k].first_in;
+                while(temp!=NULL)
+                {
+                    outdegree[temp->tail]--;
+                    if(l[k]-temp->weight < l[temp->tail])
+                        l[temp->tail]=l[k]-temp->weight;
+                    temp = temp->next_head;
+                }
+                count++;
+            }
+        }
+    }
+    printf("l array :");
+    for(k=0;k<my_graph->vertex_number;k++)
+        printf("%d\t",l[k]);
+    printf("\n");
+    
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        if( e[k] == l[k])
+            printf("%s\t", Get_Vertex(my_graph , k));
+    }
+    printf("\n");
+
+
+}
