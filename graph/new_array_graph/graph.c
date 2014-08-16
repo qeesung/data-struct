@@ -20,7 +20,6 @@
 #include    <stdio.h>
 #include    "graph.h"
 #include    <string.h>
-#include    <limits.h>
 #include    "queue.h"
 
 int visited[MAX_GRAPH_SIZE]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -982,3 +981,76 @@ Kruskal (Graph my_graph )
     }
 
 }		/* -----  end of function Kruskal  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DIJ
+ *  Description:  dijkstra 算法
+ * =====================================================================================
+ */
+    void
+DIJ ( Graph my_graph , int start )
+{
+    if(my_graph == NULL)
+        return;
+    if(start > my_graph->vertex_number)
+        return;
+    int visited[my_graph->vertex_number];
+    struct dij_node my_node[my_graph->vertex_number];
+    int k =0;
+    int k1 , k2, k3, k4;
+    int min;
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        visited[k] = 0;
+        my_node[k].weight = my_graph->arcs[start][k] ;
+        my_node[k].parent = -1;
+        if(my_node[k].weight != INT_MAX)
+            my_node[k].parent = start;
+    }
+    visited[start] = 1;
+    my_node[start].weight = 0;
+    fflush(stdout);
+    for(k=1;k<my_graph->vertex_number;k++)
+    {
+        min = 30000;
+        for(k1 = 0 ;k1< my_graph->vertex_number;k1++)
+        {
+            if(visited[k1]==0 && my_node[k1].weight < min)
+            {
+                min = my_node[k1].weight;
+                k2 = k1;
+            }
+        }
+        visited[k2] = 1;
+        printf("get the point %s\n",Get_Vertex(my_graph, k2));
+        for(k3=0;k3<my_graph->vertex_number;k3++)
+        {
+            if(visited[k3]==0 && my_graph->arcs[k2][k3]+my_node[k2].weight < my_node[k3].weight)
+            {
+                my_node[k3].weight = my_graph->arcs[k2][k3]+my_node[k2].weight;
+                my_node[k3].parent = k2;
+            }
+            for(k4=0;k4<my_graph->vertex_number;k4++)
+            {
+                printf("%s+++%d+++%d\n",Get_Vertex(my_graph,k4), my_node[k4].weight, my_node[k4].parent);
+            }
+            printf("****************************\n");
+
+        }
+        
+    }
+    for(k=0;k<my_graph->vertex_number;k++)
+    {
+        printf("%s+++%d+++:",Get_Vertex(my_graph, k ), my_node[k].weight);
+        k2 = my_node[k].parent;
+        while(k2!=-1)
+        {
+            printf("%s\t", Get_Vertex(my_graph , k2));
+            k2 = my_node[k2].parent;
+        }
+        printf("\n");
+    }
+}		/* -----  end of function DIJ  ----- */

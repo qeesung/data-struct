@@ -18,6 +18,7 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 #define MAX_GRAPH_SIZE 20
+#define INT_MAX 10000
 typedef enum {DG , DN , UDG , UDN} Graph_kind;
 typedef char Vertex_name[20];
 typedef void (* my_func)(Vertex_name); 
@@ -35,6 +36,12 @@ struct close_edge
 {
     int index;
     int weight;
+};
+struct dij_node
+{   
+    int parent;
+    int weight;
+
 };
 
 Graph Init_Graph();
@@ -55,4 +62,5 @@ void DFS(Graph my_graph ,int index_start);
 void DFS_Traverse(Graph my_graph , my_func my_visit);
 void BFS_Traverse(Graph my_graph , my_func my_visit);
 void Prim(Graph);
+void DIJ(Graph my_graph  , int start);
 #endif
