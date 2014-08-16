@@ -1,3 +1,5 @@
+dij:test_dij.o graph.o queue.o
+	gcc test_dij.o graph.o queue.o -o dij
 kruskal:test_kruskal.o graph.o queue.o
 	gcc test_kruskal.o graph.o queue.o -o kruskal
 prim:test_prim.o graph.o queue.o
@@ -9,6 +11,7 @@ graph.o:graph.h queue.h
 queue.o:queue.h
 test_prim.o:graph.h
 test_kruskal.o:graph.h
+test_dij.o:graph.h
 
 .PHONY:clean
 clean:
