@@ -20,6 +20,7 @@
 #define _ADJACENCY_LIST_H
 #define MAX_GRAPH_SIZE 20
 #include"./child_sib_mode/child_sib.h"
+#define INT_MAX 10000
 
 typedef enum {DG, DN , UDG , UDN} Graph_kind;
 typedef char Vertex_name[10];
@@ -38,6 +39,12 @@ struct graph_node
     List adj_list;
 };
 typedef struct graph_node * Graph_node;
+
+struct adj_node
+{
+    int parent;
+    int weight;
+};
 
 struct graph
 {
@@ -71,4 +78,5 @@ void BFS_Traverse(Graph my_graph, my_func visit);
 void DFS_Forest(Graph my_graph, CStree * T);
 void DFS_Tree(Graph , int , CStree * T);
 void Topo_Sort(Graph my_graph);
+void Dijkstra(Graph , int index);
 #endif
