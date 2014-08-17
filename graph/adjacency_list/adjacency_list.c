@@ -920,3 +920,82 @@ Topo_Sort ( Graph my_graph )
 
 
 }		/* -----  end of function Topo_Sort  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Dijkstra
+ *  Description:  Dijkstra算法 
+ * =====================================================================================
+ */
+    void
+Dijkstra ( Graph my_graph , int index)
+{
+    if(my_graph == NULL)
+    {
+        fprintf(stderr,"The graph have not init\n");
+        return ;
+    }
+    if(index >= my_graph->vertex_number)
+    {
+        fprintf(stderr,"index should less than %d\n", my_graph->vertex_number);
+        return ;
+    }
+    int k1,k2;
+    int k3;
+    int min;
+    List_node temp1;
+    List_node temp2;
+    int visited[my_graph->vertex_number];
+    struct dij_node nodes[my_graph->vertex_number];
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        visited[k1]=0;
+        nodes[k1].parent = -1;
+        nodes[k1].weight = INT_MAX;
+    }
+    temp1 = my_graph->nodes[index].adj_list;
+    while(temp1->next!=NULL)
+    {
+        nodes[temp1->next->index].weight = temp1->next->weight;
+        nodes[temp1->next->index].parent = index;
+        temp1 = temp1->next;
+    }
+    nodes[index].weight = 0;
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        min = 10000;
+        for(k2=0;k2<my_graph->vertex_number;k2++)
+        {
+            if(!visited[k2] && nodes[k2].weight <min )
+            {
+                k3 = k2;
+                min = nodes[k2].weight;
+            }
+        }
+        visited[k3]=1;
+        temp1 = my_graph->nodes[k3].adj_list;
+        while(temp1->next!=NULL)
+        {
+            if(!visited[temp1->next->index] && nodes[k3].weight + temp1->next->weight < nodes[temp1->next->index].weight)
+            {
+                nodes[temp1->next->index].weight = temp1->next->weight + nodes[k3].weight;
+                nodes[temp1->next->index].parent = k3;
+                
+            }
+            temp1 = temp1->next;
+        }
+    }
+    for(k1=0;k1<my_graph->vertex_number;k1++)
+    {
+        printf("%s+++%d+++", Get_Vertex(my_graph , k1 ),nodes[k1].weight);
+        k2 = nodes[k1].parent;
+        while(k2!=-1)
+        {
+            printf("%s\t",Get_Vertex(my_graph , k2));
+            k2 = nodes[k2].parent;
+        }
+        printf("\n");
+
+    }
+}		/* -----  end of function Dijkstra  ----- */
