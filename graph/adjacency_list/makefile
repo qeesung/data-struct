@@ -1,5 +1,7 @@
 
 vpath %.h child_sib_mode
+dij:test_dij.o adjacency_list.o queue.o 
+	gcc	test_dij.o adjacency_list.o queue.o  -o dij
 topo:test_topo.o adjacency_list.o queue.o 
 	gcc	test_topo.o adjacency_list.o queue.o  -o topo
 
@@ -9,7 +11,8 @@ test.o: adjacency_list.h
 adjacency_list.o:adjacency_list.h queue.h child_sib.h
 queue.o:queue.h
 child_sib.o:child_sib.h
-test_topo: adjacency_list.h
+test_topo.o: adjacency_list.h
+test_dij.o: adjacency_list.h
 
 
 
