@@ -1,3 +1,5 @@
+dij1:dijkstra.o graph.o queue.o
+	gcc dijkstra.o graph.o queue.o -o dij1
 dij:test_dij.o graph.o queue.o
 	gcc test_dij.o graph.o queue.o -o dij
 kruskal:test_kruskal.o graph.o queue.o
@@ -12,6 +14,7 @@ queue.o:queue.h
 test_prim.o:graph.h
 test_kruskal.o:graph.h
 test_dij.o:graph.h
+dijkstra.o:graph.h
 
 .PHONY:clean
 clean:
