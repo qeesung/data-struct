@@ -40,7 +40,7 @@ struct graph_node
 };
 typedef struct graph_node * Graph_node;
 
-struct adj_node
+struct dij_node
 {
     int parent;
     int weight;
