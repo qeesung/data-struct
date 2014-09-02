@@ -26,12 +26,12 @@ struct search_table
 
 typedef struct search_table * ST;
 
-ST Init_ST();
+ST Init_ST(void);
 void Create_ST(ST my_st , char * filename);
 void Destory_ST(ST my_st);
 int Search_ST(ST my_st , int key);
 void Traverse_ST(ST my_st);
-
+int Search_K(ST my_st , int left , int right , int data);
 
 
 

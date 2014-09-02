@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "search.h"
 
 
@@ -31,8 +32,7 @@
 Init_ST ( void )
 {
     ST new_st;
-
-    new_st	= malloc ( sizeof(struct search_table) );
+    new_st	= (ST)malloc ( sizeof(struct search_table) );
     if ( new_st==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
@@ -78,7 +78,7 @@ Create_ST ( ST my_st , char * filename )
     /* 先面得到实际数据内容 */
     for(k = 0; k<my_st->length ;k++)
     {
-        fscanf(myfile,"%d",buf1 );
+        fgets(buf1 , 20 , myfile);
         my_st->slist[k]=atoi(buf1);
     }
     
@@ -153,7 +153,7 @@ Traverse_ST (ST my_st)
     int k=0;
     for(k =0 ; k< my_st->length ;k++)
     {
-        printf("#%d>>>%d\t",k , my_st->slist[k].data);
+        printf("#%d>>>%d\t",k , my_st->slist[k]);
     }
     return ;
 }		/* -----  end of function Traverse_ST  ----- */
