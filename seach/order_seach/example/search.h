@@ -39,10 +39,11 @@ typedef struct search_table * ST;
 
 
 ST Init_ST(void);
-Create_ST(ST , char *);
-Destory_ST(ST);
-Traverse_ST(ST);
-Search_ST(ST , long number):
+void Create_ST(ST , char *);
+void Destory_ST(ST);
+void Traverse_ST(ST);
+STU Search_ST(ST , long number);
+void Print_ST(STU);
 
 
 /*

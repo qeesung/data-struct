@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "search.h"
+#include <string.h>
 
 
 
@@ -39,7 +40,7 @@ Init_ST (  )
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    new_st->ele = NULL;
+    new_st->stu_list = NULL;
     return new_st;
 
 }		/* -----  end of function Init_ST  ----- */
@@ -74,29 +75,30 @@ Create_ST (ST my_st , char * filename )
         return;
     }
     /* 首先得到表的元素的大小 */
-    if(fgets(buf1 , 20 , my_file)==NULL)
+    if(fgets(buf1 , 20 , myfile)==NULL)
     {
         perror("Get search table size failed");
         return ;
     }
     my_st->length = atoi(buf1);
 
-    my_st->stu_list	= malloc ( sizeof(struct stu_node) * (my_st->lenght+1) );
+    my_st->stu_list	= malloc ( sizeof(struct stu_node) * (my_st->length+1) );
     if ( my_st->stu_list==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
     /* 得到表的实际内容部分 */
-    while(fscanf(myfile , "%d %s %d %d %d %d",&number,buf1,&math , &english , &pe , &biology )!=0)
+    for(k=1;k<my_st->length+1;k++)
     {
+        fscanf(myfile , "%d %s %d %d %d %d",&number,buf1,&math , &english , &pe , &biology );
+        strcpy(my_st->stu_list[k].name,buf1);
+        my_st->stu_list[k].number = number;
         my_st->stu_list[k].math = math;
         my_st->stu_list[k].english = english;
         my_st->stu_list[k].pe = pe;
         my_st->stu_list[k].biology = biology;
         total = math + english + pe+ biology;
         my_st->stu_list[k].total = total;
-        strcpy(my_st->stu_list[k].name,buf1);
-        k++;
     }
 }		/* -----  end of function Create_ST  ----- */
 
@@ -154,10 +156,10 @@ Traverse_ST ( ST my_st)
     int k=0;
     for(k=1;k<my_st->length+1;k++)
     {
-        printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_st->stu_list[k].number,my_st->stu_list[k].name
-                my_st->stu_list[k].math ,my-st->stu_list[k].english
-                my_st->stu_list[k].pe , my_st->stu_list[k].biology,
-                my_stu->stu_list[k].total);
+        printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_st->stu_list[k].number,my_st->stu_list[k].name,
+                my_st->stu_list[k].math ,my_st->stu_list[k].english
+                ,my_st->stu_list[k].pe , my_st->stu_list[k].biology,
+                my_st->stu_list[k].total);
     }
 }		/* -----  end of function Traverse_ST  ----- */
 
@@ -174,8 +176,8 @@ Print_ST ( STU my_stu )
 {
     if(my_stu == NULL)
         return ;
-    printf("*******************************************");
-    printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_stu->[k].number,my_stu->name
+    printf("*******************************************\n");
+    printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_stu->number,my_stu->name
                , my_stu->math ,my_stu->english,
                 my_stu->pe , my_stu->biology , my_stu->total);
 }		/* -----  end of function Print_ST  ----- */
