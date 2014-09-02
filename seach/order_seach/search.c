@@ -29,7 +29,7 @@
  * =====================================================================================
  */
     ST
-Init_ST ( void )
+Init_ST()
 {
     ST new_st;
 
@@ -39,7 +39,7 @@ Init_ST ( void )
         exit (EXIT_FAILURE);
     }
     new_st->ele= NULL;
-    return search_table;
+    return new_st;
 
 }		/* -----  end of function Init_ST  ----- */
 
@@ -151,10 +151,11 @@ Traverse ( ST my_st )
     if(my_st == NULL)
         return;
     int k=0;
-    for(k=1;k<my_st->length ;k++)
+    for(k=1;k<my_st->length+1 ;k++)
     {
         printf("#%d>>>%d\t" ,k , my_st->ele[k]);
     }
+    printf("\n");
     return ;
 }		/* -----  end of function Traverse  ----- */
 

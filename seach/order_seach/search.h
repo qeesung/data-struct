@@ -23,7 +23,7 @@ struct search_table
 };
 
 typedef struct search_table * ST;
-
+ST Init_ST();
 void Create(ST , char *);
 void Destory(ST);
 int Search(ST , int);
