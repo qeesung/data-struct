@@ -95,12 +95,90 @@ Create_ST (ST my_st , char * filename )
         my_st->stu_list[k].biology = biology;
         total = math + english + pe+ biology;
         my_st->stu_list[k].total = total;
+        strcpy(my_st->stu_list[k].name,buf1);
         k++;
     }
-
-
 }		/* -----  end of function Create_ST  ----- */
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Destory_ST
+ *  Description:  销毁一个顺序查找表
+ * =====================================================================================
+ */
+    void
+Destory_ST ( ST my_st )
+{
+    if(my_st == NULL)
+        return;
+    free(my_st->stu_list);
+    free(my_st);
+    my_st = NULL;
+    return;
+}		/* -----  end of function Destory_ST  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Search_ST
+ *  Description:  顺序表的查找函数
+ * =====================================================================================
+ */
+    STU
+Search_ST ( ST my_st , long number )
+{
+    if(my_st == NULL)
+        return NULL;
+    int k=0;
+    my_st->stu_list[0].number = number;
+    for(k=my_st->length;my_st->stu_list[k].number!=number;k--);
+    if(k==0)
+        return NULL;
+    return &(my_st->stu_list[k]);
+}		/* -----  end of function Search_ST  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Traverse_ST
+ *  Description:  遍历整个表 
+ * =====================================================================================
+ */
+    void
+Traverse_ST ( ST my_st)
+{
+    if(my_st== NULL)
+        return;
+    int k=0;
+    for(k=1;k<my_st->length+1;k++)
+    {
+        printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_st->stu_list[k].number,my_st->stu_list[k].name
+                my_st->stu_list[k].math ,my-st->stu_list[k].english
+                my_st->stu_list[k].pe , my_st->stu_list[k].biology,
+                my_stu->stu_list[k].total);
+    }
+}		/* -----  end of function Traverse_ST  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Print_ST
+ *  Description:  打印一个学生节点的函数
+ * =====================================================================================
+ */
+    void
+Print_ST ( STU my_stu )
+{
+    if(my_stu == NULL)
+        return ;
+    printf("*******************************************");
+    printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n" , my_stu->[k].number,my_stu->name
+               , my_stu->math ,my_stu->english,
+                my_stu->pe , my_stu->biology , my_stu->total);
+}		/* -----  end of function Print_ST  ----- */
 
 
 
