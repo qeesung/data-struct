@@ -36,7 +36,7 @@ typedef struct queue * Queue;
 Queue Init_Queue();
 void Enqueue(Queue my_queue , Bitree tree_node);
 Bitree Dequeue(Queue my_queue);
-Traverse_Queue(Queue my_queue);
+void Traverse_Queue(Queue my_queue);
 
 
 /*
