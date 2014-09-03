@@ -60,7 +60,7 @@ Create_ST ( ST my_st , char * filename)
     }
     FILE * myfile;
     char buf1[20];
-    char buf2[20];
+    char ch;
     int k;
     if ((myfile = fopen(filename , "r"))==NULL)
     {
@@ -84,13 +84,13 @@ Create_ST ( ST my_st , char * filename)
     /* 接下来得到表的数据 */
     for(k=1;k<my_st->length+1 ; k++)
     {
-        if(fscanf(myfile , "%s %s",buf1 , buf2)==NULL)
+        if(fscanf(myfile , "%c %s\n",&ch, buf1)==-1)
         {
             perror("fscanf error");
             return;
         }
-        my_st->slist[k].key = (char)atoi(buf1);
-        my-st->slist[k].weight = atoi(buf2);
+        my_st->slist[k].key = ch;
+        my_st->slist[k].weight = atoi(buf1);
     }
 }		/* -----  end of function Create_ST  ----- */
 
@@ -121,7 +121,7 @@ Destory_ST ( ST my_st)
  * =====================================================================================
  */
     void
-Search_K ( SOStree my_tree , ST my_st , int sw[] , int left , int right)
+Search_K ( SOStree * my_tree , ST my_st , int sw[] , int left , int right)
 {
     if(my_st == NULL)
         return;
@@ -142,21 +142,22 @@ Search_K ( SOStree my_tree , ST my_st , int sw[] , int left , int right)
         }
     }
 
-    my_tree	= malloc ( sizeof(struct bitree) );
+    *my_tree	= malloc ( sizeof(struct bitree) );
     if ( my_tree==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
-    my_tree->data = (char)my_st->slist[j].key;
-    my_tree->index = j;
+    (*my_tree)->data = (char)my_st->slist[j].key;
+    (*my_tree)->index = j;
+    fprintf(stderr,"Get the index %d\n",j);
     if(j == left)
-        my_tree->leftchild = NULL;
+        (*my_tree)->leftchild = NULL;
     else
-        Search_K(my_tree->leftchild, my_st , sw , left , j-1);
+        Search_K(&((*my_tree)->leftchild), my_st , sw , left , j-1);
     if(j == right)
-        my_tree->rightchild = NULL;
+        (*my_tree)->rightchild = NULL;
     else
-        Search_K(my_tree->rightchild , my_st , sw , j+1 , right);
+        Search_K(&((*my_tree)->rightchild) , my_st , sw , j+1 , right);
 }		/* -----  end of function Search_K  ----- */
 
 
@@ -189,12 +190,19 @@ Findsw ( int sw[] , ST my_st )
  * =====================================================================================
  */
     void
-Create_SOStree ( SOStree my_tree , ST my_st )
+Create_SOStree ( SOStree * my_tree , ST my_st )
 {
     int sw[my_st->length+1];
     if(Findsw(sw , my_st)==NULL)
         return;
-    Search_K(my_tree , my_st , sw , 1 , my_st->length+1);
+    Search_K(my_tree , my_st , sw , 1 , my_st->length);
+   /* fprintf(stderr,"#%d---->%c\n",my_tree->index, my_tree->data);
+    fprintf(stderr,"#%d---->%c\n",my_tree->leftchild->index, my_tree->leftchild->data);
+    fprintf(stderr,"#%d---->%c\n",my_tree->rightchild->index, my_tree->rightchild->data);*/
+    if((*my_tree)->leftchild==NULL )
+        fprintf(stderr,"leftchild is NULL\n");
+    else
+        fprintf(stderr,"%d>>>%c\n",(*my_tree)->leftchild->index , (*my_tree)->leftchild->data);
 }		/* -----  end of function Create_SOStree  ----- */
 
 
@@ -205,24 +213,31 @@ Create_SOStree ( SOStree my_tree , ST my_st )
  * =====================================================================================
  */
     int
-Search_ST ( ST my_st , int key)
+Search_ST ( ST my_st , char key)
 {
     if(my_st == NULL)
         return -1;
-    SOStree my_tree ;
-    Create_SOStree(my_tree , my_st);
+    SOStree my_tree , temp;
+    Create_SOStree(&my_tree , my_st);
+    Levelorder_Traverse(my_tree);
+    fprintf(stderr, "hello!\n");
     temp = my_tree;
+    if(temp == NULL)
+    {
+        fprintf(stderr,"create sostree failed\n");
+    }
     while(1)
     {
         if(temp == NULL)
             return -1;
         if(temp->data == key)
-            return my_tree->index;
-        if(temp->data > key)
+            return temp->index;
+        if(temp->data < key)
             temp = temp->rightchild;
         else
             temp = temp->leftchild;
     }
+    fprintf(stderr,"moximoxi\n");
     Destory_Bitree(my_tree);
 }		/* -----  end of function Search_ST  ----- */
 

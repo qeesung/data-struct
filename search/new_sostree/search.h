@@ -34,10 +34,10 @@ typedef Bitree SOStree;
 ST Init_ST();
 void Create_ST(ST my_st , char * filename);
 void Destory_ST(ST my_st);
-int Search_K(SOStree my_tree , ST my_st ,int sw[] ,  int left ,int right);
+void Search_K(SOStree * my_tree , ST my_st ,int sw[] ,  int left ,int right);
 int Search_ST(ST my_st , char key);
 int * Findsw(int sw[], ST my_st);
-void Ceaete_SOStree(SOStree my_tree , ST my_st);
+void Ceaete_SOStree(SOStree* my_tree , ST my_st);
 void Traverse_ST(ST my_st);
 
 /*
