@@ -36,7 +36,7 @@ void Create_ST(ST my_st , char * filename);
 void Destory_ST(ST my_st);
 int Search_K(SOStree my_tree , ST my_st ,int sw[] ,  int left ,int right);
 int Search_ST(ST my_st , char key);
-void Findsw(int sw[], ST my_st);
+int * Findsw(int sw[], ST my_st);
 void Ceaete_SOStree(SOStree my_tree , ST my_st);
 void Traverse_ST(ST my_st);
 
