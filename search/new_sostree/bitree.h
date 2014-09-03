@@ -28,6 +28,7 @@ struct bitree
 typedef struct bitree * Bitree;
 
 void Destory_Bitree(Bitree my_tree);
+void Levelorder_Traverse(Bitree my_tree);
 
 /*
  * =====================================================================================

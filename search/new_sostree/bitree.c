@@ -20,7 +20,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "bitree.h"
-
+#include "queue.h"
 
 
 /* 
@@ -43,6 +43,35 @@ Destory_Bitree ( Bitree my_tree )
     Destory_Bitree(temp2);
     return;
 }		/* -----  end of function Destory_Bitree  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Levelorder_Traverse
+ *  Description:  层序遍历函数
+ * =====================================================================================
+ */
+    void
+Levelorder_Traverse ( Bitree my_tree )
+{
+    if(my_tree == NULL)
+        return;
+    Queue my_queue;
+    my_queue = Init_Queue();
+    Bitree dequeue_node;
+    Enqueue(my_queue , my_tree);
+    while((dequeue_node = Dequeue(my_queue))!=NULL)
+    {
+    //    Traverse_Queue(my_queue);
+        printf("#%d>>>%c\n",dequeue_node->index , dequeue_node->data);
+        fflush(stdout);
+        if(dequeue_node->leftchild != NULL)
+            Enqueue(my_queue, dequeue_node->leftchild);
+        if(dequeue_node->rightchild !=NULL)
+            Enqueue(my_queue , dequeue_node->rightchild);
+    }
+    return;
+}		/* -----  end of function Levelorder_Traverse  ----- */
 
 
 
