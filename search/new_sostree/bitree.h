@@ -21,10 +21,13 @@
 struct bitree
 {
     char data;
+    int index;
     struct bitree * leftchild;
     struct bitree * rightchild;
 };
 typedef struct bitree * Bitree;
+
+void Destory_Bitree(Bitree my_tree);
 
 /*
  * =====================================================================================
