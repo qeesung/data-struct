@@ -75,14 +75,14 @@ Create_ST ( ST my_st , char * filename)
     }
     my_st->length = atoi(buf1);
 
-    new_st->slist	= malloc ( sizeof(struct table_node) );
-    if ( new_st->slist==NULL ) {
+    my_st->slist	= malloc ( sizeof(struct table_node) * (my_st->length + 1));
+    if ( my_st->slist==NULL ) {
         fprintf ( stderr, "\ndynamic memory allocation failed\n" );
         exit (EXIT_FAILURE);
     }
 
     /* 接下来得到表的数据 */
-    for(k=0;k<my_st->length ; k++)
+    for(k=1;k<my_st->length+1 ; k++)
     {
         if(fscanf(myfile , "%s %s",buf1 , buf2)==NULL)
         {
@@ -160,6 +160,88 @@ Search_K ( SOStree my_tree , ST my_st , int sw[] , int left , int right)
 }		/* -----  end of function Search_K  ----- */
 
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Findsw
+ *  Description:  计算权重之和的函数
+ * =====================================================================================
+ */
+    int *
+Findsw ( int sw[] , ST my_st )
+{
+    if(my_st == NULL)
+        return NULL;
+    int k=0;
+    sw[0] = 0;
+    for(k=1;k<my_st->length+1;k++)
+    {
+        sw[k]=sw[k-1] + my_st->slist[k].weight;
+    }
+    return sw;
+}		/* -----  end of function Findsw  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Create_SOStree
+ *  Description:  创建一棵最有查找树
+ * =====================================================================================
+ */
+    void
+Create_SOStree ( SOStree my_tree , ST my_st )
+{
+    int sw[my_st->length+1];
+    if(Findsw(sw , my_st)==NULL)
+        return;
+    Search_K(my_tree , my_st , sw , 1 , my_st->length+1);
+}		/* -----  end of function Create_SOStree  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Search_ST
+ *  Description:  查找函数 
+ * =====================================================================================
+ */
+    int
+Search_ST ( ST my_st , int key)
+{
+    if(my_st == NULL)
+        return -1;
+    SOStree my_tree ;
+    Create_SOStree(my_tree , my_st);
+    temp = my_tree;
+    while(1)
+    {
+        if(temp == NULL)
+            return -1;
+        if(temp->data == key)
+            return my_tree->index;
+        if(temp->data > key)
+            temp = temp->rightchild;
+        else
+            temp = temp->leftchild;
+    }
+    Destory_Bitree(my_tree);
+}		/* -----  end of function Search_ST  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Traverse_ST
+ *  Description:  遍历有序表
+ * =====================================================================================
+ */
+    void
+Traverse_ST ( ST my_st)
+{
+    int k=0 ;
+    for(k=1;k<my_st->length+1;k++)
+    {
+        printf("#%d+++%c>>>%d\n",k,my_st->slist[k].key , my_st->slist[k].weight);
+    }
+}		/* -----  end of function Traverse_ST  ----- */
 
 
 
